@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new ConnectFragment();
                 break;
             case 4:
-                fragment = new ConnectFragment();
+                fragment = new ProfileFragment();
                 break;
             case 5:
                 fragment = new ConnectFragment();
