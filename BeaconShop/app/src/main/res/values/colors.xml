@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#227CBB</color>
+  <!--  <color name="colorPrimary">#227CBB</color>
     <color name="colorPrimaryDark">#227CBB</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FF4081</color>-->
     <color name="trans">#00F0F8FF</color>
-    <color name="black">#000000</color>
-    <color name="drawer">#333435</color>
+   <!-- <color name="black">#000000</color>
+    <color name="drawer">#333435</color>-->
+
+    <color name="primary">#FBC02D</color>
+    <color name="primary_dark">#F9A825</color>
+    <color name="primary_light">#FDD835</color>
+    <color name="accent">#FBE9E7</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
 </resources>
