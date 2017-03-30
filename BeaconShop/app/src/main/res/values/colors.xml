@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--  <color name="colorPrimary">#227CBB</color>
+    <color name="colorPrimary">#227CBB</color>
     <color name="colorPrimaryDark">#227CBB</color>
-    <color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">#FF4081</color>
+
     <color name="trans">#00F0F8FF</color>
-<<<<<<< HEAD
     <color name="black">#000000</color>
     <color name="drawer">#333435</color>
     <color name="darkOrange">#FF8C00</color>
     <color name="orange">#FF4500</color>
     <color name="coral">#FF7F50</color>
     <color name="red">#FF0000</color>
-=======
    <!-- <color name="black">#000000</color>
     <color name="drawer">#333435</color>-->
 
@@ -23,5 +22,5 @@
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
->>>>>>> c7e0a3251334cae338a4760bf71ecede0361d377
+
 </resources>
