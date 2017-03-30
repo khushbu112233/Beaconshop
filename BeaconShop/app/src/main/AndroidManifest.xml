@@ -24,7 +24,8 @@
         <activity android:name=".AccountActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".StoreListActivity"></activity>
+        <activity android:name=".StoreListActivity" />
+        <activity android:name=".OffersListActivity"></activity>
     </application>
 
 </manifest>
