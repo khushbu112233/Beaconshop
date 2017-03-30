@@ -3,6 +3,7 @@
 
     <string-array name="navigation_drawer_items_array">
         <item>Home</item>
+        <item>Home</item>
         <item>Favourites</item>
         <item>My Vouchers</item>
         <item>Badges</item>
@@ -16,4 +17,14 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
+
+    <string name="action_settings">Settings</string>
+    <string name="logo_desc">App logo</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="profile_name">Kingsley Johnson</string>
+    <string name="profile_address">1 Heaven Crescent Avenue</string>
+    <string name="profile_email">kjohnson@yahoo.com</string>
 </resources>
