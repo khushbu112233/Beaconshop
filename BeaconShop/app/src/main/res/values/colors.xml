@@ -6,4 +6,8 @@
     <color name="trans">#00F0F8FF</color>
     <color name="black">#000000</color>
     <color name="drawer">#333435</color>
+    <color name="darkOrange">#FF8C00</color>
+    <color name="orange">#FF4500</color>
+    <color name="coral">#FF7F50</color>
+    <color name="red">#FF0000</color>
 </resources>
