@@ -102,10 +102,10 @@ public class MainActivity extends ActionBarActivity {
         switch(position) {
             default:
            /* case 0:
-               // fragment = new ConnectFragment();
+               // fragment = new HomeFragment();
                 break;*/
             case 1:
-                fragment = new FixturesFragment();
+                fragment = new HomeFragment();
                 break;
             case 2:
                 fragment = new TableFragment();
@@ -114,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new FixturesFragment();
                 break;
             case 4:
-                fragment = new ConnectFragment();
+                fragment = new HomeFragment();
                 break;
             case 5:
                 fragment = new ProfileFragment();

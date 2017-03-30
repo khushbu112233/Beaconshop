@@ -3,7 +3,7 @@
 
     <string-array name="navigation_drawer_items_array">
         <item>Home</item>
-        <item>Home</item>
+        <item>Store Category</item>
         <item>Favourites</item>
         <item>My Vouchers</item>
         <item>Badges</item>
