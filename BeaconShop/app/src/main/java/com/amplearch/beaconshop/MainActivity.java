@@ -114,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new FixturesFragment();
                 break;
             case 4:
-                fragment = new HomeFragment();
+                fragment = new BadgesFragment();
                 break;
             case 5:
                 fragment = new ProfileFragment();
