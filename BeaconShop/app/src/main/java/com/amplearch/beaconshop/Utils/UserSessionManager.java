@@ -24,16 +24,22 @@ public class UserSessionManager {
 	int PRIVATE_MODE = 0;
 	
 	// Sharedpref file name
-	private static final String PREFER_NAME = "AndroidExamplePref";
+	private static final String PREFER_NAME = "BeaconShopPref";
 	
 	// All Shared Preferences Keys
 	private static final String IS_USER_LOGIN = "IsUserLoggedIn";
 	
 	// User name (make variable public to access from outside)
 	public static final String KEY_NAME = "name";
+
+	public static final String KEY_PROFILE = "profile_image";
 	
 	// Email address (make variable public to access from outside)
 	public static final String KEY_EMAIL = "email";
+
+	public static final String KEY_PASSWORD = "password";
+
+	public static final String KEY_USER_ID = "user_id";
 	
 	// Constructor
 	public UserSessionManager(Context context){
@@ -43,7 +49,7 @@ public class UserSessionManager {
 	}
 	
 	//Create login session
-	public void createUserLoginSession(String name, String email){
+	public void createUserLoginSession(String name, String email, String profileImage, String password, String userId){
 		// Storing login value as TRUE
 		editor.putBoolean(IS_USER_LOGIN, true);
 		
@@ -52,7 +58,12 @@ public class UserSessionManager {
 		
 		// Storing email in pref
 		editor.putString(KEY_EMAIL, email);
-		
+
+		editor.putString(KEY_PROFILE, profileImage);
+
+		editor.putString(KEY_PASSWORD, password);
+
+		editor.putString(KEY_USER_ID, userId);
 		// commit changes
 		editor.commit();
 	}	
@@ -98,6 +109,12 @@ public class UserSessionManager {
 		
 		// user email id
 		user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+
+		user.put(KEY_PROFILE, pref.getString(KEY_PROFILE, null));
+
+		user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
+
+		user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
 		
 		// return user
 		return user;
