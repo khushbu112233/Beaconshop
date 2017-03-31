@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -32,12 +34,15 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressDialog mProgressDialog;
 
     private SignInButton btnSignIn;
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+
+        session = new UserSessionManager(getApplicationContext());
 
         txtSignIn = (TextView)findViewById(R.id.btnSignIn);
         txtSignUp = (TextView)findViewById(R.id.btnSignUp);
@@ -48,6 +53,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(getApplicationContext(), SignInActivity.class));
             }
         });
+
+        Toast.makeText(getApplicationContext(),
+                "User Login Status: " + session.isUserLoggedIn(),
+                Toast.LENGTH_LONG).show();
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -91,7 +101,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
 
-           // txtName.setText(personName);
+            session.createUserLoginSession(personName, email, personPhotoUrl, "gpass", "2977");
+
+
+            // txtName.setText(personName);
            // txtEmail.setText(email);
            /* Glide.with(getApplicationContext()).load(personPhotoUrl)
                     .thumbnail(0.5f)
@@ -189,8 +202,17 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         if (isSignedIn) {
             btnSignIn.setVisibility(View.GONE);
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+            // Starting MainActivity
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Add new Flag to start new Activity
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+
+            finish();
+           // Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+          //  startActivity(intent);
            // btnSignOut.setVisibility(View.VISIBLE);
            // btnRevokeAccess.setVisibility(View.VISIBLE);
           //  llProfileLayout.setVisibility(View.VISIBLE);

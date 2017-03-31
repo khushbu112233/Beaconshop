@@ -24,10 +24,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -47,6 +49,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -69,6 +72,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     TextView txtName;
     private Button btnSignOut, btnRevokeAccess;
+    UserSessionManager session;
+    Button btnLogout;
 
     public ProfileFragment() {
     }
@@ -80,14 +85,17 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
-
+        session = new UserSessionManager(getContext());
         btnDatePicker = (Button) rootView.findViewById(R.id.btn_date);
         txtDate = (EditText) rootView.findViewById(R.id.in_date);
         ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
         txtName = (TextView) rootView.findViewById(R.id.txtName);
-
+        btnLogout = (Button) rootView.findViewById(R.id.logout);
         btnSignOut = (Button) rootView.findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (Button) rootView.findViewById(R.id.btn_revoke_access);
+        Toast.makeText(getContext(),
+                "User Login Status: " + session.isUserLoggedIn(),
+                Toast.LENGTH_LONG).show();
 
         ivImage.setOnClickListener(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +125,24 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+
+        if(session.checkLogin()){
+            getActivity().finish();
+        }
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // get name
+        String name = user.get(UserSessionManager.KEY_NAME);
+
+        // get email
+        String email = user.get(UserSessionManager.KEY_EMAIL);
+
+        // Show user data on activity
+
+        Toast.makeText(getContext(), name + " " + email, Toast.LENGTH_LONG).show();
+
         // Customizing G+ button
 
         return rootView;
@@ -138,6 +164,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     @Override
                     public void onResult(Status status) {
                         updateUI(false);
+                        session.logoutUser();
                     }
                 });
     }
@@ -148,6 +175,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     @Override
                     public void onResult(Status status) {
                         updateUI(false);
+                        session.logoutUser();
                     }
                 });
     }
@@ -350,13 +378,15 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
            // btnSignIn.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
             btnRevokeAccess.setVisibility(View.VISIBLE);
+            btnLogout.setVisibility(View.GONE);
            // llProfileLayout.setVisibility(View.VISIBLE);
         } else {
            // btnSignIn.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.GONE);
             btnRevokeAccess.setVisibility(View.GONE);
-            Intent intent = new Intent(getContext(), AccountActivity.class);
-            startActivity(intent);
+            btnLogout.setVisibility(View.VISIBLE);
+         //   Intent intent = new Intent(getContext(), AccountActivity.class);
+          //  startActivity(intent);
           //  llProfileLayout.setVisibility(View.GONE);
         }
     }
@@ -398,7 +428,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         ivImage.setImageBitmap(bm);
     }
-
+    
 }
 /*
 class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
