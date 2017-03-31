@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Model;
 
 public class ItemObject {
 

@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.amplearch.beaconshop.AccountActivity">
+    tools:context="com.amplearch.beaconshop.Activity.AccountActivity">
 
     <TextView
         android:id="@+id/tvLogo"
@@ -102,32 +102,14 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/llGoogleIntegration"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="0.5"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/google_rectangle">
-            <ImageView
-                android:layout_width="130dp"
-                android:layout_height="30dp"
-                android:layout_weight="0.5"
-                android:src="@drawable/ic_google_plus"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sign In With Google Plus"
-                android:textStyle="bold"
-                android:layout_weight="0.5"
-                android:textAlignment="center"
-                android:layout_marginTop="5dp"
-                android:textSize="16dip"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
+
+        <com.google.android.gms.common.SignInButton
+            android:layout_marginTop="20dp"
+            android:id="@+id/btn_sign_in"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+
     </LinearLayout>
 
 </RelativeLayout>

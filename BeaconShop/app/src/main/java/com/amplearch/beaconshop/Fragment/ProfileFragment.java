@@ -1,18 +1,19 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.amplearch.beaconshop.Activity.AccountActivity;
+import com.amplearch.beaconshop.Activity.MainActivity;
+import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.Utility;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,7 +50,7 @@ import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     Button btnDatePicker;
     EditText txtDate;
@@ -43,6 +60,15 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private Button btnSelect;
     private CircleImageView ivImage;
     private String userChoosenTask;
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int RC_SIGN_IN = 007;
+
+    private GoogleApiClient mGoogleApiClient;
+    private ProgressDialog mProgressDialog;
+
+    TextView txtName;
+    private Button btnSignOut, btnRevokeAccess;
 
     public ProfileFragment() {
     }
@@ -58,6 +84,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         btnDatePicker = (Button) rootView.findViewById(R.id.btn_date);
         txtDate = (EditText) rootView.findViewById(R.id.in_date);
         ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
+        txtName = (TextView) rootView.findViewById(R.id.txtName);
+
+        btnSignOut = (Button) rootView.findViewById(R.id.btn_sign_out);
+        btnRevokeAccess = (Button) rootView.findViewById(R.id.btn_revoke_access);
 
         ivImage.setOnClickListener(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +106,18 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         spinner.setOnItemSelectedListener(this);
 
         btnDatePicker.setOnClickListener(this);
+        btnSignOut.setOnClickListener(this);
+        btnRevokeAccess.setOnClickListener(this);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .enableAutoManage(getActivity(), this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // Customizing G+ button
 
         return rootView;
     }
@@ -88,6 +130,56 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        updateUI(false);
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        updateUI(false);
+                    }
+                });
+    }
+
+    public void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.e(TAG, "display name: " + acct.getDisplayName());
+
+            String personName = acct.getDisplayName();
+            String personPhotoUrl = acct.getPhotoUrl().toString();
+            String email = acct.getEmail();
+
+            Log.e(TAG, "Name: " + personName + ", email: " + email
+                    + ", Image: " + personPhotoUrl);
+
+            txtName.setText(personName + System.lineSeparator() + email );
+           // txtEmail.setText(email);
+            Glide.with(getContext()).load(personPhotoUrl)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivImage);
+
+            updateUI(true);
+        } else {
+            // Signed out, show unauthenticated UI.
+            updateUI(false);
+        }
     }
 
     @Override
@@ -118,6 +210,15 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         if (v == ivImage) {
             selectImage();
         }
+
+        if (v == btnSignOut){
+            signOut();
+        }
+
+        if (v == btnRevokeAccess){
+            revokeAccess();
+        }
+
     }
 
     @Override
@@ -188,6 +289,75 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
+            else  if (requestCode == RC_SIGN_IN) {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                handleSignInResult(result);
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
+
+    private void updateUI(boolean isSignedIn) {
+        if (isSignedIn) {
+           // btnSignIn.setVisibility(View.GONE);
+            btnSignOut.setVisibility(View.VISIBLE);
+            btnRevokeAccess.setVisibility(View.VISIBLE);
+           // llProfileLayout.setVisibility(View.VISIBLE);
+        } else {
+           // btnSignIn.setVisibility(View.VISIBLE);
+            btnSignOut.setVisibility(View.GONE);
+            btnRevokeAccess.setVisibility(View.GONE);
+            Intent intent = new Intent(getContext(), AccountActivity.class);
+            startActivity(intent);
+          //  llProfileLayout.setVisibility(View.GONE);
         }
     }
 

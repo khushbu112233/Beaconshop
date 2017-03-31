@@ -1,12 +1,13 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+
+import com.amplearch.beaconshop.R;
+import com.github.siyamed.shapeimageview.RoundedImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -14,13 +15,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by admin on 03/30/2017.
  */
 
-public class CategoryAdapter extends BaseAdapter {
+public class OffersAdapter extends BaseAdapter {
 
     private Context mContext;
     private final String[] gridViewString;
     private final int[] gridViewImageId;
 
-    public CategoryAdapter(Context context, String[] gridViewString, int[] gridViewImageId) {
+    public OffersAdapter(Context context, String[] gridViewString, int[] gridViewImageId) {
         mContext = context;
         this.gridViewImageId = gridViewImageId;
         this.gridViewString = gridViewString;
@@ -50,10 +51,10 @@ public class CategoryAdapter extends BaseAdapter {
         if (convertView == null) {
 
             gridViewAndroid = new View(mContext);
-            gridViewAndroid = inflater.inflate(R.layout.category_row, null);
-           // TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.android_gridview_text);
-            CircleImageView imageViewAndroid = (CircleImageView) gridViewAndroid.findViewById(R.id.imgCategory);
-         //   textViewAndroid.setText(gridViewString[i]);
+            gridViewAndroid = inflater.inflate(R.layout.offers_row, null);
+            // TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.android_gridview_text);
+            RoundedImageView imageViewAndroid = (RoundedImageView) gridViewAndroid.findViewById(R.id.imgOffer);
+            //   textViewAndroid.setText(gridViewString[i]);
             imageViewAndroid.setImageResource(gridViewImageId[i]);
         } else {
             gridViewAndroid = (View) convertView;
@@ -62,3 +63,4 @@ public class CategoryAdapter extends BaseAdapter {
         return gridViewAndroid;
     }
 }
+

@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,6 +17,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.Adapter.CustomAdapter;
+import com.amplearch.beaconshop.Fragment.AboutUsFragment;
+import com.amplearch.beaconshop.Fragment.BadgesFragment;
+import com.amplearch.beaconshop.Fragment.FavoriteFragment;
+import com.amplearch.beaconshop.Fragment.HomeFragment;
+import com.amplearch.beaconshop.Fragment.ProfileFragment;
+import com.amplearch.beaconshop.Fragment.SettingsFragment;
+import com.amplearch.beaconshop.Fragment.TableFragment;
+import com.amplearch.beaconshop.Model.ItemObject;
+import com.amplearch.beaconshop.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mDrawerTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar topToolBar;
+    private static final int RC_SIGN_IN = 007;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +111,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
+
 
     private void selectItemFragment(int position){
 

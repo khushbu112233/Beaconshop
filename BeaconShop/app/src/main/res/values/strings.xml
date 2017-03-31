@@ -27,4 +27,7 @@
     <string name="profile_name">Kingsley Johnson</string>
     <string name="profile_address">1 Heaven Crescent Avenue</string>
     <string name="profile_email">kjohnson@yahoo.com</string>
+
+    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_revoke_access">Revoke Access</string>
 </resources>

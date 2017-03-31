@@ -13,19 +13,19 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".AccountActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".StoreListActivity" />
-        <activity android:name=".OffersListActivity" />
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.AccountActivity" />
+        <activity android:name=".Activity.SignInActivity" />
+        <activity android:name=".Activity.SignUpActivity" />
+        <activity android:name=".Activity.StoreListActivity" />
+        <activity android:name=".Activity.OffersListActivity" />
     </application>
 
 </manifest>

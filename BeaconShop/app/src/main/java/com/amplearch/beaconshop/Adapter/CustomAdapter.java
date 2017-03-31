@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amplearch.beaconshop.Model.ItemObject;
+import com.amplearch.beaconshop.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.amplearch.beaconshop.Adapter.StoreListAdapter;
+import com.amplearch.beaconshop.R;
 
 public class StoreListActivity extends AppCompatActivity {
 

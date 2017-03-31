@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Utils;
 
 import android.Manifest;
 import android.annotation.TargetApi;

@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.Toast;
+
+import com.amplearch.beaconshop.Adapter.CategoryAdapter;
+import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Activity.StoreListActivity;
 
 /**
  * Created by anupamchugh on 10/12/15.
