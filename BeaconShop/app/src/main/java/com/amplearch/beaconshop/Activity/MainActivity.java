@@ -25,6 +25,7 @@ import com.amplearch.beaconshop.Fragment.HomeFragment;
 import com.amplearch.beaconshop.Fragment.ProfileFragment;
 import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.TableFragment;
+import com.amplearch.beaconshop.Fragment.VoucherFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
 import com.amplearch.beaconshop.R;
 
