@@ -10,7 +10,6 @@
         android:layout_height="100dp"
         android:src="@drawable/ic_sale"
         android:id="@+id/circleBadges"
-        android:layout_margin="20dp"
-        />
+        android:layout_margin="20dp" />
 
 </LinearLayout>

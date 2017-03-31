@@ -108,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new HomeFragment();
                 break;
             case 2:
-                fragment = new TableFragment();
+                fragment = new FavoriteFragment();
                 break;
             case 3:
                 fragment = new FixturesFragment();
