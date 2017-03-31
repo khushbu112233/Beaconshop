@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -85,6 +86,10 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.main_fragment_container, new HomeFragment());
+        tx.commit();
+
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,8 +106,8 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(position) {
             default:
-           /* case 0:
-               // fragment = new HomeFragment();
+            /*case 0:
+                fragment = new HomeFragment();
                 break;*/
             case 1:
                 fragment = new HomeFragment();
@@ -111,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new TableFragment();
                 break;
             case 3:
-                fragment = new FixturesFragment();
+                fragment = new TableFragment();
                 break;
             case 4:
                 fragment = new BadgesFragment();
@@ -120,13 +125,13 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new ProfileFragment();
                 break;
             case 6:
-                fragment = new TableFragment();
+                fragment = new SettingsFragment();
                 break;
             case 7:
-                fragment = new FixturesFragment();
+                fragment = new TableFragment();
                 break;
             case 8:
-                fragment = new FixturesFragment();
+                fragment = new AboutUsFragment();
                 break;
         }
         fragmentManager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
