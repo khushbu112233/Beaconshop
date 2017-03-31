@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+
+import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 
 import java.util.ArrayList;
 
