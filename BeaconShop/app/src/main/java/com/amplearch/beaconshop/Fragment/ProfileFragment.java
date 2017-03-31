@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -28,11 +30,14 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
+import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -48,6 +53,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -75,6 +82,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     UserSessionManager session;
     Button btnLogout;
 
+    private User user;
+    Bitmap bitmap;
+
     public ProfileFragment() {
     }
 
@@ -86,6 +96,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
         session = new UserSessionManager(getContext());
+        user= PrefUtils.getCurrentUser(getContext());
         btnDatePicker = (Button) rootView.findViewById(R.id.btn_date);
         txtDate = (EditText) rootView.findViewById(R.id.in_date);
         ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
@@ -116,6 +127,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         btnDatePicker.setOnClickListener(this);
         btnSignOut.setOnClickListener(this);
         btnRevokeAccess.setOnClickListener(this);
+        btnLogout.setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -131,19 +143,57 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }
 
         // get user data from session
-        HashMap<String, String> user = session.getUserDetails();
+        final HashMap<String, String> user1 = session.getUserDetails();
 
         // get name
-        String name = user.get(UserSessionManager.KEY_NAME);
+        String name = user1.get(UserSessionManager.KEY_NAME);
 
         // get email
-        String email = user.get(UserSessionManager.KEY_EMAIL);
+        String email = user1.get(UserSessionManager.KEY_EMAIL);
 
         // Show user data on activity
 
         Toast.makeText(getContext(), name + " " + email, Toast.LENGTH_LONG).show();
 
         // Customizing G+ button
+
+
+        new AsyncTask<Void,Void,Void>(){
+            @Override
+            protected Void doInBackground(Void... params) {
+                URL imageURL = null;
+                try {
+
+                    if (user != null)
+                        imageURL = new URL("https://graph.facebook.com/" + user.facebookID + "/picture?type=large");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (imageURL != null)
+                        bitmap  = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                try {
+                    if (user.name != null) {
+                        ivImage.setImageBitmap(bitmap);
+                        txtName.setText(user.name + System.lineSeparator() + user.email);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+
 
         return rootView;
     }
@@ -245,6 +295,18 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         if (v == btnRevokeAccess){
             revokeAccess();
+        }
+
+        if (v == btnLogout){
+
+
+            PrefUtils.clearCurrentUser(getContext());
+
+
+            // We can logout from facebook by calling following method
+            LoginManager.getInstance().logOut();
+            session.logoutUser();
+
         }
 
     }
