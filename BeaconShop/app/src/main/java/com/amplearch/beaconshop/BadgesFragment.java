@@ -24,7 +24,6 @@ public class BadgesFragment extends Fragment
     ArrayList<Integer> badgeImages = new ArrayList<Integer>();
     Dialog dialog ;
 
-
     public BadgesFragment()
     {
 
