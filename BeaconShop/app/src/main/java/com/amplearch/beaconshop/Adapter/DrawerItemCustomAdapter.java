@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Adapter;
 
 /**
  * Created by admin on 03/29/2017.
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amplearch.beaconshop.Model.DataModel;
+import com.amplearch.beaconshop.R;
 
 public class DrawerItemCustomAdapter extends ArrayAdapter<DataModel> {
 

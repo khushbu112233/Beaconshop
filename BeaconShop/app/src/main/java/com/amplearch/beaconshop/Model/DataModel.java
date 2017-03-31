@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Model;
 
 /**
  * Created by admin on 03/29/2017.

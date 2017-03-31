@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Fragment;
 
 
 import android.app.Dialog;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.amplearch.beaconshop.Adapter.BadgeAdapter;
+import com.amplearch.beaconshop.R;
 
 import java.util.ArrayList;
 

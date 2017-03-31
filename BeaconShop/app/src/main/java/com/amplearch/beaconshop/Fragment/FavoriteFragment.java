@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Fragment;
 
 
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+
+import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
+import com.amplearch.beaconshop.R;
 
 import java.util.ArrayList;
 

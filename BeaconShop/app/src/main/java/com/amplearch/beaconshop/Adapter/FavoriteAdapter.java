@@ -1,4 +1,4 @@
-package com.amplearch.beaconshop;
+package com.amplearch.beaconshop.Adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.R;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 
 import java.util.ArrayList;
