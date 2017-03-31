@@ -139,13 +139,13 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new ProfileFragment();
                 break;
             case 6:
-//                fragment = new SettingsFragment();
+                fragment = new SettingsFragment();
                 break;
             case 7:
                 fragment = new TableFragment();
                 break;
             case 8:
-//                fragment = new AboutUsFragment();
+                fragment = new AboutUsFragment();
                 break;
         }
         fragmentManager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();

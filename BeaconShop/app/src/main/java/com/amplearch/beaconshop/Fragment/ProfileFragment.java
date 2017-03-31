@@ -428,19 +428,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         ivImage.setImageBitmap(bm);
     }
-    
-}
-/*
-class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
     }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
+
 }
-*/
