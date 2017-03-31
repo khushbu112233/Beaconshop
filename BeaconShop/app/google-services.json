@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "689509243662",
+    "project_id": "firebase-beaconshop"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689509243662:android:0df0252d86c250e9",
+        "android_client_info": {
+          "package_name": "com.amplearch.beaconshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689509243662-ecdi5pjfnjh2tk9d11j412v7dbca8j8c.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "689509243662-14hb5s6n30kc5tt91as3b93l4i93tvvq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amplearch.beaconshop",
+            "certificate_hash": "55b5063040d2d006eefce7e7d58a4efd417017f8"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASG1-C4O8mC2ZIHDrJCYa9c1wSfcBbUlw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

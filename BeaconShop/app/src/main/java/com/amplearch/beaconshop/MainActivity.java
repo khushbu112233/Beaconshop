@@ -1,5 +1,6 @@
 package com.amplearch.beaconshop;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +19,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.attr.data;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -30,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mDrawerTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar topToolBar;
+    private static final int RC_SIGN_IN = 007;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +110,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
+
 
     private void selectItemFragment(int position){
 
