@@ -13,9 +13,7 @@ import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Activity.StoreListActivity;
 
-/**
- * Created by anupamchugh on 10/12/15.
- */
+
 public class HomeFragment extends Fragment {
 
     GridView listCategory;

@@ -24,7 +24,7 @@ import com.amplearch.beaconshop.Fragment.FavoriteFragment;
 import com.amplearch.beaconshop.Fragment.HomeFragment;
 import com.amplearch.beaconshop.Fragment.ProfileFragment;
 import com.amplearch.beaconshop.Fragment.SettingsFragment;
-import com.amplearch.beaconshop.Fragment.TableFragment;
+import com.amplearch.beaconshop.Fragment.HelpFragment;
 import com.amplearch.beaconshop.Fragment.VoucherFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
 import com.amplearch.beaconshop.R;
@@ -142,7 +142,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new SettingsFragment();
                 break;
             case 7:
-                fragment = new TableFragment();
+                fragment = new HelpFragment();
                 break;
             case 8:
                 fragment = new AboutUsFragment();

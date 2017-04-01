@@ -10,9 +10,6 @@ import android.widget.CompoundButton;
 
 import com.amplearch.beaconshop.R;
 
-/**
- * Created by anupamchugh on 10/12/15.
- */
 public class SettingsFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
     CheckBox chboxNotification, chboxPopup, chboxWelcome;
