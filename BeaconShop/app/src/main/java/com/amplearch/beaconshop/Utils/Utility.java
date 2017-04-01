@@ -11,9 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-/**
- * Created by Shreya Kotak on 12/05/16.
- */
+import com.amplearch.beaconshop.Activity.SignUpActivity;
+
 public class Utility {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
@@ -49,4 +48,63 @@ public class Utility {
             return true;
         }
     }
+
+    public static boolean validate(String userName, String emailAddress, String contactNo, String password, String rePassword)
+    {
+        boolean valid = true ;
+
+
+        if(userName.isEmpty() || userName.length() < 3 )
+        {
+            SignUpActivity.etUserName.setError("Minimum 3 Characters.");
+            valid = false ;
+        }
+        else
+        {
+            SignUpActivity.etUserName.setError(null);
+        }
+
+        if (emailAddress.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches())
+        {
+            SignUpActivity. etEmailAddress.setError("Not a valid Email Address");
+            valid = false;
+        }
+        else {
+            SignUpActivity. etEmailAddress.setError(null);
+        }
+
+        if(contactNo.isEmpty() || contactNo.length() != 10  )
+        {
+            SignUpActivity.  etContactNo.setError("10 Characters Required");
+            valid = false ;
+        }
+        else if(contactNo.length() > 10){
+            SignUpActivity. etContactNo.setError("10 Characters Required");
+        }
+        else {
+            SignUpActivity.  etContactNo.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 4)
+        {
+            SignUpActivity.  etPassword.setError("Minimum 4 Characters");
+            valid = false;
+        }
+        else {
+            SignUpActivity. etPassword.setError(null);
+        }
+
+        if (rePassword.equals(password))
+        {
+
+            SignUpActivity.etRePassword.setError(null);
+        }
+        else {
+            SignUpActivity.etRePassword.setError("Password does not match");
+            valid = false;
+        }
+
+        return valid;
+    }
+
 }

@@ -3,13 +3,13 @@ package com.amplearch.beaconshop.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Utils.Validations;
+
+import static com.amplearch.beaconshop.Utils.Utility.validate;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String Password = etPassword.getText().toString();
                 String RePassword = etRePassword.getText().toString();
 
-                if (!Validations.validate(UserName,EmailAddress,ContactNo,Password,RePassword))
+                if (!validate(UserName,EmailAddress,ContactNo,Password,RePassword))
                 {
 
                     Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
