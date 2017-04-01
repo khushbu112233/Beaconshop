@@ -1,11 +1,13 @@
 package com.amplearch.beaconshop.Activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -350,5 +352,31 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
           //  btnRevokeAccess.setVisibility(View.GONE);
           //  llProfileLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Exit Application?");
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                moveTaskToBack(true);
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                            }
+                        })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
