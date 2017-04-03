@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <permission
         android:name="com.amplearch.beaconshop.permission.MAPS_RECEIVE"
         android:protectionLevel="signature"/>
@@ -53,7 +52,6 @@
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.StoreListActivity" />
         <activity android:name=".Activity.OffersListActivity" />
-        <activity android:name=".Activity.NearbyMall"></activity>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
