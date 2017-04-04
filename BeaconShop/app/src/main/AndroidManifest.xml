@@ -52,7 +52,6 @@
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.StoreListActivity" />
         <activity android:name=".Activity.OffersListActivity" />
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAYWxi1tvDrSA7fLp_qoMaTDMqGvnLHveY" />
