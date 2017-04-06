@@ -103,7 +103,8 @@ public class MainActivity extends ActionBarActivity {
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
-        mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close)
+        {
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
