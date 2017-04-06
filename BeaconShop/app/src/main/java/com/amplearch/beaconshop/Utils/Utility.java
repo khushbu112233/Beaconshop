@@ -53,7 +53,6 @@ public class Utility {
     {
         boolean valid = true ;
 
-
         if(userName.isEmpty() || userName.length() < 3 )
         {
             SignUpActivity.etUserName.setError("Minimum 3 Characters.");
@@ -66,32 +65,32 @@ public class Utility {
 
         if (emailAddress.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches())
         {
-            SignUpActivity. etEmailAddress.setError("Not a valid Email Address");
+            SignUpActivity.etEmailAddress.setError("Not a valid Email Address");
             valid = false;
         }
         else {
-            SignUpActivity. etEmailAddress.setError(null);
+            SignUpActivity.etEmailAddress.setError(null);
         }
 
         if(contactNo.isEmpty() || contactNo.length() != 10  )
         {
-            SignUpActivity.  etContactNo.setError("10 Characters Required");
+            SignUpActivity.etContactNo.setError("10 Characters Required");
             valid = false ;
         }
         else if(contactNo.length() > 10){
-            SignUpActivity. etContactNo.setError("10 Characters Required");
+            SignUpActivity.etContactNo.setError("10 Characters Required");
         }
         else {
-            SignUpActivity.  etContactNo.setError(null);
+            SignUpActivity.etContactNo.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4)
         {
-            SignUpActivity.  etPassword.setError("Minimum 4 Characters");
+            SignUpActivity.etPassword.setError("Minimum 4 Characters");
             valid = false;
         }
         else {
-            SignUpActivity. etPassword.setError(null);
+            SignUpActivity.etPassword.setError(null);
         }
 
         if (rePassword.equals(password))

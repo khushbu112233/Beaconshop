@@ -1,11 +1,19 @@
 package com.amplearch.beaconshop.Activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,7 +37,11 @@ import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
 import com.amplearch.beaconshop.Fragment.VoucherFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
+import com.amplearch.beaconshop.MyService;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.Const;
+import com.amplearch.beaconshop.Utils.LocationUpdateService;
+import com.amplearch.beaconshop.Utils.NotificationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +58,24 @@ public class MainActivity extends ActionBarActivity {
     private Toolbar topToolBar;
     private static final int RC_SIGN_IN = 007;
 
+    private boolean mIsServiceStarted = false;
+    public static final String EXTRA_NOTIFICATION_ID = "notification_id";
+    public static final String ACTION_STOP = "STOP_ACTION";
+    public static final String ACTION_FROM_NOTIFICATION = "isFromNotification";
+    private String action;
+    private int notifID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!mIsServiceStarted) {
+            mIsServiceStarted = true;
+           // setButtonsEnabledState();
+            OnGoingLocationNotification(this);
+            startService(new Intent(this, LocationUpdateService.class));
+        }
 
         mTitle = mDrawerTitle = getTitle();
         titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
@@ -161,6 +187,77 @@ public class MainActivity extends ActionBarActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
+    }
+
+    public void exportDatabaseToSdCard(View view) {
+        Const.ExportDatabase(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getAction() != null) {
+            action = getIntent().getAction();
+            notifID = getIntent().getIntExtra(EXTRA_NOTIFICATION_ID, 0);
+            if (action.equalsIgnoreCase(ACTION_FROM_NOTIFICATION)) {
+                mIsServiceStarted = true;
+                //setButtonsEnabledState();
+
+            }
+        }
+    }
+
+    /**
+     * Method to generate OnGoingLocationNotification
+     *
+     * @param mcontext
+     */
+    public static void OnGoingLocationNotification(Context mcontext) {
+        int mNotificationId;
+
+        mNotificationId = (int) System.currentTimeMillis();
+
+        //Broadcast receiver to handle the stop action
+        Intent mstopReceive = new Intent(mcontext, NotificationHandler.class);
+        mstopReceive.putExtra(EXTRA_NOTIFICATION_ID, mNotificationId);
+        mstopReceive.setAction(ACTION_STOP);
+        PendingIntent pendingIntentStopService = PendingIntent.getBroadcast(mcontext, (int) System.currentTimeMillis(), mstopReceive, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(mcontext)
+                        .setSound(alarmSound)
+                        .setSmallIcon(R.drawable.ic_cast_off_light)
+                        .setContentTitle("Location Service")
+                        .addAction(R.drawable.ic_cancel, "Stop Service", pendingIntentStopService)
+                        .setOngoing(true).setContentText("Running...");
+        mBuilder.setAutoCancel(false);
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(mcontext, MainActivity.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        resultIntent.setAction(ACTION_FROM_NOTIFICATION);
+        resultIntent.putExtra(EXTRA_NOTIFICATION_ID, mNotificationId);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(mcontext, (int) System.currentTimeMillis(), resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) mcontext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.cancel(mNotificationId);
+
+        Notification mNotification = mBuilder.build();
+        mNotification.defaults |= Notification.DEFAULT_VIBRATE;
+        mNotification.flags |= Notification.FLAG_ONGOING_EVENT;
+
+        mNotificationManager.notify(mNotificationId, mNotification);
+
+    }
+
+    private void cancelNotification(Context mContext, int mnotinotifId) {
+        NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(mnotinotifId);
     }
 
     @Override

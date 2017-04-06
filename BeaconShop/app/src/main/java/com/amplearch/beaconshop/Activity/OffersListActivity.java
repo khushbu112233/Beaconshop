@@ -1,5 +1,6 @@
 package com.amplearch.beaconshop.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -47,8 +48,8 @@ public class OffersListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
                 //  Toast.makeText(getContext(), "GridView Item: " , Toast.LENGTH_LONG).show();
-               /* Intent intent = new Intent(getApplicationContext(), StoreListActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getApplicationContext(), OfferDetailActivity.class);
+                startActivity(intent);
             }
         });
     }
