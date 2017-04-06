@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
 import android.location.Location;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.StoreLocations;
 import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.facebook.CallbackManager;
@@ -105,6 +108,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
      * Time when the location was updated represented as a String.
      */
     protected String mLastUpdateTime;
+    public static Cursor c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -124,6 +128,22 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(getApplicationContext(), SignInActivity.class));
             }
         });
+
+        String URL = "content://com.amplearch.beaconshop.StoreLocations";
+
+        Uri students = Uri.parse(URL);
+        c = managedQuery(students, null, null, null, null);
+
+       /* if (c.moveToFirst()) {
+            do{
+                Toast.makeText(this,
+                        c.getString(c.getColumnIndex(StoreLocations._ID)) +
+                                ", " +  c.getString(c.getColumnIndex( StoreLocations.FIELD_OFFER_TITLE)) +
+                                ", " + c.getString(c.getColumnIndex( StoreLocations.FIELD_STORE_NAME)) +
+                                ", " + c.getString(c.getColumnIndex( StoreLocations.FIELD_START_DATE)),
+                        Toast.LENGTH_SHORT).show();
+            } while (c.moveToNext());
+        }*/
 
         if(PrefUtils.getCurrentUser(AccountActivity.this) != null){
 

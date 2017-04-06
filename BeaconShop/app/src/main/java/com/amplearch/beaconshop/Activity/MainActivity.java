@@ -90,9 +90,15 @@ public class MainActivity extends AppCompatActivity
 
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
+<<<<<<< HEAD
 
        // topToolBar.setLogo(R.mipmap.ic_launcher);
+=======
+        topToolBar.setLogo(R.mipmap.ic_launcher);
+>>>>>>> 15d6d0a93a36a372c1b59230999f34c88e86b97b
         topToolBar.setLogoDescription("BeaconShop");
+        topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
+//        mDrawerToggle.setDrawerIndicatorEnabled(true);
 
         //Initializing the tablayout
       /*  tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -172,12 +178,12 @@ public class MainActivity extends AppCompatActivity
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-
+        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.main_fragment_container, new HomeFragment());
+        tx.replace(R.id.content_frame, new HomeFragment());
         tx.commit();
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -225,7 +231,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new AboutUsFragment();
                 break;
         }
-        fragmentManager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         mDrawerList.setItemChecked(position, true);
         setTitle(titles[position]);

@@ -26,7 +26,7 @@ public class StoreLocations extends ContentProvider {
     static final String URL = "content://" + PROVIDER_NAME + "/locations";
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
-    static final String _ID = "_id";
+    public static final String _ID = "_id";
 
     public static final String FIELD_STORE_NAME = "store_name";
 
@@ -94,16 +94,16 @@ public class StoreLocations extends ContentProvider {
             insertValues.put("lat", "23.057506");
             insertValues.put("lng", "72.543392");
             insertValues.put("offer_title", "Cashbak");
-            insertValues.put("offer_desc", "70% Cashback");
+            insertValues.put("offer_desc", "70% Cashback, Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%.");
             insertValues.put("start_date", "08/03/2017");
             insertValues.put("end_date", "06/04/2017");
             db.insert(LOCATIONS_TABLE_NAME, null, insertValues);
 
             insertValues.put("store_name", "Vikram Appts");
-            insertValues.put("lat", "22.485460");
-            insertValues.put("lng", "70.061735");
+            insertValues.put("lat", "23.012102");
+            insertValues.put("lng", "72.522634");
             insertValues.put("offer_title", "Redeem Code");
-            insertValues.put("offer_desc", "70% Cashback");
+            insertValues.put("offer_desc", "Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%");
             insertValues.put("start_date", "08/02/2015");
             insertValues.put("end_date", "14/02/2016");
             db.insert(LOCATIONS_TABLE_NAME, null, insertValues);
