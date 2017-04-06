@@ -81,8 +81,10 @@ public class MainActivity extends ActionBarActivity {
         titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
-       // topToolBar.setLogo(R.mipmap.ic_launcher);
+        topToolBar.setLogo(R.mipmap.ic_launcher);
         topToolBar.setLogoDescription("BeaconShop");
+        topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
+//        mDrawerToggle.setDrawerIndicatorEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -124,12 +126,12 @@ public class MainActivity extends ActionBarActivity {
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-
+        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.main_fragment_container, new HomeFragment());
+        tx.replace(R.id.content_frame, new HomeFragment());
         tx.commit();
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -177,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new AboutUsFragment();
                 break;
         }
-        fragmentManager.beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         mDrawerList.setItemChecked(position, true);
         setTitle(titles[position]);

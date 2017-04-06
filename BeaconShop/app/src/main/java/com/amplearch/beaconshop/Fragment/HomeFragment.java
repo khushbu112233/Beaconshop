@@ -19,13 +19,13 @@ public class HomeFragment extends Fragment {
     GridView listCategory;
     String[] web;
     int[] imageId = {
-            R.drawable.ic_sale,
-            R.drawable.ic_sale,
-            R.drawable.ic_sale,
-            R.drawable.ic_sale,
-            R.drawable.ic_sale,
-            R.drawable.ic_sale,
-            R.drawable.ic_sale
+            R.drawable.ic_round,
+            R.drawable.ic_round,
+            R.drawable.ic_round,
+            R.drawable.ic_round,
+            R.drawable.ic_round,
+            R.drawable.ic_round,
+            R.drawable.ic_round
 
     };
 
