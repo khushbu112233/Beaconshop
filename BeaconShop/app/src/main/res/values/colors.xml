@@ -24,4 +24,6 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="facebook">#227CBB</color>
+    <color name="white">#FFFFFF</color>
+    <color name="logo_color">#313152</color>
 </resources>
