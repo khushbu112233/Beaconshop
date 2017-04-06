@@ -13,6 +13,8 @@ import java.util.Date;
 
 public class TempActivity extends AppCompatActivity {
 
+    public static Cursor c;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +23,7 @@ public class TempActivity extends AppCompatActivity {
         String URL = "content://com.amplearch.beaconshop.StoreLocations";
 
         Uri students = Uri.parse(URL);
-        Cursor c = managedQuery(students, null, null, null, null);
+         c = managedQuery(students, null, null, null, null);
 
         if (c.moveToFirst()) {
             do{
