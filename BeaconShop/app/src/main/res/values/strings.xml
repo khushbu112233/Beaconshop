@@ -32,4 +32,13 @@
     <string name="btn_revoke_access">Revoke Access</string>
 
     <string name="facebook_app_id">1083886521715240</string>
+
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="last_update_time_label">Last location update time</string>
+
+    <string name="start_updates">Start updates</string>
+    <string name="stop_updates">Stop updates</string>
+    <string name="location_updated_message">Location updated</string>
+    <string name="location_update">Location %1$s</string>
 </resources>
