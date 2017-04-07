@@ -56,7 +56,7 @@ public class ElectOfferAdapter extends BaseAdapter
         TrojanText trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
 
         imageView.setImageResource(elect_Image.get(position));
-        trojanText.setError(elect_Text.get(position));
+        trojanText.setText(elect_Text.get(position));
 
         return rowView ;
     }

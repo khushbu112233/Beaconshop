@@ -37,6 +37,7 @@
                 android:layout_weight="0.5"
                 android:text="FILTERS"
                 android:textColor="@color/white"
+                android:layout_marginRight="1dp"
                 android:background="@color/logo_color"/>
             <com.amplearch.beaconshop.Utils.TrojanButton
                 android:id="@+id/btnShort"
@@ -44,6 +45,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.5"
                 android:text="SHORT"
+                android:layout_marginLeft="1dp"
                 android:textColor="@color/white"
                 android:background="@color/logo_color"/>
         </LinearLayout>
@@ -52,8 +54,9 @@
             android:id="@+id/listView_Elect"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/llButtons">
-
-        </ListView>
+            android:layout_below="@+id/llButtons"
+            android:dividerHeight="2dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp" />
 
 </RelativeLayout>

@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity
         topToolBar.setLogo(R.mipmap.ic_launcher);
         topToolBar.setLogoDescription("BeaconShop");
         topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
+        getActionBar().setDisplayHomeAsUpEnabled(false);
+        getActionBar().setDisplayUseLogoEnabled(false);
 //        mDrawerToggle.setDrawerIndicatorEnabled(true);
 
         //Initializing the tablayout

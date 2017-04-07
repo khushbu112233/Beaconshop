@@ -6,38 +6,43 @@
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
         <LinearLayout
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:background="@drawable/login_shape"
             android:layout_weight="0.0"
             android:gravity="center">
             <ImageView
                 android:id="@+id/ivElectImage"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/ic_sale"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="90dp"
+            android:layout_height="50dp"
             android:background="@drawable/offers_shape"
             android:layout_weight="1.0"
             android:layout_marginTop="10dp">
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:id="@+id/tvElectOfferDetails"
                 android:textColor="@color/logo_color"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="Discount"
+                android:textSize="10dp"/>
         </LinearLayout>
     </LinearLayout>
 
