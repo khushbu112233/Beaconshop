@@ -41,4 +41,9 @@
     <string name="stop_updates">Stop updates</string>
     <string name="location_updated_message">Location updated</string>
     <string name="location_update">Location %1$s</string>
+
+    <string name="Settings">Settings</string>
+    <string name="action_listfiles">List files</string>
+    <string name="action_deletefiles">Delete Files</string>
+    <string name="action_transferfiles">Transfer Files</string>
 </resources>

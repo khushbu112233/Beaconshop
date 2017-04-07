@@ -51,6 +51,8 @@ dependencies {
     compile 'com.google.code.ksoap2-android:ksoap2-android:3.6.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'org.altbeacon:android-beacon-library:2+'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

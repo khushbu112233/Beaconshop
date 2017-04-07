@@ -72,6 +72,15 @@
             android:enabled="true"
             android:exported="false"></service>
 
+        <activity
+            android:name=".Utils.AppPreferenceActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.amplearch.beaconshop.Utils.AppPreferenceActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <receiver
             android:name=".Utils.NotificationHandler"
             android:enabled="true"

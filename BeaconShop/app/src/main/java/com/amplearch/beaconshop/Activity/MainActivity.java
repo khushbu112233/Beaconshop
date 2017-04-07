@@ -6,10 +6,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +22,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +32,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
+import com.amplearch.beaconshop.ApplicationUtils.MyApplication;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
 import com.amplearch.beaconshop.Fragment.FavoriteFragment;
@@ -37,17 +42,28 @@ import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
 import com.amplearch.beaconshop.Fragment.VoucherFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
-import com.amplearch.beaconshop.MyService;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.BeaconHelper;
 import com.amplearch.beaconshop.Utils.Const;
+import com.amplearch.beaconshop.Utils.FileHelper;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.NotificationHandler;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.utils.UrlBeaconUrlCompressor;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements BeaconConsumer{
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -65,6 +81,46 @@ public class MainActivity extends ActionBarActivity {
     private String action;
     private int notifID;
 
+    private static final String PREFERENCE_SCANINTERVAL = "scanInterval";
+    private static final String PREFERENCE_TIMESTAMP = "timestamp";
+    private static final String PREFERENCE_POWER = "power";
+    private static final String PREFERENCE_PROXIMITY = "proximity";
+    private static final String PREFERENCE_RSSI = "rssi";
+    private static final String PREFERENCE_MAJORMINOR = "majorMinor";
+    private static final String PREFERENCE_UUID = "uuid";
+    private static final String PREFERENCE_INDEX = "index";
+    private static final String PREFERENCE_LOCATION = "location";
+    private static final String PREFERENCE_REALTIME = "realTimeLog";
+    private static final String MODE_SCANNING = "Stop Scanning";
+    private static final String MODE_STOPPED = "Start Scanning";
+    protected static final String TAG = "ScanActivity";
+
+    private final static int
+            CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
+    private FileHelper fileHelper;
+    private Region region;
+    private int eventNum = 1;
+
+    // This StringBuffer will hold the scan data for any given scan.
+    private StringBuffer logString;
+
+    // Preferences - will actually have a boolean value when loaded.
+    private Boolean index;
+    private Boolean location;
+    private Boolean uuid;
+    private Boolean majorMinor;
+    private Boolean rssi;
+    private Boolean proximity;
+    private Boolean power;
+    private Boolean timestamp;
+    private String scanInterval;
+    // Added following a feature request from D.Schmid.
+    private Boolean realTimeLog;
+
+   // private BeaconManager beaconManager = BeaconManager.getInstanceForApplication(this);
+    // LocationClient for Google Play Location Services
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +133,14 @@ public class MainActivity extends ActionBarActivity {
             startService(new Intent(this, LocationUpdateService.class));
         }
 
+        verifyBluetooth();
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        MyApplication app = (MyApplication) this.getApplication();
+     //   beaconManager.bind(this);
+        //beaconManager.setForegroundScanPeriod(10);
+
+        fileHelper = app.getFileHelper();
+        startScanning();
         mTitle = mDrawerTitle = getTitle();
         titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
@@ -144,6 +208,23 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onBeaconServiceConnect() {
+        /*beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection beacons, Region region) {
+                if (beacons.size() > 0) {
+                    Log.i(TAG, "The first beacon I see is about "+beacons.toString()+" meters away.");
+                }
+            }
+        });
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }*/
+    }
 
     private void selectItemFragment(int position){
 
@@ -198,6 +279,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+      //  beaconManager.bind(this);
         if (getIntent().getAction() != null) {
             action = getIntent().getAction();
             notifID = getIntent().getIntExtra(EXTRA_NOTIFICATION_ID, 0);
@@ -208,6 +290,227 @@ public class MainActivity extends ActionBarActivity {
             }
         }
     }
+
+
+    private void startScanning() {
+
+        // Set UI elements to the correct state.
+      //  scanButton.setText(MODE_SCANNING);
+       // ((EditText)findViewById(R.id.scanText)).setText("");
+
+        // Reset event counter
+        eventNum = 1;
+        // Get current values for logging preferences
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        HashMap<String, Object> prefs = new HashMap<String, Object>();
+        prefs.putAll(sharedPrefs.getAll());
+
+        index = (Boolean)prefs.get(PREFERENCE_INDEX);
+        location = (Boolean)prefs.get(PREFERENCE_LOCATION);
+        uuid = (Boolean)prefs.get(PREFERENCE_UUID);
+        majorMinor = (Boolean)prefs.get(PREFERENCE_MAJORMINOR);
+        rssi = (Boolean)prefs.get(PREFERENCE_RSSI);
+        proximity = (Boolean)prefs.get(PREFERENCE_PROXIMITY);
+        power = (Boolean)prefs.get(PREFERENCE_POWER);
+        timestamp = (Boolean)prefs.get(PREFERENCE_TIMESTAMP);
+        scanInterval = (String)prefs.get(PREFERENCE_SCANINTERVAL);
+        realTimeLog = (Boolean)prefs.get(PREFERENCE_REALTIME);
+
+        // Get current background scan interval (if specified)
+        if (prefs.get(PREFERENCE_SCANINTERVAL) != null) {
+            //beaconManager.setBackgroundBetweenScanPeriod(Long.parseLong(scanInterval));
+        }
+
+      //  logToDisplay("Scanning...");
+
+        // Initialise scan log
+        logString = new StringBuffer();
+
+        //Start scanning again.
+        /*beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                if (beacons.size() > 0) {
+                    Iterator<Beacon> beaconIterator = beacons.iterator();
+                    while (beaconIterator.hasNext()) {
+                        Beacon beacon = beaconIterator.next();
+                        // Debug - logging a beacon - checking background logging is working.
+                        System.out.println("Logging another beacon.");
+                        logBeaconData(beacon);
+                        Toast.makeText(getApplicationContext(), "Enter", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(region);
+        } catch (RemoteException e) {
+            // TODO - OK, what now then?
+        }*/
+
+    }
+
+    private void logBeaconData(Beacon beacon) {
+
+        StringBuilder scanString = new StringBuilder();
+
+        if (index) {
+            scanString.append(eventNum++);
+        }
+
+        if (beacon.getServiceUuid() == 0xfeaa) {
+
+            if (beacon.getBeaconTypeCode() == 0x00) {
+
+                scanString.append(" Eddystone-UID -> ");
+                scanString.append(" Namespace : ").append(beacon.getId1());
+                scanString.append(" Identifier : ").append(beacon.getId2());
+
+                logEddystoneTelemetry(scanString, beacon);
+
+            } else if (beacon.getBeaconTypeCode() == 0x10) {
+
+                String url = UrlBeaconUrlCompressor.uncompress(beacon.getId1().toByteArray());
+                scanString.append(" Eddystone-URL -> " + url);
+
+            } else if (beacon.getBeaconTypeCode() == 0x20) {
+
+                scanString.append(" Eddystone-TLM -> ");
+                logEddystoneTelemetry(scanString, beacon);
+
+            }
+
+        } else {
+
+            // Just an old fashioned iBeacon or AltBeacon...
+            logGenericBeacon(scanString, beacon);
+
+        }
+
+        logToDisplay(scanString.toString());
+        scanString.append("\n");
+
+        // Code added following a feature request by D.Schmid - writes a single entry to a file
+        // every time a beacon is detected, the file will only ever have one entry as it will be
+        // recreated on each call to this method.
+        // Get current background scan interval (if specified)
+        if (realTimeLog) {
+            // We're in realtime logging mode, create a new log file containing only this entry.
+            fileHelper.createFile(scanString.toString(), "realtimelog.txt");
+        }
+
+        logString.append(scanString.toString());
+
+    }
+
+    private void logGenericBeacon(StringBuilder scanString, Beacon beacon) {
+
+
+        if (uuid) {
+            scanString.append(" UUID: ").append(beacon.getId1());
+        }
+
+        if (majorMinor) {
+            scanString.append(" Maj. Mnr.: ");
+            if (beacon.getId2() != null) {
+                scanString.append(beacon.getId2());
+            }
+            scanString.append("-");
+            if (beacon.getId3() != null) {
+                scanString.append(beacon.getId3());
+            }
+        }
+
+        if (rssi) {
+            scanString.append(" RSSI: ").append(beacon.getRssi());
+        }
+
+        if (proximity) {
+            scanString.append(" Proximity: ").append(BeaconHelper.getProximityString(beacon.getDistance()));
+        }
+
+        if (power) {
+            scanString.append(" Power: ").append(beacon.getTxPower());
+        }
+
+        if (timestamp) {
+            scanString.append(" Timestamp: ").append(BeaconHelper.getCurrentTimeStamp());
+        }
+        Log.e("beacon : ", scanString + "\n");
+    }
+
+    private void logEddystoneTelemetry(StringBuilder scanString, Beacon beacon) {
+        // Do we have telemetry data?
+        if (beacon.getExtraDataFields().size() > 0) {
+            long telemetryVersion = beacon.getExtraDataFields().get(0);
+            long batteryMilliVolts = beacon.getExtraDataFields().get(1);
+            long pduCount = beacon.getExtraDataFields().get(3);
+            long uptime = beacon.getExtraDataFields().get(4);
+
+            scanString.append(" Telemetry version : " + telemetryVersion);
+            scanString.append(" Uptime (sec) : " + uptime);
+            scanString.append(" Battery level (mv) " + batteryMilliVolts);
+            scanString.append(" Tx count: " + pduCount);
+            Log.e("beacon : ", scanString + "\n");
+        }
+    }
+
+    private void logToDisplay(final String line) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+
+                Log.e("beacon : ", line + "\n");
+               // editText.append(line + "\n");
+
+                // Temp code - don't really want to do this for every line logged, will look for a
+                // workaround.
+               // Linkify.addLinks(editText, Linkify.WEB_URLS);
+
+               // scroller.fullScroll(View.FOCUS_DOWN);
+
+            }
+        });
+    }
+
+    private void verifyBluetooth() {
+
+        try {
+            if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Bluetooth not enabled");
+                builder.setMessage("Please enable bluetooth in settings and restart this application.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                        System.exit(0);
+                    }
+                });
+                builder.show();
+            }
+        }
+        catch (RuntimeException e) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Bluetooth LE not available");
+            builder.setMessage("Sorry, this device does not support Bluetooth LE.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    finish();
+                    System.exit(0);
+                }
+
+            });
+            builder.show();
+
+        }
+
+    }
+
 
     /**
      * Method to generate OnGoingLocationNotification
