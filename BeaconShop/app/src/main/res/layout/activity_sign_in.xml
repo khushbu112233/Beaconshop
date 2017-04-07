@@ -27,18 +27,18 @@
 
         <ImageView
             android:id="@+id/id_logo"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="150dp"
+            android:layout_height="140dp"
             android:src="@drawable/ic_shop_logo"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"/>
+            android:layout_marginTop="35dp"/>
 
         <LinearLayout
             android:id="@+id/llUsernameBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:weightSum="1"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
@@ -80,7 +80,7 @@
             android:textColor="@color/white"
             android:textAlignment="center"
             android:textSize="25dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="10dp"/>
 
         <LinearLayout
             android:id="@+id/llEmailBox"

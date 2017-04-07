@@ -4,39 +4,15 @@
     android:layout_width="match_parent"
     android:id="@+id/drawer_layout"
     android:background="@drawable/ic_back"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-<<<<<<< HEAD
-    <!-- our tablayout to display tabs  -->
-    <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/tabLayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="?attr/colorPrimary"-->
-        <!--android:minHeight="?attr/actionBarSize"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>-->
-
-    <!-- View pager to swipe views -->
-
-    <!--
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"/>
-    -->
-
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-=======
     <LinearLayout
         android:id="@+id/container_toolbar"
->>>>>>> 15d6d0a93a36a372c1b59230999f34c88e86b97b
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -71,12 +47,5 @@
             android:dividerHeight="5dp" />
 
 
-<<<<<<< HEAD
     <!-- our toolbar -->
-
-
-
-</LinearLayout>
-=======
 </android.support.v4.widget.DrawerLayout>
->>>>>>> 15d6d0a93a36a372c1b59230999f34c88e86b97b

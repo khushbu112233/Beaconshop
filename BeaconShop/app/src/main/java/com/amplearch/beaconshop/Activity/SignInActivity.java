@@ -96,7 +96,7 @@ public class SignInActivity extends AppCompatActivity
     }
 
     private boolean isValidUserName(String name){
-        if(name != null && name.length()> 3)
+        if(name != null && name.length() > 2)
         {
             return true ;
         }

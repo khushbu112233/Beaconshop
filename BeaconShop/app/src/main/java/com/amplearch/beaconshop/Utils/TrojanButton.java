@@ -15,19 +15,22 @@ public class TrojanButton extends AppCompatButton
 
     public TrojanButton(Context context) {
         super(context);
+        init();
     }
 
     public TrojanButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public TrojanButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
-    private void init() {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                "TrajanPro-Regular.ttf");
+    private void init()
+    {
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "TrajanPro-Regular.ttf");
         setTypeface(tf);
     }
 }

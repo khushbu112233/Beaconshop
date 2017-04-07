@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/login_shape"
+            android:layout_weight="0.0"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/ivElectImage"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:src="@drawable/ic_sale"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:background="@drawable/offers_shape"
+            android:layout_weight="1.0"
+            android:layout_marginTop="10dp">
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvElectOfferDetails"
+                android:textColor="@color/logo_color"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

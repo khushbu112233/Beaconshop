@@ -220,7 +220,7 @@
             android:layout_below="@+id/tvSignUp"
             android:layout_marginTop="20dp"
             android:text="ALREADY HAVE AN ACCOUNT? SIGN IN"
-            android:textSize="15dp"
+            android:textSize="13dp"
             android:gravity="center"
             android:textColor="@color/white"/>
 

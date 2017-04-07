@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -31,28 +30,23 @@
     <application
         android:name=".ApplicationUtils.MyApplication"
         android:allowBackup="true"
-<<<<<<< HEAD
         android:icon="@drawable/ic_shop_logo"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_shop_logo"
-=======
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
->>>>>>> 15d6d0a93a36a372c1b59230999f34c88e86b97b
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1083886521715240"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider1083886521715240"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -60,7 +54,6 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".Activity.SplashActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -73,31 +66,32 @@
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.StoreListActivity" />
         <activity android:name=".Activity.OffersListActivity" />
+
         <service
             android:name=".Utils.LocationUpdateService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <receiver
             android:name=".Utils.NotificationHandler"
             android:enabled="true"
             android:exported="false"
-            android:label="@string/app_name">
-
-        </receiver>
+            android:label="@string/app_name"></receiver>
         <!--
             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAYWxi1tvDrSA7fLp_qoMaTDMqGvnLHveY" />
         -->
-        <activity android:name=".TempActivity">
-        </activity>
+        <activity android:name=".TempActivity"></activity>
 
         <provider
             android:name=".StoreLocations"
             android:authorities="com.amplearch.beaconshop.StoreLocations" />
 
-        <activity android:name=".Activity.OfferDetailActivity"></activity>
+        <activity android:name=".Activity.OfferDetailActivity" />
+        <activity android:name=".Activity.ElectronicOfferActivity"
+            android:theme="@style/NoActionBar"/>
+
     </application>
 
 </manifest>

@@ -19,7 +19,7 @@
 
     <com.amplearch.beaconshop.Utils.TrojanText
         android:padding="10dp"
-        android:background="@drawable/button_shape"
+        android:background="@drawable/button_shap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profile_name"

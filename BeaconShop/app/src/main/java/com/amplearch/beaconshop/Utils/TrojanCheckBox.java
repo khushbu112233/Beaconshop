@@ -13,14 +13,17 @@ public class TrojanCheckBox extends AppCompatCheckBox {
 
     public TrojanCheckBox(Context context) {
         super(context);
+        init();
     }
 
     public TrojanCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public TrojanCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     private void init() {

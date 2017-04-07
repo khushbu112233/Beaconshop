@@ -90,12 +90,8 @@ public class MainActivity extends AppCompatActivity
 
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
-<<<<<<< HEAD
-
        // topToolBar.setLogo(R.mipmap.ic_launcher);
-=======
         topToolBar.setLogo(R.mipmap.ic_launcher);
->>>>>>> 15d6d0a93a36a372c1b59230999f34c88e86b97b
         topToolBar.setLogoDescription("BeaconShop");
         topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
 //        mDrawerToggle.setDrawerIndicatorEnabled(true);

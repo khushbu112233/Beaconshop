@@ -14,14 +14,17 @@ public class TrojanEditText extends AppCompatEditText
 
     public TrojanEditText(Context context) {
         super(context);
+        init();
     }
 
     public TrojanEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public TrojanEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     private void init() {
