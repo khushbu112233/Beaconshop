@@ -133,7 +133,7 @@ public class MainActivity extends ActionBarActivity implements BeaconConsumer{
             startService(new Intent(this, LocationUpdateService.class));
         }
 
-        verifyBluetooth();
+     //   verifyBluetooth();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         MyApplication app = (MyApplication) this.getApplication();
      //   beaconManager.bind(this);

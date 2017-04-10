@@ -54,7 +54,6 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".Activity.SplashActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,9 +95,13 @@
         <activity android:name=".TempActivity">
         </activity>
 
-        <provider
+        <!--<provider
             android:name=".StoreLocations"
             android:authorities="com.amplearch.beaconshop.StoreLocations" />
+
+        <provider
+            android:name=".FavouriteDatabase"
+            android:authorities="com.amplearch.beaconshop.FavouriteDatabase" />-->
 
         <activity android:name=".Activity.OfferDetailActivity"></activity>
     </application>

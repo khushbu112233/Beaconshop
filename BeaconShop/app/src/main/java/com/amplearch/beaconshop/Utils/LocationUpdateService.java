@@ -31,10 +31,13 @@ import android.widget.Toast;
 import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.ApplicationUtils.MyApplication;
+import com.amplearch.beaconshop.Model.StoreLocation;
+import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;
 import com.amplearch.beaconshop.TempActivity;
 import com.amplearch.beaconshop.database.LocationDBHelper;
+import com.amplearch.beaconshop.helper.DatabaseHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -56,6 +59,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Grishma on 16/5/16.
@@ -73,7 +77,7 @@ public class LocationUpdateService extends Service implements
      * than this value.
      */
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-              UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
     // Keys for storing activity state in the Bundle.
     protected final static String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
@@ -105,12 +109,12 @@ public class LocationUpdateService extends Service implements
     public static boolean isEnded = false;
     private ArrayList<LocationVo> mLocationData;
 
-    double fix_Latitude , fix_Longitude ;
-    double cur_Latitude , cur_Longitude ;
-    double dist , theta ;
-    int dist_int ;
-    float dist_float ;
-    double dist_double ;
+    double fix_Latitude, fix_Longitude;
+    double cur_Latitude, cur_Longitude;
+    double dist, theta;
+    int dist_int;
+    float dist_float;
+    double dist_double;
 
 
     private static final String PREFERENCE_SCANINTERVAL = "scanInterval";
@@ -155,10 +159,12 @@ public class LocationUpdateService extends Service implements
     private Boolean realTimeLog;
 
     private EditText editText;
+    DatabaseHelper db;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        verifyBluetooth();
+      // verifyBluetooth();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         MyApplication app = (MyApplication) this.getApplication();
         beaconManager = app.getBeaconManager();
@@ -171,7 +177,7 @@ public class LocationUpdateService extends Service implements
         editText = new EditText(getApplicationContext());
         // Initialise scan button.
         getScanButton().setText(MODE_STOPPED);
-       // toggleScanState();
+        // toggleScanState();
         // Kick off the process of building a GoogleApiClient and requesting the LocationServices
         // API.
     }
@@ -192,8 +198,7 @@ public class LocationUpdateService extends Service implements
                 });
                 builder.show();
             }
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Bluetooth LE not available");
             builder.setMessage("Sorry, this device does not support Bluetooth LE.");
@@ -202,8 +207,8 @@ public class LocationUpdateService extends Service implements
 
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                  //  finish();
-                  //  System.exit(0);
+                    //  finish();
+                    //  System.exit(0);
                 }
 
             });
@@ -225,6 +230,7 @@ public class LocationUpdateService extends Service implements
         // Within {@code onPause()}, we pause location updates, but leave the
         // connection to GoogleApiClient intact.  Here, we resume receiving
         // location updates if the user has requested them.
+        db = new DatabaseHelper(getApplicationContext());
         Log.d("LOC", "Service init...");
         isEnded = false;
         mRequestingLocationUpdates = false;
@@ -236,7 +242,9 @@ public class LocationUpdateService extends Service implements
 
         return Service.START_REDELIVER_INTENT;
     }
+
     Button btn;
+
     private Button getScanButton() {
         return btn = new Button(getApplicationContext());
     }
@@ -255,16 +263,16 @@ public class LocationUpdateService extends Service implements
         HashMap<String, Object> prefs = new HashMap<String, Object>();
         prefs.putAll(sharedPrefs.getAll());
 
-        index = (Boolean)prefs.get(PREFERENCE_INDEX);
-        location = (Boolean)prefs.get(PREFERENCE_LOCATION);
-        uuid = (Boolean)prefs.get(PREFERENCE_UUID);
-        majorMinor = (Boolean)prefs.get(PREFERENCE_MAJORMINOR);
-        rssi = (Boolean)prefs.get(PREFERENCE_RSSI);
-        proximity = (Boolean)prefs.get(PREFERENCE_PROXIMITY);
-        power = (Boolean)prefs.get(PREFERENCE_POWER);
-        timestamp = (Boolean)prefs.get(PREFERENCE_TIMESTAMP);
-        scanInterval = (String)prefs.get(PREFERENCE_SCANINTERVAL);
-        realTimeLog = (Boolean)prefs.get(PREFERENCE_REALTIME);
+        index = (Boolean) prefs.get(PREFERENCE_INDEX);
+        location = (Boolean) prefs.get(PREFERENCE_LOCATION);
+        uuid = (Boolean) prefs.get(PREFERENCE_UUID);
+        majorMinor = (Boolean) prefs.get(PREFERENCE_MAJORMINOR);
+        rssi = (Boolean) prefs.get(PREFERENCE_RSSI);
+        proximity = (Boolean) prefs.get(PREFERENCE_PROXIMITY);
+        power = (Boolean) prefs.get(PREFERENCE_POWER);
+        timestamp = (Boolean) prefs.get(PREFERENCE_TIMESTAMP);
+        scanInterval = (String) prefs.get(PREFERENCE_SCANINTERVAL);
+        realTimeLog = (Boolean) prefs.get(PREFERENCE_REALTIME);
 
         // Get current background scan interval (if specified)
         if (prefs.get(PREFERENCE_SCANINTERVAL) != null) {
@@ -286,6 +294,25 @@ public class LocationUpdateService extends Service implements
                         Beacon beacon = beaconIterator.next();
                         // Debug - logging a beacon - checking background logging is working.
                         System.out.println("Logging another beacon.");
+
+                        List<Voucher> allTags = db.getAllBeaconVouchers();
+                        for (Voucher tag : allTags) {
+                            Log.d("Voucher Details", tag.getUuid());
+                            int mId = Integer.parseInt(String.valueOf(tag.getId()));
+                            if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())){
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(getApplicationContext())
+                                                .setSmallIcon(R.drawable.ic_audiotrack)
+                                                .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                .setContentText(tag.getOffer_desc());
+// Creates an explicit intent for an Activity in your app
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+                                mNotificationManager.notify(mId, mBuilder.build());
+                            }
+                        }
+
                         logBeaconData(beacon);
                     }
                 }
@@ -419,14 +446,32 @@ public class LocationUpdateService extends Service implements
                         Beacon beacon = beaconIterator.next();
                         // Debug - logging a beacon - checking background logging is working.
                         System.out.println("Logging another beacon.");
-                     //   logBeaconData(beacon);
-                        Log.i(TAG, "The first beacon I see is about "+beacon.getDistance()+" meters away.");
+                        //   logBeaconData(beacon);
+                        Log.i(TAG, "The first beacon I see is about " + beacon.getDistance() + " meters away.");
 
-                        Toast.makeText(getApplicationContext(), "The first beacon I see is about "+beacon.getDistance()+" meters away.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "The first beacon I see is about " + beacon.getDistance() + " meters away.", Toast.LENGTH_LONG).show();
+
+                        List<Voucher> allTags = db.getAllBeaconVouchers();
+                        for (Voucher tag : allTags) {
+                            Log.d("Voucher Details", tag.getUuid());
+                            int mId = Integer.parseInt(String.valueOf(tag.getId()));
+                            if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())){
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(getApplicationContext())
+                                                .setSmallIcon(R.drawable.ic_audiotrack)
+                                                .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                .setContentText(tag.getOffer_desc());
+// Creates an explicit intent for an Activity in your app
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+                                mNotificationManager.notify(mId, mBuilder.build());
+                            }
+                        }
                     }
 
-                    Log.i(TAG, "The first beacon I see is about "+beacons.toString()+" meters away.");
-                   // logBeaconData(beacons);
+                    Log.i(TAG, "The first beacon I see is about " + beacons.toString() + " meters away.");
+                    // logBeaconData(beacons);
                 }
             }
         });
@@ -443,13 +488,13 @@ public class LocationUpdateService extends Service implements
             public void run() {
 
                 Toast.makeText(getApplicationContext(), line + "\n", Toast.LENGTH_LONG).show();
-              //  editText.append(line + "\n");
+                //  editText.append(line + "\n");
 
                 // Temp code - don't really want to do this for every line logged, will look for a
                 // workaround.
                 //Linkify.addLinks(editText, Linkify.WEB_URLS);
 
-              //  scroller.fullScroll(View.FOCUS_DOWN);
+                //  scroller.fullScroll(View.FOCUS_DOWN);
 
             }
         });
@@ -474,7 +519,7 @@ public class LocationUpdateService extends Service implements
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
         Toast.makeText(this, getResources().getString(R.string.location_updated_message),
-                  Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -491,10 +536,10 @@ public class LocationUpdateService extends Service implements
     protected synchronized void buildGoogleApiClient() {
         Log.i(TAG, "Building GoogleApiClient===");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                  .addConnectionCallbacks(this)
-                  .addOnConnectionFailedListener(this)
-                  .addApi(LocationServices.API)
-                  .build();
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
         createLocationRequest();
     }
@@ -505,7 +550,7 @@ public class LocationUpdateService extends Service implements
         LocationVo mLocVo = new LocationVo();
         mLocVo.setmLongitude(mCurrentLocation.getLongitude());
         mLocVo.setmLatitude(mCurrentLocation.getLatitude());
-        Log.e("service : ", mCurrentLocation.getLongitude() + "  " + mCurrentLocation.getLatitude() );
+        Log.e("service : ", mCurrentLocation.getLongitude() + "  " + mCurrentLocation.getLatitude());
         mLocVo.setmLocAddress(Const.getCompleteAddressString(this, mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
         mLocationData.add(mLocVo);
         cal_Distance();
@@ -518,9 +563,9 @@ public class LocationUpdateService extends Service implements
     private void updateUI() {
         setLocationData();
         Toast.makeText(this, "Latitude: =" + mCurrentLocation.getLatitude() + " Longitude:=" + mCurrentLocation
-                  .getLongitude(), Toast.LENGTH_SHORT).show();
+                .getLongitude(), Toast.LENGTH_SHORT).show();
         Log.d(TAG, "Latitude:==" + mCurrentLocation.getLatitude() + "\n Longitude:==" + mCurrentLocation.getLongitude
-                  ());
+                ());
 
         LocationDBHelper.getInstance(this).insertLocationDetails(mLocationData);
     }
@@ -565,26 +610,27 @@ public class LocationUpdateService extends Service implements
             // The final argument to {@code requestLocationUpdates()} is a LocationListener
             // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
             LocationServices.FusedLocationApi.requestLocationUpdates(
-                      mGoogleApiClient, mLocationRequest, this);
+                    mGoogleApiClient, mLocationRequest, this);
             Log.i(TAG, " startLocationUpdates===");
             isEnded = true;
 
         }
     }
 
-    String URL = "content://com.amplearch.beaconshop.StoreLocations";
-    void cal_Distance()
-    {
-
+    //String URL = "content://com.amplearch.beaconshop.StoreLocations";
+    void cal_Distance() {
         cur_Latitude = mCurrentLocation.getLatitude();
         cur_Longitude = mCurrentLocation.getLongitude();
 
 
         String res = null;
         //String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(Uri.parse(URL), null, null, null, null);
-        if(cursor.moveToFirst()){
-            do {
+        // Cursor cursor = getContentResolver().query(Uri.parse(URL), null, null, null, null);
+        List<StoreLocation> allTags = db.getAllLocations();
+        for (StoreLocation tag : allTags) {
+            Log.d("StoreLocation Name", tag.getStore_name());
+          //  Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getOffer_title(), Toast.LENGTH_LONG).show();
+
                 /*Toast.makeText(this,
                         cursor.getString(cursor.getColumnIndex(StoreLocations._ID)) +
                                 ", " + cursor.getString(cursor.getColumnIndex(StoreLocations.FIELD_OFFER_TITLE)) +
@@ -593,89 +639,79 @@ public class LocationUpdateService extends Service implements
                         Toast.LENGTH_SHORT).show();*/
 
 
-                fix_Latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex( StoreLocations.FIELD_LAT)));
-                fix_Longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex( StoreLocations.FIELD_LNG)));
+            fix_Latitude = Double.parseDouble(tag.getLat());
+            fix_Longitude = Double.parseDouble(tag.getLng());
 
-                theta = fix_Longitude - cur_Longitude ;
-                dist = ( Math.sin(deg2rad(fix_Latitude)) * Math.sin(deg2rad(cur_Latitude)) )
-                        + ( Math.cos(deg2rad(fix_Latitude)) * Math.cos(deg2rad(cur_Latitude)) )
-                        * Math.cos(deg2rad(theta));
-                dist = Math.acos(dist);
-                dist = rad2deg(dist);
-                dist = dist * 60 * 1.753 ; //1.1515
+            theta = fix_Longitude - cur_Longitude;
+            dist = (Math.sin(deg2rad(fix_Latitude)) * Math.sin(deg2rad(cur_Latitude)))
+                    + (Math.cos(deg2rad(fix_Latitude)) * Math.cos(deg2rad(cur_Latitude)))
+                    * Math.cos(deg2rad(theta));
+            dist = Math.acos(dist);
+            dist = rad2deg(dist);
+            dist = dist * 60 * 1.753; //1.1515
 
-                //Number Format code
-                NumberFormat numberFormat = NumberFormat.getNumberInstance();
-                numberFormat.setMinimumFractionDigits(2);
-                numberFormat.setMaximumFractionDigits(3);
-                String distt_km = numberFormat.format(dist);
-                float disttt_km = Float.parseFloat(numberFormat.format(dist));
+            //Number Format code
+            NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            numberFormat.setMinimumFractionDigits(2);
+            numberFormat.setMaximumFractionDigits(3);
+            String distt_km = numberFormat.format(dist);
+            float disttt_km = Float.parseFloat(numberFormat.format(dist));
 
-                //distance units
-                dist_double = dist; // double
-                dist_float = disttt_km * 1000 ;  //
-                dist_int  = (int) dist_float ;
+            //distance units
+            dist_double = dist; // double
+            dist_float = disttt_km * 1000;  //
+            dist_int = (int) dist_float;
 
-                String dist_D = String.valueOf(dist_double);
-                String dist_F = String.valueOf(disttt_km);
-                String dist_I = String.valueOf(dist_int);
-                // tvDouble_Dist.setText(dist_D+" Km");
-                //tvFloat_Dist.setText(dist_F+" Km");
-                // tvInteger_Dist.setText(dist_I+" M");
+            String dist_D = String.valueOf(dist_double);
+            String dist_F = String.valueOf(disttt_km);
+            String dist_I = String.valueOf(dist_int);
+            // tvDouble_Dist.setText(dist_D+" Km");
+            //tvFloat_Dist.setText(dist_F+" Km");
+            // tvInteger_Dist.setText(dist_I+" M");
 
-                if(dist_int > 0 && dist_int < 500)
-                {
-                    int mId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(StoreLocations._ID)));
-                    Toast.makeText(getApplicationContext(),"Please! Enable Bluetooth " + dist_int ,Toast.LENGTH_LONG).show();
-                    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if(!mBluetoothAdapter.isEnabled()) {
-                        mBluetoothAdapter.enable();
+            if (dist_int > 0 && dist_int < 500) {
+                int mId = Integer.parseInt(String.valueOf(tag.getId()));
+                Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (!mBluetoothAdapter.isEnabled()) {
+                    mBluetoothAdapter.enable();
 
-                    }
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(this)
-                                    .setSmallIcon(R.drawable.ic_bluetooth_black_24dp)
-                                    .setContentTitle(cursor.getString(cursor.getColumnIndex( StoreLocations.FIELD_OFFER_TITLE)) + " at " + cursor.getString(cursor.getColumnIndex( StoreLocations.FIELD_STORE_NAME)))
-                                    .setContentText(cursor.getString(cursor.getColumnIndex( StoreLocations.FIELD_OFFER_DESC)));
+                }
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(R.drawable.ic_bluetooth_black_24dp)
+                                .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
+                                .setContentText(tag.getOffer_desc());
 // Creates an explicit intent for an Activity in your app
-                    NotificationManager mNotificationManager =
-                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager mNotificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
-                    mNotificationManager.notify(mId, mBuilder.build());
+                mNotificationManager.notify(mId, mBuilder.build());
 
 
-                    //     tvStatus.setText("Status: "+"Please! Enable Bluetooth Mode.");
-                }
-                else if(dist_int > 500 &&  dist_int < 1000)
-                {
-                    Toast.makeText(getApplicationContext(),"You are nearest to Mall within"+dist_int+" Meter",Toast.LENGTH_LONG).show();
-                    //       tvStatus.setText("Status: "+"You are nearest to Mall within "+dist_int+" meters.");
-                }
-                else if(dist_int > 1000 && dist_int < 2000)
-                {
-                    Toast.makeText(getApplicationContext(),"Your distance from Mall is: "+dist_int+" Meters.",Toast.LENGTH_LONG).show();
-                    //       tvStatus.setText("Status: "+"Your distance from Mall is "+distt_km+" km.");
-                }
-                else if(dist_int > 2000 && dist_int < 3000)
-                {
-                    Toast.makeText(getApplicationContext(),"Distance from mall: "+distt_km+" Km",Toast.LENGTH_LONG).show();
-                    //      tvStatus.setText("Status: "+"Find Alpha-One Mall in range of "+distt_km+" kms distance.");
-                }
-                else if (dist_int > 3000)
-                {
-                    Toast.makeText(getApplicationContext(),"Away from.."+distt_km+" Km",Toast.LENGTH_LONG).show();
-                    //   tvStatus.setText("You are away from Alpha-One Mall at "+distt_km+" Km.");
-                }
-                else {
-                    //    tvStatus.setText("Ta-Ta Bye.. Bye.. "+distt_km+" Km.");
-                }
+                //     tvStatus.setText("Status: "+"Please! Enable Bluetooth Mode.");
+            } else if (dist_int > 500 && dist_int < 1000) {
+                Toast.makeText(getApplicationContext(), "You are nearest to Mall within" + dist_int + " Meter", Toast.LENGTH_LONG).show();
+                //       tvStatus.setText("Status: "+"You are nearest to Mall within "+dist_int+" meters.");
+            } else if (dist_int > 1000 && dist_int < 2000) {
+                Toast.makeText(getApplicationContext(), "Your distance from Mall is: " + dist_int + " Meters.", Toast.LENGTH_LONG).show();
+                //       tvStatus.setText("Status: "+"Your distance from Mall is "+distt_km+" km.");
+            } else if (dist_int > 2000 && dist_int < 3000) {
+                Toast.makeText(getApplicationContext(), "Distance from mall: " + distt_km + " Km", Toast.LENGTH_LONG).show();
+                //      tvStatus.setText("Status: "+"Find Alpha-One Mall in range of "+distt_km+" kms distance.");
+            } else if (dist_int > 3000) {
+                Toast.makeText(getApplicationContext(), "Away from.." + distt_km + " Km", Toast.LENGTH_LONG).show();
+                //   tvStatus.setText("You are away from Alpha-One Mall at "+distt_km+" Km.");
+            } else {
+                //    tvStatus.setText("Ta-Ta Bye.. Bye.. "+distt_km+" Km.");
+            }
 
-                int dist_cm = dist_int * 100;
-                String cm = String.valueOf(dist_cm);
+            int dist_cm = dist_int * 100;
+            String cm = String.valueOf(dist_cm);
 
-            }while (cursor.moveToNext());
         }
-        cursor.close();
+    }
+    //     cursor.close();
 
         /*if (AccountActivity.c.moveToFirst()) {
             do{
@@ -769,24 +805,22 @@ public class LocationUpdateService extends Service implements
             } while (AccountActivity.c.moveToNext());
         }*/
 
-        //for Alfa-One Mall
-      //  fix_Latitude = 23.012102 ;
-       // fix_Longitude = 72.522634 ;
+    //for Alfa-One Mall
+    //  fix_Latitude = 23.012102 ;
+    // fix_Longitude = 72.522634 ;
 
-        //for current location
-
-
-        // dist calculate in Km
+    //for current location
 
 
-      //  tvKm_Distance.setText(distt_km+" Km");
-     //   tvM_Distance.setText(dist_int+" Meter");
-     //   tvCm_Distance.setText(cm+" Cm");
+    // dist calculate in Km
+
+
+    //  tvKm_Distance.setText(distt_km+" Km");
+    //   tvM_Distance.setText(dist_int+" Meter");
+    //   tvCm_Distance.setText(cm+" Cm");
 
 //        get_Distance();
 
-
-    }
 
     private double deg2rad(double deg)
     {
