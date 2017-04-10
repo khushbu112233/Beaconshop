@@ -17,10 +17,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,9 +32,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
 import com.amplearch.beaconshop.ApplicationUtils.MyApplication;
+import com.amplearch.beaconshop.Adapter.LayoutPager;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
 import com.amplearch.beaconshop.Fragment.FavoriteFragment;
@@ -62,9 +64,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class MainActivity extends ActionBarActivity implements BeaconConsumer{
 
+=======
+public class MainActivity extends AppCompatActivity
+{
+>>>>>>> b81ae31da7c89c737cbf8363ee61cd0eca03860d
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     String[] titles ;
@@ -81,6 +86,7 @@ public class MainActivity extends ActionBarActivity implements BeaconConsumer{
     private String action;
     private int notifID;
 
+<<<<<<< HEAD
     private static final String PREFERENCE_SCANINTERVAL = "scanInterval";
     private static final String PREFERENCE_TIMESTAMP = "timestamp";
     private static final String PREFERENCE_POWER = "power";
@@ -120,6 +126,14 @@ public class MainActivity extends ActionBarActivity implements BeaconConsumer{
 
    // private BeaconManager beaconManager = BeaconManager.getInstanceForApplication(this);
     // LocationClient for Google Play Location Services
+=======
+    //This is our tablayout
+    private TabLayout tabLayout;
+
+    //This is our viewPager
+    private ViewPager viewPager;
+
+>>>>>>> b81ae31da7c89c737cbf8363ee61cd0eca03860d
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,12 +157,54 @@ public class MainActivity extends ActionBarActivity implements BeaconConsumer{
         startScanning();
         mTitle = mDrawerTitle = getTitle();
         titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
+
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
+       // topToolBar.setLogo(R.mipmap.ic_launcher);
         topToolBar.setLogo(R.mipmap.ic_launcher);
         topToolBar.setLogoDescription("BeaconShop");
         topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
+        getActionBar().setDisplayHomeAsUpEnabled(false);
+        getActionBar().setDisplayUseLogoEnabled(false);
 //        mDrawerToggle.setDrawerIndicatorEnabled(true);
+
+        //Initializing the tablayout
+      /*  tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        //Adding the tabs using addTab() method
+        tabLayout.addTab(tabLayout.newTab().setText("All Offer List"));
+        tabLayout.addTab(tabLayout.newTab().setText("Nearby"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+      */
+
+        //Initializing viewPager
+     /*   viewPager = (ViewPager) findViewById(R.id.pager);
+
+        //Creating our pager adapter
+        LayoutPager adapter = new LayoutPager(getSupportFragmentManager());
+
+        //Adding adapter to pager
+        viewPager.setAdapter(adapter);*/
+
+        //Adding onTabSelectedListener to swipe views
+/*
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+*/
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);

@@ -2,14 +2,19 @@ package com.amplearch.beaconshop.Utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
+import android.util.AttributeSet;
+
+import static java.security.AccessController.getContext;
+
 import android.util.AttributeSet;
 
 /**
  * Created by admin on 04/06/2017.
  */
 
-public class TrojanText extends android.support.v7.widget.AppCompatTextView {
-
+public class TrojanText extends AppCompatTextView
+{
     public TrojanText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -26,9 +31,9 @@ public class TrojanText extends android.support.v7.widget.AppCompatTextView {
     }
 
     private void init() {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                "TrajanPro-Regular.ttf");
-        setTypeface(tf);
-    }
+    Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
+            "TrajanPro-Regular.ttf");
+    setTypeface(tf);
+}
 
 }

@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class SignInActivity extends AppCompatActivity
 {
     TextView tvSignIn;
-    EditText etEmailAdd, etPass;
+    EditText etEmailAdd, etPass, etUsername;
     public static String rslt="";
 
     @Override
@@ -30,6 +30,7 @@ public class SignInActivity extends AppCompatActivity
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
         etEmailAdd = (EditText)findViewById(R.id.etEmailAdd);
         etPass = (EditText)findViewById(R.id.etPass);
+        etUsername = (EditText)findViewById(R.id.etUserName);
 
         tvSignIn = (TextView)findViewById(R.id.tvSignIn);
         tvSignIn.setOnClickListener(new View.OnClickListener() {
@@ -38,10 +39,15 @@ public class SignInActivity extends AppCompatActivity
             {
                 String email = etEmailAdd.getText().toString();
                 String pass = etPass.getText().toString();
+                String name = etUsername.getText().toString();
 
                 //CallSoap cs=new CallSoap();
 
-                if (!isValidEmail(email)) {
+                if(!isValidUserName(name)){
+                    etUsername.setError("at least 3 characters.");
+                }
+
+                else if (!isValidEmail(email)) {
                     etEmailAdd.setError("Email Id is not in Valid Format.");
                 }
 
@@ -51,29 +57,30 @@ public class SignInActivity extends AppCompatActivity
 
                 else
                 {
+//                    try
+//                    {
+//
+//                        rslt="START";
+//                        Caller c=new Caller(); c.uname=email;
+//                        c.pwd=pass;
+//                        c.join(); c.start();
+//                        while(rslt=="START") {
+//                            try {
+//                                Thread.sleep(10);
+//                            }catch(Exception ex) {
+//                            }
+//                        }
+//                        ad.setTitle("RESULT OF ");
+//                        ad.setMessage(rslt);
+//                    }catch(Exception ex) {
+//                        ad.setTitle("Error!"); ad.setMessage(ex.toString());
+//                    }
+//                    ad.show();
 
-                    try
-                    {
-
-                        rslt="START";
-                        Caller c=new Caller(); c.uname=email;
-                        c.pwd=pass;
-                        c.join(); c.start();
-                        while(rslt=="START") {
-                            try {
-                                Thread.sleep(10);
-                            }catch(Exception ex) {
-                            }
-                        }
-                        ad.setTitle("RESULT OF ");
-                        ad.setMessage(rslt);
-                    }catch(Exception ex) {
-                        ad.setTitle("Error!"); ad.setMessage(ex.toString());
-                    }
-                    ad.show();
-               /* startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
-               */ }
+
+                }
             }
         });
     }
@@ -86,6 +93,14 @@ public class SignInActivity extends AppCompatActivity
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    private boolean isValidUserName(String name){
+        if(name != null && name.length() > 2)
+        {
+            return true ;
+        }
+        return false ;
     }
 
     // validating password with retype password

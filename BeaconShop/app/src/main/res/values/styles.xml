@@ -4,7 +4,8 @@
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
 
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
+        <item name="colorPrimaryDark">@color/logo_color</item>
 
     </style>
 

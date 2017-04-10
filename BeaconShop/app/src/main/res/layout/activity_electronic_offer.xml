@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.amplearch.beaconshop.Activity.ElectronicOfferActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/color_logo"
+            android:layout_alignParentStart="true"
+            android:id="@+id/llActionbar">
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="ELECTRONIC OFFERS"
+                android:textColor="@color/logo_color"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/llActionbar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:id="@+id/llButtons">
+            <com.amplearch.beaconshop.Utils.TrojanButton
+                android:id="@+id/btnFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:text="FILTERS"
+                android:textColor="@color/white"
+                android:layout_marginRight="1dp"
+                android:background="@color/logo_color"/>
+            <com.amplearch.beaconshop.Utils.TrojanButton
+                android:id="@+id/btnShort"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:text="SHORT"
+                android:layout_marginLeft="1dp"
+                android:textColor="@color/white"
+                android:background="@color/logo_color"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listView_Elect"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/llButtons"
+            android:dividerHeight="2dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp" />
+
+</RelativeLayout>

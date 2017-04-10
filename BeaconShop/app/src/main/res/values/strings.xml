@@ -42,8 +42,15 @@
     <string name="location_updated_message">Location updated</string>
     <string name="location_update">Location %1$s</string>
 
+<<<<<<< HEAD
     <string name="Settings">Settings</string>
     <string name="action_listfiles">List files</string>
     <string name="action_deletefiles">Delete Files</string>
     <string name="action_transferfiles">Transfer Files</string>
+=======
+    <string name="men_offers">On Men Cloths Offer has Going To Be On Last Saturday Till 10-Aprl-2017.
+        \nFor More Claim check: <u>www.MenClaimOffer.com</u> Till 11th Aprl.
+        \nClaim Offers Available Only For Mall Store.\n<b>Thank You!</b></string>
+
+>>>>>>> b81ae31da7c89c737cbf8363ee61cd0eca03860d
 </resources>
