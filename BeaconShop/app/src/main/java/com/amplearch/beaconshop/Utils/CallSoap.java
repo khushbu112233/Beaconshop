@@ -4,11 +4,7 @@ package com.amplearch.beaconshop.Utils;
  * Created by admin on 04/04/2017.
  */
 
-        import org.ksoap2.SoapEnvelope;
-        import org.ksoap2.serialization.PropertyInfo;
-        import org.ksoap2.serialization.SoapObject;
-        import org.ksoap2.serialization.SoapSerializationEnvelope;
-        import org.ksoap2.transport.HttpTransportSE;
+
 public class CallSoap
 {
     public final String SOAP_ACTION = "http://tempuri.org/login";
@@ -21,7 +17,7 @@ public class CallSoap
     public CallSoap()
     {
     }
-    public String Call(String uname,String pwd)
+  /*  public String Call(String uname,String pwd)
     {
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,OPERATION_NAME);
         PropertyInfo pi=new PropertyInfo();
@@ -53,5 +49,5 @@ public class CallSoap
             response=exception.toString();
         }
         return response.toString();
-    }
+    }*/
 }

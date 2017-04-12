@@ -3,13 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     android:id="@+id/frameHome">
-
-   <ImageView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:src="@drawable/fasion_home"
-       android:alpha="0.7"/>
 
    <GridView
        android:horizontalSpacing="10dp"
@@ -20,8 +15,7 @@
        android:columnWidth="85dp"
        android:gravity="center"
        android:stretchMode="columnWidth"
-       android:numColumns="auto_fit"
-       android:padding="16dp"/>
+       android:numColumns="auto_fit" />
 
 
 </FrameLayout>

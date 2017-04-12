@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:id="@+id/drawer_layout"
     android:background="@drawable/ic_back"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,8 +31,7 @@
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -47,5 +47,4 @@
             android:dividerHeight="5dp" />
 
 
-    <!-- our toolbar -->
 </android.support.v4.widget.DrawerLayout>

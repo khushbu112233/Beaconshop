@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.amplearch.beaconshop.Activity.AccountActivity">
 
-    <FrameLayout
+    <TextView
+        android:id="@+id/tvLogo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/fasion_home"/>
+        android:layout_height="wrap_content"
+        android:text="Beacon Shop . ."
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="70dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="cursive"
+        android:layout_marginTop="50dp"/>
 
-   <ImageView
-       android:id="@+id/ivLogo"
-       android:layout_width="210dp"
-       android:layout_height="210dp"
-       android:src="@drawable/ic_shop_logo"
-       android:layout_centerHorizontal="true"
-       android:layout_marginTop="40dp"/>
-
-    <com.amplearch.beaconshop.Utils.TrojanText
-        android:layout_below="@+id/ivLogo"
+    <TextView
+        android:layout_below="@+id/tvLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Discover New Offers Every Day."
         android:textAlignment="center"
         android:fontFamily="monospace"
         android:textSize="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textColor="@android:color/black"/>
 
     <LinearLayout
@@ -38,10 +40,8 @@
         android:orientation="horizontal"
         android:weightSum="1"
         android:layout_marginBottom="20dp"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:layout_above="@+id/llIntegrationBox" >
-        <com.amplearch.beaconshop.Utils.TrojanButton
+        <TextView
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,12 +49,12 @@
             android:text="Sign Up"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:textColor="@color/logo_color"
+            android:textColor="@color/orange"
             android:layout_marginRight="10dp"
-            android:background="@drawable/button_shape"
+            android:background="@drawable/rectangle_shape"
             android:textAlignment="center"
             android:padding="10dp" />
-        <com.amplearch.beaconshop.Utils.TrojanButton
+        <TextView
             android:layout_marginLeft="10dp"
             android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
@@ -63,8 +63,8 @@
             android:text="Sign In"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:textColor="@color/logo_color"
-            android:background="@drawable/button_shape"
+            android:textColor="@color/orange"
+            android:background="@drawable/rectangle_shape"
             android:textAlignment="center"
             android:padding="10dp" />
     </LinearLayout>
@@ -76,9 +76,7 @@
         android:orientation="vertical"
         android:weightSum="1"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_alignParentStart="true">
         <TextView android:text="Login With Facebook"
 
             android:id="@+id/btnLogin"
