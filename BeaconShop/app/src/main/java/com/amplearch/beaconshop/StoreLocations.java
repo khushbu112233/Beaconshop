@@ -20,8 +20,8 @@ import java.util.HashMap;
  * Created by admin on 04/05/2017.
  */
 
-public class StoreLocations extends ContentProvider {
-
+public class StoreLocations/* extends ContentProvider*/ {
+/*
     static final String PROVIDER_NAME = "com.amplearch.beaconshop.StoreLocations";
     static final String URL = "content://" + PROVIDER_NAME + "/locations";
     public static final Uri CONTENT_URI = Uri.parse(URL);
@@ -30,10 +30,10 @@ public class StoreLocations extends ContentProvider {
 
     public static final String FIELD_STORE_NAME = "store_name";
 
-    /** Field 2 of the table locations, stores the latitude */
+    *//** Field 2 of the table locations, stores the latitude *//*
     public static final String FIELD_LAT = "lat";
 
-    /** Field 3 of the table locations, stores the longitude*/
+    *//** Field 3 of the table locations, stores the longitude*//*
     public static final String FIELD_LNG = "lng";
 
     public static final String FIELD_OFFER_TITLE = "offer_title";
@@ -56,9 +56,9 @@ public class StoreLocations extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME, "locations/#", LOCATIONS_ID);
     }
 
-    /**
+    *//**
      * Database specific constant declarations
-     */
+     *//*
 
     public static SQLiteDatabase db;
     static final String DATABASE_NAME = "StoreLocations";
@@ -76,10 +76,10 @@ public class StoreLocations extends ContentProvider {
                     " end_date DATETIME NOT NULL);";
 
     static final String COMPARE_DATE = "SELECT * FROM " + LOCATIONS_TABLE_NAME + " WHERE Date() >= StartDate AND Date() =< EndDate AND DateField = Date()";
-    /**
+    *//**
      * Helper class that actually creates and manages
      * the provider's underlying data repository.
-     */
+     *//*
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context){
@@ -168,10 +168,10 @@ public class StoreLocations extends ContentProvider {
         Context context = getContext();
         DatabaseHelper dbHelper = new DatabaseHelper(context);
 
-        /**
+        *//**
          * Create a write able database which will trigger its
          * creation if it doesn't already exist.
-         */
+         *//*
 
         db = dbHelper.getWritableDatabase();
         return (db == null)? false:true;
@@ -179,14 +179,14 @@ public class StoreLocations extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        /**
+        *//**
          * Add a new student record
-         */
+         *//*
         long rowID = db.insert(	LOCATIONS_TABLE_NAME, "", values);
 
-        /**
+        *//**
          * If record is added successfully
-         */
+         *//*
         if (rowID > 0) {
             Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
             getContext().getContentResolver().notifyChange(_uri, null);
@@ -215,17 +215,17 @@ public class StoreLocations extends ContentProvider {
         }
 
         if (sortOrder == null || sortOrder == ""){
-            /**
+            *//**
              * By default sort on student names
-             */
+             *//*
             sortOrder = FIELD_STORE_NAME;
         }
 
         Cursor c = qb.query(db,	projection,	selection,
                 selectionArgs,null, null, sortOrder);
-        /**
+        *//**
          * register to watch a content URI for changes
-         */
+         *//*
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }
@@ -281,18 +281,18 @@ public class StoreLocations extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)){
-            /**
+            *//**
              * Get all student records
-             */
+             *//*
             case LOCATIONS:
                 return "vnd.android.cursor.dir/vnd.example.students";
-            /**
+            *//**
              * Get a particular student
-             */
+             *//*
             case LOCATIONS_ID:
                 return "vnd.android.cursor.item/vnd.example.students";
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
-    }
+    }*/
 }

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Activity.StoreListActivity;
@@ -43,14 +42,13 @@ public class HomeFragment extends Fragment {
         listCategory =(GridView) rootView.findViewById(R.id.category_list);
         CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), web, imageId);
         listCategory.setAdapter(adapterViewAndroid);
-        listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
               //  Toast.makeText(getContext(), "GridView Item: " , Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getContext(), ElectronicOfferActivity.class);
+                Intent intent = new Intent(getContext(), StoreListActivity.class);
                 startActivity(intent);
             }
         });
