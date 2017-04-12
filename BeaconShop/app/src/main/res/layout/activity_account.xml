@@ -14,8 +14,8 @@
 
    <ImageView
        android:id="@+id/ivLogo"
-       android:layout_width="210dp"
-       android:layout_height="210dp"
+       android:layout_width="190dp"
+       android:layout_height="190dp"
        android:src="@drawable/ic_shop_logo"
        android:layout_centerHorizontal="true"
        android:layout_marginTop="40dp"/>
@@ -24,12 +24,12 @@
         android:layout_below="@+id/ivLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Discover New Offers Every Day."
+        android:text="A SHOP OF OFFERS."
         android:textAlignment="center"
         android:fontFamily="monospace"
         android:textSize="15dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@android:color/black"/>
+        android:layout_marginTop="25dp"
+        android:textColor="@color/white"/>
 
     <LinearLayout
         android:id="@+id/llSignBox"

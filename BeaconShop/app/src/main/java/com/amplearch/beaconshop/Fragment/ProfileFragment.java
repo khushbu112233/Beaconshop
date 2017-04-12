@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        View rootView = inflater.inflate(R.layout.profile_account, container, false);
 
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
@@ -104,9 +104,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         btnLogout = (Button) rootView.findViewById(R.id.logout);
         btnSignOut = (Button) rootView.findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (Button) rootView.findViewById(R.id.btn_revoke_access);
-        Toast.makeText(getContext(),
-                "User Login Status: " + session.isUserLoggedIn(),
-                Toast.LENGTH_LONG).show();
+
+        Toast.makeText(getContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
 
         ivImage.setOnClickListener(this);
         ivImage.setOnClickListener(new View.OnClickListener() {

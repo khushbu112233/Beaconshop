@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/drawer_layout"
-    android:background="@drawable/ic_back"
     android:layout_height="match_parent">
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/flBackImage"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/ic_back"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,16 +27,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/primary"  />
+            android:background="@color/primary"
+            android:gravity="center">
+
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BEACON SHOP"
+                android:textColor="@color/white"
+                android:id="@+id/toolbarTitle"
+                android:textAlignment="center"
+                android:textSize="25dp"/>
+        </android.support.v7.widget.Toolbar>
 
     </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:id="@+id/rlButtons"
+            android:visibility="visible">
+            <Button
+                android:id="@+id/btnALLOfferList"
+                android:layout_width="150dp"
+                android:layout_height="25dp"
+                android:text="ALL Offer List"
+                android:background="@color/logo_color"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/btnNearby"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="Nearby"
+                android:background="@android:color/transparent"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
 
 
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

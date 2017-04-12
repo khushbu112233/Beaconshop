@@ -26,7 +26,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
 import com.amplearch.beaconshop.Adapter.LayoutPager;
@@ -34,6 +36,7 @@ import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
 import com.amplearch.beaconshop.Fragment.FavoriteFragment;
 import com.amplearch.beaconshop.Fragment.HomeFragment;
+import com.amplearch.beaconshop.Fragment.MyProfileFragment;
 import com.amplearch.beaconshop.Fragment.ProfileFragment;
 import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
@@ -44,6 +47,8 @@ import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.Const;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.NotificationHandler;
+import com.amplearch.beaconshop.Utils.TrojanText;
+
 import android.support.design.widget.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity
     private CharSequence mDrawerTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar topToolBar;
+    private TrojanText toolbarTitle ;
     private static final int RC_SIGN_IN = 007;
 
     private boolean mIsServiceStarted = false;
@@ -72,11 +78,16 @@ public class MainActivity extends AppCompatActivity
     //This is our viewPager
     private ViewPager viewPager;
 
+    RelativeLayout rlButtons ;
+    FrameLayout flBackImage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
+//        flBackImage = (FrameLayout)findViewById(R.id.flBackImage);
 
         if (!mIsServiceStarted) {
             mIsServiceStarted = true;
@@ -88,15 +99,16 @@ public class MainActivity extends AppCompatActivity
         mTitle = mDrawerTitle = getTitle();
         titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
 
+        toolbarTitle =(TrojanText)findViewById(R.id.toolbarTitle);
+
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
        // topToolBar.setLogo(R.mipmap.ic_launcher);
         topToolBar.setLogo(R.mipmap.ic_launcher);
-        topToolBar.setLogoDescription("BeaconShop");
-        topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
-        getActionBar().setDisplayHomeAsUpEnabled(false);
-        getActionBar().setDisplayUseLogoEnabled(false);
-//        mDrawerToggle.setDrawerIndicatorEnabled(true);
+//        topToolBar.setLogoDescription("BeaconShop");
+//        topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
+//        topToolBar.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
+//       mDrawerToggle.setDrawerIndicatorEnabled(false);
 
         //Initializing the tablayout
       /*  tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -145,7 +157,7 @@ public class MainActivity extends AppCompatActivity
 
         List<ItemObject> listViewItems = new ArrayList<ItemObject>();
         listViewItems.add(new ItemObject("Home", R.drawable.ic_home_black_24dp));
-        listViewItems.add(new ItemObject("Favourites", R.drawable.ic_favorite_black_24dp));
+        listViewItems.add(new ItemObject("Favorites", R.drawable.ic_favorite_black_24dp));
         listViewItems.add(new ItemObject("My Vouchers", R.drawable.ic_email_black_24dp));
         listViewItems.add(new ItemObject("Badges", R.drawable.ic_help_outline_black_24dp));
         listViewItems.add(new ItemObject("My Account", R.drawable.ic_person_black_24dp));
@@ -155,7 +167,7 @@ public class MainActivity extends AppCompatActivity
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
-        mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close)
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close)
         {
 
             /** Called when a drawer has settled in a completely closed state. */
@@ -177,8 +189,8 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.content_frame, new HomeFragment());
@@ -199,40 +211,56 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        switch(position) {
+        switch(position)
+        {
             default:
             /*case 0:
                 fragment = new HomeFragment();
                 break;*/
             case 1:
                 fragment = new HomeFragment();
+                toolbarTitle.setText("Beacon Shop");
                 break;
             case 2:
                 fragment = new FavoriteFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("Favorites");
                 break;
             case 3:
                 fragment = new VoucherFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("My Vouchers");
                 break;
             case 4:
                 fragment = new BadgesFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("Badges");
                 break;
             case 5:
-                fragment = new ProfileFragment();
+                fragment = new MyProfileFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("My Account");
                 break;
             case 6:
                 fragment = new SettingsFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("Settings");
                 break;
             case 7:
                 fragment = new HelpFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("Help");
                 break;
             case 8:
                 fragment = new AboutUsFragment();
+                rlButtons.setVisibility(View.INVISIBLE);
+                toolbarTitle.setText("About Us");
                 break;
         }
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         mDrawerList.setItemChecked(position, true);
-        setTitle(titles[position]);
+//        setTitle(titles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
     @Override

@@ -20,7 +20,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
@@ -65,7 +65,7 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:background="@drawable/rectangle_shape"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
@@ -100,7 +100,7 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:background="@drawable/rectangle_shape"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
@@ -119,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Contact No"
                 android:layout_weight="0.9"
+                android:maxLength="10"
                 android:textColorHint="@android:color/white"
                 android:textColor="@android:color/white"
                 android:layout_marginRight="10dp"
@@ -135,7 +136,7 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:background="@drawable/rectangle_shape"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
@@ -170,7 +171,7 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:background="@drawable/rectangle_shape"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
@@ -204,7 +205,7 @@
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llRePaswordBox"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/button_shape"
             android:text="SIGN UP"
             android:textAlignment="center"
@@ -214,15 +215,35 @@
             android:textSize="20dp"
             android:textStyle="bold"/>
 
-        <com.amplearch.beaconshop.Utils.TrojanText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvSignUp"
-            android:layout_marginTop="20dp"
-            android:text="ALREADY HAVE AN ACCOUNT? SIGN IN"
-            android:textSize="13dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:paddingLeft="0dp"
+            android:paddingRight="00dp"
             android:gravity="center"
-            android:textColor="@color/white"/>
+            android:layout_below="@+id/tvSignUp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="0dp">
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textSize="11dp"
+                android:textColor="@android:color/white"
+                android:text="ALREADY HAVE AN ACCOUNT?"/>
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Sign IN"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="0dp"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
 
 
     </RelativeLayout>

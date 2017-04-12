@@ -43,20 +43,20 @@ public class SignInActivity extends AppCompatActivity
 
                 //CallSoap cs=new CallSoap();
 
-                if(!isValidUserName(name)){
-                    etUsername.setError("at least 3 characters.");
-                }
-
-                else if (!isValidEmail(email)) {
-                    etEmailAdd.setError("Email Id is not in Valid Format.");
-                }
-
-                else if (!isValidPassword(pass)) {
-                    etPass.setError("Minimum 5 characters.");
-                }
-
-                else
-                {
+//                if(!isValidUserName(name)){
+//                    etUsername.setError("at least 3 characters.");
+//                }
+//
+//                else if (!isValidEmail(email)) {
+//                    etEmailAdd.setError("Email Id is not in Valid Format.");
+//                }
+//
+//                else if (!isValidPassword(pass)) {
+//                    etPass.setError("Minimum 5 characters.");
+//                }
+//
+//                else
+//                {
 //                    try
 //                    {
 //
@@ -80,7 +80,7 @@ public class SignInActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
 
-                }
+//                }
             }
         });
     }

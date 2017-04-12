@@ -25,6 +25,7 @@ public class BadgesFragment extends Fragment
     GridView gridView ;
     BadgeAdapter badgeAdapter ;
     ArrayList<Integer> badgeImages = new ArrayList<Integer>();
+    ArrayList<String>  badgeText = new ArrayList<String>();
     Dialog dialog ;
 
     public BadgesFragment()
@@ -37,21 +38,25 @@ public class BadgesFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.fragment_badges, container, false);
 
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
-        badgeImages.add(R.drawable.ic_sale);
+        badgeImages.add(R.drawable.award);
+        badgeText.add(" GOLD\nDIGGER");
+        badgeImages.add(R.drawable.award);
+        badgeText.add("  EARLY\nSHOPPER");
+        badgeImages.add(R.drawable.award);
+        badgeText.add("  GOOD\nSHOPPER");
+        badgeImages.add(R.drawable.award);
+        badgeText.add("HAPPY\n GIRL");
+        badgeImages.add(R.drawable.award);
+        badgeText.add("MYSTERY\n  BADGE");
+        badgeImages.add(R.drawable.award);
+        badgeText.add("COFFEE\nMANIA");
+        badgeImages.add(R.drawable.award);
+        badgeText.add(" SALE\nMANIA");
 
-        badgeAdapter = new BadgeAdapter(getActivity(),badgeImages);
+        badgeAdapter = new BadgeAdapter(getActivity(),badgeImages,badgeText);
 
         gridView = (GridView)rootView.findViewById(R.id.gridView);
         gridView.setAdapter(badgeAdapter);
-
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -59,9 +64,9 @@ public class BadgesFragment extends Fragment
             {
                 Toast.makeText(getActivity(), "You badges Number: " + position, Toast.LENGTH_SHORT).show();
 
-                dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.badges_dialog_box);
-                dialog.show();
+//                dialog = new Dialog(getActivity());
+//                dialog.setContentView(R.layout.badges_dialog_box);
+//                dialog.show();
 //                new Handler().postDelayed(new Runnable() {
 //                    @Override
 //                    public void run() {

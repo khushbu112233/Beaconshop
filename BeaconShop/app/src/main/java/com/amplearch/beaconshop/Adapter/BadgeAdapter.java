@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.TrojanText;
 
 import java.util.ArrayList;
 
@@ -21,11 +23,13 @@ public class BadgeAdapter extends BaseAdapter
 {
     Context context;
     ArrayList<Integer> Bimages;
+    ArrayList<String> Btexts;
 
-    public BadgeAdapter(FragmentActivity activity, ArrayList<Integer> badgeImages)
+    public BadgeAdapter(FragmentActivity activity, ArrayList<Integer> badgeImages, ArrayList<String> badgeText)
     {
         this.context = activity;
         this.Bimages = badgeImages;
+        this.Btexts = badgeText ;
     }
 
     @Override
@@ -49,8 +53,11 @@ public class BadgeAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView= inflater.inflate(R.layout.grid_badges, null, true);
 
-        CircleImageView circleBadges = (CircleImageView)rowView.findViewById(R.id.circleBadges);
+        ImageView circleBadges = (ImageView) rowView.findViewById(R.id.circleBadges);
+        TrojanText tvAwardname = (TrojanText)rowView.findViewById(R.id.tvAwardName);
+
         circleBadges.setImageResource(Bimages.get(position));
+        tvAwardname.setText(Btexts.get(position));
 
         return rowView;
     }

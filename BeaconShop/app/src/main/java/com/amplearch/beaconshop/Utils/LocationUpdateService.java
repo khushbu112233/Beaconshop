@@ -1,7 +1,6 @@
 package com.amplearch.beaconshop.Utils;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -11,18 +10,13 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;
-import com.amplearch.beaconshop.TempActivity;
-import com.amplearch.beaconshop.database.LocationDBHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -191,7 +185,7 @@ public class LocationUpdateService extends Service implements
         Log.d(TAG, "Latitude:==" + mCurrentLocation.getLatitude() + "\n Longitude:==" + mCurrentLocation.getLongitude
                   ());
 
-        LocationDBHelper.getInstance(this).insertLocationDetails(mLocationData);
+//        LocationDBHelper.getInstance(this).insertLocationDetails(mLocationData);
     }
 
     /**
@@ -252,8 +246,10 @@ public class LocationUpdateService extends Service implements
         String res = null;
         //String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = getContentResolver().query(Uri.parse(URL), null, null, null, null);
-        if(cursor.moveToFirst()){
-            do {
+        if(cursor.moveToFirst())
+        {
+            do
+            {
                 /*Toast.makeText(this,
                         cursor.getString(cursor.getColumnIndex(StoreLocations._ID)) +
                                 ", " + cursor.getString(cursor.getColumnIndex(StoreLocations.FIELD_OFFER_TITLE)) +
@@ -342,7 +338,8 @@ public class LocationUpdateService extends Service implements
                 int dist_cm = dist_int * 100;
                 String cm = String.valueOf(dist_cm);
 
-            }while (cursor.moveToNext());
+            }
+            while (cursor.moveToNext());
         }
         cursor.close();
 

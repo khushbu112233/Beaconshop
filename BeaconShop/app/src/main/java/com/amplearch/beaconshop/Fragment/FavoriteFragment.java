@@ -1,6 +1,8 @@
 package com.amplearch.beaconshop.Fragment;
 
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
+import com.amplearch.beaconshop.FavouriteDatabase;
 import com.amplearch.beaconshop.R;
 
 import java.util.ArrayList;
@@ -25,6 +29,13 @@ public class FavoriteFragment extends Fragment
     ArrayList<Integer> favImage = new ArrayList<Integer>();
     ArrayList<String>  favText = new ArrayList<String>();
 
+    String URL = "content://com.amplearch.beaconshop.FavoriteDatabase";
+    String res ;
+    Cursor cursor ;
+
+    String product_id ;
+    String user_id ;
+
     public FavoriteFragment() { }
 
     @Nullable
@@ -33,8 +44,22 @@ public class FavoriteFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
 
+//        cursor = getActivity().getContentResolver().query(Uri.parse(String.valueOf(FavouriteDatabase.CONTENT_URI)), null, null, null, null);
+//        if(cursor.moveToFirst())
+//        {
+//            do
+//            {
+//                product_id = cursor.getString(cursor.getColumnIndex(FavouriteDatabase.FIELD_PRODUCT_ID));
+//                user_id =  cursor.getString(cursor.getColumnIndex(FavouriteDatabase.FIELD_USER_ID));
+//
+//                Toast.makeText(getContext(),"Productid: "+product_id,Toast.LENGTH_SHORT).show();
+//            }
+//            while (cursor.moveToNext());
+//        }
+//        cursor.close();
+
         favImage.add(R.drawable.ic_sale);
-        favText.add("Fav Offer");
+        favText.add("p_Id");
 
         favImage.add(R.drawable.ic_sale);
         favText.add("Fav Offer");

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/primary"
-        />
+        android:gravity="center"/>
 
     <GridView
         android:padding="16dp"

@@ -12,7 +12,7 @@ import com.amplearch.beaconshop.R;
 
 public class SettingsFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
-    CheckBox chboxNotification, chboxPopup, chboxWelcome;
+    CheckBox chboxNotification, chboxPopup, chboxWelcome, cbHQimages;
 
     public SettingsFragment() {
     }
@@ -22,9 +22,10 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
 
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        chboxNotification = (CheckBox) rootView.findViewById(R.id.checkbox_offer_noti);
-        chboxPopup = (CheckBox) rootView.findViewById(R.id.checkbox_offer_popup);
-        chboxWelcome = (CheckBox) rootView.findViewById(R.id.checkbox_welcome);
+        cbHQimages = (CheckBox)rootView.findViewById(R.id.cbHQimages);
+        chboxNotification = (CheckBox) rootView.findViewById(R.id.cbOfferNotification);
+        chboxPopup = (CheckBox) rootView.findViewById(R.id.cbOfferPopup);
+        chboxWelcome = (CheckBox) rootView.findViewById(R.id.cbWelcomeMessage);
 
         chboxNotification.setOnCheckedChangeListener(this);
         chboxPopup.setOnCheckedChangeListener(this);
@@ -37,7 +38,7 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
         switch (buttonView.getId()) {
-            case R.id.checkbox_offer_noti:
+            case R.id.cbHQimages:
                 if (isChecked) {
                 }
                 // Put some meat on the sandwich
@@ -45,7 +46,7 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
 
                 }
                 break;
-            case R.id.checkbox_offer_popup:
+            case R.id.cbOfferNotification:
                 if (isChecked) {
 
                 }
@@ -56,7 +57,18 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
                 // I'm lactose intolerant
                 break;
 
-            case R.id.checkbox_welcome:
+            case R.id.cbOfferPopup:
+                if (isChecked) {
+
+                }
+                // Cheese me
+                else {
+
+                }
+                // I'm lactose intolerant
+                break;
+
+            case R.id.cbWelcomeMessage:
                 if (isChecked) {
 
                 }
