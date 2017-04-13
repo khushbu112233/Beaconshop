@@ -2,7 +2,9 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Activity.ElectClaimOfferAcivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,34 +24,34 @@
         android:background="@android:color/transparent">
 
         <LinearLayout
-            android:id="@+id/llMenOffer"
+            android:id="@+id/llItemsOffer"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:orientation="vertical"
             android:background="@drawable/login_shape"
             android:layout_marginTop="20dp">
             <com.amplearch.beaconshop.Utils.TrojanText
+                android:id="@+id/tvItemOffer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MANS WEAR OFFER"
+                android:text="Electronic Offer"
                 android:textAlignment="center"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:layout_marginTop="25dp"
-                android:id="@+id/tvMenOffer"/>
+                android:layout_marginTop="25dp" />
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="On Men Cloths Offer has Going To Be On Last Saturday Till 10-Aprl-2017"
+                android:text="On Electronic Offer has Going To Be On Last Saturday Till 10-Aprl-2017"
                 android:textSize="15dp"
                 android:textAlignment="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:id="@+id/tvMenOfferDetails"/>
+                android:id="@+id/tvItemOfferDetails"/>
         </LinearLayout>
 
       <com.amplearch.beaconshop.Utils.TrojanCheckBox
@@ -58,11 +60,11 @@
           android:text="AGREE TO TERMS AND CONDITIONS."
           android:textColor="@color/white"
           android:id="@+id/chAgree"
-          android:layout_below="@+id/llMenOffer"
+          android:layout_below="@+id/llItemsOffer"
           android:layout_marginTop="10dp"/>
 
         <LinearLayout
-            android:id="@+id/llShare"
+            android:id="@+id/llItemShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -70,12 +72,14 @@
             android:layout_below="@+id/chAgree"
             android:gravity="center"
             android:layout_marginTop="20dp">
+
             <ImageView
                 android:id="@+id/ivFacebook"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/ic_facebook"
-                android:layout_weight="0.2"/>
+                android:layout_weight="0.2"
+                android:src="@drawable/ic_facebook" />
+
             <ImageView
                 android:id="@+id/ivFavorite"
                 android:layout_width="60dp"
@@ -91,8 +95,8 @@
         </LinearLayout>
 
         <com.amplearch.beaconshop.Utils.TrojanButton
-            android:id="@+id/btnClaimOffer"
-            android:layout_below="@+id/llShare"
+            android:id="@+id/btnItemClaimOffer"
+            android:layout_below="@+id/llItemShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

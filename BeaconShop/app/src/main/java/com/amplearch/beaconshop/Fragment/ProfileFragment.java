@@ -33,6 +33,9 @@ import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.PrefUtils;
+import com.amplearch.beaconshop.Utils.TrojanButton;
+import com.amplearch.beaconshop.Utils.TrojanEditText;
+import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
 import com.bumptech.glide.Glide;
@@ -62,8 +65,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
-    Button btnDatePicker;
-    EditText txtDate;
+    TrojanText btnDatePicker;
+    TrojanText txtDate;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
@@ -77,16 +80,15 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
 
-    TextView txtName, txtUserID;
-    private Button btnSignOut, btnRevokeAccess;
+    TrojanText txtName, txtUserID;
+    private TrojanButton btnSignOut, btnRevokeAccess;
     UserSessionManager session;
-    Button btnLogout;
+    TrojanButton btnLogout;
 
     private User user;
     Bitmap bitmap;
 
-    public ProfileFragment() {
-    }
+    public ProfileFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,14 +99,14 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
         session = new UserSessionManager(getContext());
         user= PrefUtils.getCurrentUser(getContext());
-        btnDatePicker = (Button) rootView.findViewById(R.id.btn_date);
-        txtDate = (EditText) rootView.findViewById(R.id.in_date);
+        btnDatePicker = (TrojanText) rootView.findViewById(R.id.btn_date);
+        txtDate = (TrojanText) rootView.findViewById(R.id.in_date);
         ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
-        txtName = (TextView) rootView.findViewById(R.id.txtName);
-        txtUserID = (TextView) rootView.findViewById(R.id.txtUser_id);
-        btnLogout = (Button) rootView.findViewById(R.id.logout);
-        btnSignOut = (Button) rootView.findViewById(R.id.btn_sign_out);
-        btnRevokeAccess = (Button) rootView.findViewById(R.id.btn_revoke_access);
+        txtName = (TrojanText) rootView.findViewById(R.id.txtName);
+        txtUserID = (TrojanText) rootView.findViewById(R.id.txtUser_id);
+        btnLogout = (TrojanButton) rootView.findViewById(R.id.logout);
+        btnSignOut = (TrojanButton) rootView.findViewById(R.id.btn_sign_out);
+        btnRevokeAccess = (TrojanButton) rootView.findViewById(R.id.btn_revoke_access);
         Toast.makeText(getContext(),
                 "User Login Status: " + session.isUserLoggedIn(),
                 Toast.LENGTH_LONG).show();
