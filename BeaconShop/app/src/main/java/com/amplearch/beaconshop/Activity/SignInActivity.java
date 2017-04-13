@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.CallSoap;
 import com.amplearch.beaconshop.Utils.Caller;
+import com.amplearch.beaconshop.Utils.UserSessionManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -43,6 +44,7 @@ public class SignInActivity extends AppCompatActivity
     TextView tvSignIn;
     EditText etEmailAdd, etPass, etUsername;
     public static String rslt="";
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,6 +53,7 @@ public class SignInActivity extends AppCompatActivity
         setContentView(R.layout.activity_sign_in);
 
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
+        session = new UserSessionManager(getApplicationContext());
         etEmailAdd = (EditText)findViewById(R.id.etEmailAdd);
         etPass = (EditText)findViewById(R.id.etPass);
         etUsername = (EditText)findViewById(R.id.etUserName);
@@ -244,7 +247,7 @@ public class SignInActivity extends AppCompatActivity
 
                             Toast.makeText(getApplicationContext(), email_id, Toast.LENGTH_LONG).show();
                             Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
-//                            session.createUserLoginSession(username, email_id, image, password, user_id);
+                            session.createUserLoginSession(username, email_id, image, password, user_id);
 
                             Intent intent=new Intent(SignInActivity.this,MainActivity.class);
                             startActivity(intent);
