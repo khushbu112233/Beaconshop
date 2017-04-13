@@ -24,16 +24,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.PrefUtils;
-import com.amplearch.beaconshop.Utils.TrojanButton;
-import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
 import com.bumptech.glide.Glide;
@@ -48,6 +47,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,16 +62,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
-    Button btnClaimOffers;
-    TrojanText tvGender, btnDatePicker, txtName, tvProfileId, tvOfferNumbers, tvVoucherNumbers, tvBadgeNumbers ;
-    TrojanButton btnGender, txtDate ;
-    LinearLayout llProfileShare , llProfileInvite ;
-    CircleImageView ivImage ;
-    TrojanButton btnLogout, btnSignOut, btnRevokeAccess ;
-
+    Button btnDatePicker;
+    EditText txtDate;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private Button btnSelect;
+    private CircleImageView ivImage;
     private String userChoosenTask;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -80,8 +77,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
 
-
+    TextView txtName, txtUserID;
+    private Button btnSignOut, btnRevokeAccess;
     UserSessionManager session;
+    Button btnLogout;
+
     private User user;
     Bitmap bitmap;
 
@@ -91,32 +91,23 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.profile_account, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
         session = new UserSessionManager(getContext());
         user= PrefUtils.getCurrentUser(getContext());
-
-        btnClaimOffers = (Button)rootView.findViewById(R.id.btnProfileClaimOffer);
-        ivImage = (CircleImageView)rootView.findViewById(R.id.profile_picture);
-        llProfileInvite = (LinearLayout)rootView.findViewById(R.id.llProfileInvite);
-        llProfileShare = (LinearLayout)rootView.findViewById(R.id.llProfileShare);
-        btnGender = (TrojanButton)rootView.findViewById(R.id.ProfileGenderButton);
-        txtDate = (TrojanButton)rootView.findViewById(R.id.ProfileDateBirthButton);
-        tvGender = (TrojanText)rootView.findViewById(R.id.ProfileGenderText);
-        btnDatePicker = (TrojanText)rootView.findViewById(R.id.ProfileDateBirthText);
-        txtName = (TrojanText)rootView.findViewById(R.id.tvProfileName);
-        tvProfileId = (TrojanText)rootView.findViewById(R.id.tvProfileId);
-        tvOfferNumbers = (TrojanText)rootView.findViewById(R.id.tvProfileOfferNumbers);
-        tvVoucherNumbers = (TrojanText)rootView.findViewById(R.id.tvProfileVoucherNumbers);
-        tvBadgeNumbers = (TrojanText)rootView.findViewById(R.id.tvProfileBadgeNumbers);
-        btnLogout = (TrojanButton)rootView.findViewById(R.id.btnLogOut);
-        btnSignOut = (TrojanButton)rootView.findViewById(R.id.btnSignOut);
-        btnRevokeAccess = (TrojanButton)rootView.findViewById(R.id.btnRevokeAccess);
-
-
-
-        Toast.makeText(getContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
+        btnDatePicker = (Button) rootView.findViewById(R.id.btn_date);
+        txtDate = (EditText) rootView.findViewById(R.id.in_date);
+        ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
+        txtName = (TextView) rootView.findViewById(R.id.txtName);
+        txtUserID = (TextView) rootView.findViewById(R.id.txtUser_id);
+        btnLogout = (Button) rootView.findViewById(R.id.logout);
+        btnSignOut = (Button) rootView.findViewById(R.id.btn_sign_out);
+        btnRevokeAccess = (Button) rootView.findViewById(R.id.btn_revoke_access);
+        Toast.makeText(getContext(),
+                "User Login Status: " + session.isUserLoggedIn(),
+                Toast.LENGTH_LONG).show();
 
         ivImage.setOnClickListener(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +154,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         // Show user data on activity
 
+        txtName.setText(name);
+        txtUserID.setText(user1.get(UserSessionManager.KEY_USER_ID));
         Toast.makeText(getContext(), name + " " + email, Toast.LENGTH_LONG).show();
 
         // Customizing G+ button
@@ -256,7 +249,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     + ", Image: " + personPhotoUrl);
 
             txtName.setText(personName + System.lineSeparator() + email );
-           // txtEmail.setText(email);
+            // txtEmail.setText(email);
             Glide.with(getContext()).load(personPhotoUrl)
                     .thumbnail(0.5f)
                     .crossFade()
@@ -447,19 +440,19 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
-           // btnSignIn.setVisibility(View.GONE);
+            // btnSignIn.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
             btnRevokeAccess.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.GONE);
-           // llProfileLayout.setVisibility(View.VISIBLE);
+            // llProfileLayout.setVisibility(View.VISIBLE);
         } else {
-           // btnSignIn.setVisibility(View.VISIBLE);
+            // btnSignIn.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.GONE);
             btnRevokeAccess.setVisibility(View.GONE);
             btnLogout.setVisibility(View.VISIBLE);
-         //   Intent intent = new Intent(getContext(), AccountActivity.class);
-          //  startActivity(intent);
-          //  llProfileLayout.setVisibility(View.GONE);
+            //   Intent intent = new Intent(getContext(), AccountActivity.class);
+            //  startActivity(intent);
+            //  llProfileLayout.setVisibility(View.GONE);
         }
     }
 

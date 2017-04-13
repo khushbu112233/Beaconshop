@@ -19,6 +19,7 @@ import com.amplearch.beaconshop.Utils.Caller;
 import com.amplearch.beaconshop.Utils.TrojanButton;
 import com.amplearch.beaconshop.Utils.TrojanEditText;
 import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.Utils.UserSessionManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -49,6 +50,7 @@ public class SignInActivity extends AppCompatActivity
     TrojanEditText etEmailAdd, etPass, etUsername;
     TrojanButton tvSignIn ;
     public static String rslt="";
+    UserSessionManager session;
 
     final Context context = this ;
 
@@ -63,6 +65,7 @@ public class SignInActivity extends AppCompatActivity
         etPass = (TrojanEditText)findViewById(R.id.etPass);
         etUsername = (TrojanEditText)findViewById(R.id.etUserName);
         tvForgotPassword = (TrojanText)findViewById(R.id.tvForgotPassword);
+        session = new UserSessionManager(getApplicationContext());
 
         tvSignIn = (TrojanButton) findViewById(R.id.tvSignIn);
         tvSignIn.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +277,7 @@ public class SignInActivity extends AppCompatActivity
 
                             Toast.makeText(getApplicationContext(), email_id, Toast.LENGTH_LONG).show();
                             Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
-//                            session.createUserLoginSession(username, email_id, image, password, user_id);
+                            session.createUserLoginSession(username, email_id, image, password, user_id);
 
                             Intent intent=new Intent(SignInActivity.this,MainActivity.class);
                             startActivity(intent);

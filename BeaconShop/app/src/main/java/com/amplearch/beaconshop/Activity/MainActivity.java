@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
 import com.amplearch.beaconshop.Adapter.DrawerAdapter;
@@ -36,7 +34,6 @@ import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
 import com.amplearch.beaconshop.Fragment.FavoriteFragment;
 import com.amplearch.beaconshop.Fragment.HomeFragment;
-import com.amplearch.beaconshop.Fragment.MyProfileFragment;
 import com.amplearch.beaconshop.Fragment.ProfileFragment;
 import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
@@ -197,37 +194,37 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 2:
                 fragment = new FavoriteFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
+                rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Favorites");
                 break;
             case 3:
                 fragment = new VoucherFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
+                rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Vouchers");
                 break;
             case 4:
                 fragment = new BadgesFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
+                rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Badges");
                 break;
             case 5:
                 fragment = new ProfileFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
+                rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
                 break;
             case 6:
                 fragment = new SettingsFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
-                toolbarTitle.setText("Setting");
+                rlButtons.setVisibility(View.GONE);
+                toolbarTitle.setText("Settings");
                 break;
             case 7:
                 fragment = new HelpFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
+                rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Help");
                 break;
             case 8:
                 fragment = new AboutUsFragment();
-                rlButtons.setVisibility(View.INVISIBLE);
+                rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("About Us");
                 break;
         }
