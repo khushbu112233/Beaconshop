@@ -214,8 +214,8 @@ public class SignInActivity extends AppCompatActivity
             protected void onPostExecute(String result)
             {
                 super.onPostExecute(result);
-                Toast.makeText(getApplicationContext(),"Result: "+result,Toast.LENGTH_LONG).show();
-                if (result.equals(""))
+//                Toast.makeText(getApplicationContext(),"Result: "+result,Toast.LENGTH_LONG).show();
+                if (result.equals(" "))
                 {
                     Toast.makeText(getApplicationContext(), "Email Address..?", Toast.LENGTH_LONG).show();
                 }
@@ -223,10 +223,10 @@ public class SignInActivity extends AppCompatActivity
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         String res = jsonObject.getString("message");
-                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
-                        if (res.equals("not exists"))
+//                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
+                        if (res.equals("This email address does not match our records."))
                         {
-                            Toast.makeText(getApplicationContext(), "This email address does not match our records..", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "This email address does not EXISTS..", Toast.LENGTH_LONG).show();
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Password Has been sent to email id.", Toast.LENGTH_LONG).show();
