@@ -37,7 +37,7 @@
                 android:textColor="@color/white"
                 android:id="@+id/toolbarTitle"
                 android:layout_marginLeft="80dp"
-                android:textSize="30dp"/>
+                android:textSize="25dp"/>
         </android.support.v7.widget.Toolbar>
 
     </LinearLayout>

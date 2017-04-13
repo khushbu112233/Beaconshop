@@ -1,5 +1,7 @@
 package com.amplearch.beaconshop.Activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +16,9 @@ import android.widget.Toast;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.CallSoap;
 import com.amplearch.beaconshop.Utils.Caller;
+import com.amplearch.beaconshop.Utils.TrojanButton;
+import com.amplearch.beaconshop.Utils.TrojanEditText;
+import com.amplearch.beaconshop.Utils.TrojanText;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -40,9 +45,12 @@ import java.util.regex.Pattern;
 
 public class SignInActivity extends AppCompatActivity
 {
-    TextView tvSignIn;
-    EditText etEmailAdd, etPass, etUsername;
+    TrojanText tvForgotPassword;
+    TrojanEditText etEmailAdd, etPass, etUsername;
+    TrojanButton tvSignIn ;
     public static String rslt="";
+
+    final Context context = this ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,11 +59,12 @@ public class SignInActivity extends AppCompatActivity
         setContentView(R.layout.activity_sign_in);
 
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
-        etEmailAdd = (EditText)findViewById(R.id.etEmailAdd);
-        etPass = (EditText)findViewById(R.id.etPass);
-        etUsername = (EditText)findViewById(R.id.etUserName);
+        etEmailAdd = (TrojanEditText)findViewById(R.id.etEmailAdd);
+        etPass = (TrojanEditText)findViewById(R.id.etPass);
+        etUsername = (TrojanEditText)findViewById(R.id.etUserName);
+        tvForgotPassword = (TrojanText)findViewById(R.id.tvForgotPassword);
 
-        tvSignIn = (TextView)findViewById(R.id.tvSignIn);
+        tvSignIn = (TrojanButton) findViewById(R.id.tvSignIn);
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -81,13 +90,34 @@ public class SignInActivity extends AppCompatActivity
                 else {
                   connectWithHttpPost(email, pass);
               }
-
 //                startActivity(new Intent(getApplicationContext(),MainActivity.class));
 //                finish();
-
-
             }
         });
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder inputEmail = new AlertDialog.Builder(context);
+                inputEmail.setTitle("Forgot Password?");
+                inputEmail.setMessage("Please! Enter your Emial Id.");
+                // for email edittext
+                final EditText etInputEmail = new EditText(context);
+                inputEmail.setView(etInputEmail);
+                //for positive response
+                inputEmail.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String email = etInputEmail.getEditableText().toString();
+                        Toast.makeText(context,"Password has been sent at: "+email,Toast.LENGTH_LONG).show();
+                    }
+                });
+                AlertDialog alertDialog = inputEmail.create();
+                alertDialog.show();
+            }
+        });
+
+
     }
 
     // validating email id
@@ -116,8 +146,8 @@ public class SignInActivity extends AppCompatActivity
         return false;
     }
 
-    private void connectWithHttpPost(String givenUsername, String givenPassword) {
-
+    private void connectWithHttpPost(String givenUsername, String givenPassword)
+    {
         // Connect with a server is a time consuming process.
         //Therefore we use AsyncTask to handle it
         // From the three generic types;
