@@ -158,6 +158,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 "User Login Status: " + session.isUserLoggedIn(),
                 Toast.LENGTH_LONG).show();
 
+        if (session.isUserLoggedIn()){
+            Intent intent=new Intent(AccountActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         mLatitudeLabel = getResources().getString(R.string.latitude_label);
         mLongitudeLabel = getResources().getString(R.string.longitude_label);

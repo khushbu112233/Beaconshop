@@ -18,11 +18,12 @@ public class Voucher {
     String uuid;
     String major;
     String minor;
+    String product_id;
 
     public Voucher() {
     }
 
-    public Voucher(String store_name, String lat, String lng, String offer_title, String offer_desc, String start_date, String end_date, String message, String uuid, String major, String minor) {
+    public Voucher(String store_name, String lat, String lng, String offer_title, String offer_desc, String start_date, String end_date, String message, String uuid, String major, String minor, String product_id) {
         this.store_name = store_name;
         this.lat = lat;
         this.lng = lng;
@@ -34,6 +35,15 @@ public class Voucher {
         this.uuid = uuid;
         this.major = major;
         this.minor = minor;
+        this.product_id = product_id;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
     }
 
     public int getId() {

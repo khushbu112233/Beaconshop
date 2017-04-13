@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
@@ -79,6 +80,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
             + TABLE_VOUCHER + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_STORENAME + " TEXT,"
 			+ KEY_LAT + " TEXT,"
+            + TABLE_VOUCHER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_STORENAME
+            + " TEXT," + KEY_LAT + " TEXT,"
+			+ KEY_PRODUCTID + " TEXT,"
             + KEY_LNG + " TEXT,"
             + KEY_OFFERTITLE + " TEXT,"
             + KEY_OFFERDESC + " TEXT,"
@@ -146,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         insertVoucherValues.put("uuid", "e71c1a56-58e5-7b1f-abbe-9bf13e06f36a");
         insertVoucherValues.put("major", "0");
         insertVoucherValues.put("minor", "0");
+		insertFavValues.put("product_id", "7");
         db.insert(TABLE_VOUCHER, null, insertVoucherValues);
 
         insertVoucherValues.put("store_name", "Levie's");
@@ -159,6 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         insertVoucherValues.put("uuid", "f18aa677-3b40-48c5-a937-9e2c9e9f8");
         insertVoucherValues.put("major", "0");
         insertVoucherValues.put("minor", "0");
+		insertFavValues.put("product_id", "5");
         db.insert(TABLE_VOUCHER, null, insertVoucherValues);
 
 
@@ -253,6 +259,28 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 		return td;
 	}
+
+    public Voucher getVoucherByProductId(long todo_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_VOUCHER + " WHERE "
+                + KEY_PRODUCTID + " = " + todo_id;
+
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        Voucher td = new Voucher();
+        td.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        td.setProduct_id((c.getString(c.getColumnIndex(KEY_PRODUCTID))));
+        td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+
+        return td;
+    }
+
 
 	/**
 	 * getting all todos
