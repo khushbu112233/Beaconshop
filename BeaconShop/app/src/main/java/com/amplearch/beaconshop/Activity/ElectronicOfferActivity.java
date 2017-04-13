@@ -1,7 +1,10 @@
 package com.amplearch.beaconshop.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
@@ -38,5 +41,14 @@ public class ElectronicOfferActivity extends AppCompatActivity
         listView_Elect = (ListView)findViewById(R.id.listView_Elect);
         listView_Elect.setAdapter(electOfferAdapter);
 
+        listView_Elect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Intent i = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
+                startActivity(i);
+            }
+        });
     }
+
 }

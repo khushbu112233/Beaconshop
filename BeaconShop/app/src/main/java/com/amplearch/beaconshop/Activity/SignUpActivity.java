@@ -185,7 +185,6 @@ public class SignUpActivity extends AppCompatActivity
                         // String message = jsonObject.getString("User");
                         //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                         if (res.equals("not exists")){
-
                             Toast.makeText(getApplicationContext(), "Successfully Registered: Login to your account.", Toast.LENGTH_LONG).show();
                             Intent intent=new Intent(SignUpActivity.this,SignInActivity.class);
                             startActivity(intent);

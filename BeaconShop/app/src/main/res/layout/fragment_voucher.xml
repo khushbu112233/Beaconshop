@@ -7,25 +7,12 @@
     android:paddingRight="20dp"
     android:paddingBottom="20dp">
 
-    <TextView
-        android:id="@+id/voucher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Your Vouchers"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="monospace"
-        android:textStyle="bold" />
-
     <GridView
         android:id="@+id/gridView_Vouch"
-        android:layout_below="@+id/voucher"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="30dp"
         android:numColumns="2">
-
     </GridView>
 
 </RelativeLayout>

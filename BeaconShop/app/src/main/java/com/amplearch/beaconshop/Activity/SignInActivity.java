@@ -1,5 +1,7 @@
 package com.amplearch.beaconshop.Activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +16,9 @@ import android.widget.Toast;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.CallSoap;
 import com.amplearch.beaconshop.Utils.Caller;
+import com.amplearch.beaconshop.Utils.TrojanButton;
+import com.amplearch.beaconshop.Utils.TrojanEditText;
+import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 
 import org.apache.http.HttpResponse;
@@ -41,10 +46,13 @@ import java.util.regex.Pattern;
 
 public class SignInActivity extends AppCompatActivity
 {
-    TextView tvSignIn;
-    EditText etEmailAdd, etPass, etUsername;
+    TrojanText tvForgotPassword;
+    TrojanEditText etEmailAdd, etPass, etUsername;
+    TrojanButton tvSignIn ;
     public static String rslt="";
     UserSessionManager session;
+
+    final Context context = this ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,12 +61,13 @@ public class SignInActivity extends AppCompatActivity
         setContentView(R.layout.activity_sign_in);
 
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
+        etEmailAdd = (TrojanEditText)findViewById(R.id.etEmailAdd);
+        etPass = (TrojanEditText)findViewById(R.id.etPass);
+        etUsername = (TrojanEditText)findViewById(R.id.etUserName);
+        tvForgotPassword = (TrojanText)findViewById(R.id.tvForgotPassword);
         session = new UserSessionManager(getApplicationContext());
-        etEmailAdd = (EditText)findViewById(R.id.etEmailAdd);
-        etPass = (EditText)findViewById(R.id.etPass);
-        etUsername = (EditText)findViewById(R.id.etUserName);
 
-        tvSignIn = (TextView)findViewById(R.id.tvSignIn);
+        tvSignIn = (TrojanButton) findViewById(R.id.tvSignIn);
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -84,15 +93,43 @@ public class SignInActivity extends AppCompatActivity
                 else {
                   connectWithHttpPost(email, pass);
               }
-
 //                startActivity(new Intent(getApplicationContext(),MainActivity.class));
 //                finish();
-
-
             }
         });
-    }
 
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder inputEmail = new AlertDialog.Builder(context);
+                inputEmail.setTitle("Forgot Password?");
+                inputEmail.setMessage("Please! Enter your Emial Id.");
+                // for email edittext
+                final EditText etInputEmail = new EditText(context);
+                etInputEmail.setHint("ample-arch@gmail.com");
+                inputEmail.setView(etInputEmail);
+                //for positive response
+                inputEmail.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        String email_id = etInputEmail.getEditableText().toString();
+                            forgotpassword(email_id);
+                    }
+                });
+                inputEmail.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = inputEmail.create();
+                alertDialog.show();
+            }
+        });
+
+
+    }
     // validating email id
     private boolean isValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -119,8 +156,94 @@ public class SignInActivity extends AppCompatActivity
         return false;
     }
 
-    private void connectWithHttpPost(String givenUsername, String givenPassword) {
+    private void forgotpassword(String email_id)
+    {
+        class HttpGetAsyncTask extends AsyncTask<String, Void, String>
+        {
+            @Override
+            protected String doInBackground(String... params)
+            {
+                String paramEmail = params[0];
+                System.out.println("paramEmail is :" + paramEmail);
+                // Create an intermediate to connect with the Internet
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/ForgotPassword");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
+                nameValuePair.add(new BasicNameValuePair("email_id", paramEmail));
 
+                //Encoding POST data
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                } catch (UnsupportedEncodingException e) {
+                    // log exception
+                    e.printStackTrace();
+                }
+                try
+                {
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+                    System.out.println("httpResponse");
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+                    // We have a byte stream. Next step is to convert it to a Character stream
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    // Then we have to wraps the existing reader (InputStreamReader) and buffer the input
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    // InputStreamReader contains a buffer of bytes read from the source stream and converts these into characters as needed.
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+                    System.out.println("Returning value of doInBackground :" + stringBuilder.toString());
+
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("Exception generates caz of httpResponse :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second exception generates caz of httpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result)
+            {
+                super.onPostExecute(result);
+                Toast.makeText(getApplicationContext(),"Result: "+result,Toast.LENGTH_LONG).show();
+                if (result.equals(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Email Address..?", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String res = jsonObject.getString("message");
+                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
+                        if (res.equals("not exists"))
+                        {
+                            Toast.makeText(getApplicationContext(), "This email address does not match our records..", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Password Has been sent to email id.", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        httpGetAsyncTask.execute(email_id);
+    }
+
+    private void connectWithHttpPost(String givenUsername, String givenPassword)
+    {
         // Connect with a server is a time consuming process.
         //Therefore we use AsyncTask to handle it
         // From the three generic types;

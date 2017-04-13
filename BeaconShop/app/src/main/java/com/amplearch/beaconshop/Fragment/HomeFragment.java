@@ -75,8 +75,8 @@ public class HomeFragment extends Fragment {
         {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int i, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id)
+            {
               //  Toast.makeText(getContext(), "GridView Item: " , Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), ElectronicOfferActivity.class);
                 startActivity(intent);

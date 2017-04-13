@@ -156,6 +156,17 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
 
+        <com.amplearch.beaconshop.Utils.TrojanText
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llPasswordBox"
+            android:text="Forgot Password?"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"
+            android:textAlignment="textEnd"
+            android:textSize="15dp"/>
+
         <com.amplearch.beaconshop.Utils.TrojanButton
             android:id="@+id/tvSignIn"
             android:layout_width="210dp"
@@ -166,8 +177,8 @@
             android:textSize="16dp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/llPasswordBox"
-            android:layout_marginTop="25dp"/>
+            android:layout_below="@+id/tvForgotPassword"
+            android:layout_marginTop="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -178,7 +189,7 @@
             android:paddingRight="00dp"
             android:gravity="center"
             android:layout_below="@+id/tvSignIn"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp">
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="wrap_content"
