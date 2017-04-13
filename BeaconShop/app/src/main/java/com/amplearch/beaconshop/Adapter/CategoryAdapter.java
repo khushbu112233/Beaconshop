@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.amplearch.beaconshop.R;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -17,30 +20,30 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class CategoryAdapter extends BaseAdapter {
-
+    private static ArrayList name,notice;
     private Context mContext;
-    private final String[] gridViewString;
-    private final int[] gridViewImageId;
+ //   private final String[] gridViewString;
+   // private final int[] gridViewImageId;
 
-    public CategoryAdapter(Context context, String[] gridViewString, int[] gridViewImageId) {
+    public CategoryAdapter(Context context, ArrayList name, ArrayList image) {
         mContext = context;
-        this.gridViewImageId = gridViewImageId;
-        this.gridViewString = gridViewString;
+        notice = image;
+        this.name = name;
     }
 
     @Override
     public int getCount() {
-        return gridViewString.length;
+        return name.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return i;
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -55,8 +58,11 @@ public class CategoryAdapter extends BaseAdapter {
             gridViewAndroid = inflater.inflate(R.layout.category_row, null);
            // TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.android_gridview_text);
             CircleImageView imageViewAndroid = (CircleImageView) gridViewAndroid.findViewById(R.id.imgCategory);
-         //   textViewAndroid.setText(gridViewString[i]);
-            imageViewAndroid.setImageResource(gridViewImageId[i]);
+            TextView txtCategory = (TextView) gridViewAndroid.findViewById(R.id.txtCategory);
+            txtCategory.setText(name.get(i).toString());
+            if (notice.get(i).toString()!=null){
+           // imageViewAndroid.setImageResource(gridViewImageId[i]);
+            }
         } else {
             gridViewAndroid = (View) convertView;
         }
