@@ -17,8 +17,8 @@ public class Caller extends Thread
     public void run(){
         try{
             cs=new CallSoap();
-           // String resp=cs.Call(uname, pwd);
-           // SignInActivity.rslt=resp;
+            String resp=cs.Call(uname, pwd);
+            SignInActivity.rslt=resp;
         }catch(Exception ex)
         {
             SignInActivity.rslt=ex.toString();}

@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,8 +29,9 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
-import com.amplearch.beaconshop.Adapter.LayoutPager;
+import com.amplearch.beaconshop.Adapter.DrawerAdapter;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
 import com.amplearch.beaconshop.Fragment.FavoriteFragment;
@@ -42,14 +42,11 @@ import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
 import com.amplearch.beaconshop.Fragment.VoucherFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
-import com.amplearch.beaconshop.MyService;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.Const;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.NotificationHandler;
 import com.amplearch.beaconshop.Utils.TrojanText;
-
-import android.support.design.widget.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,22 +69,20 @@ public class MainActivity extends AppCompatActivity
     private String action;
     private int notifID;
 
-    //This is our tablayout
-    private TabLayout tabLayout;
-
-    //This is our viewPager
-    private ViewPager viewPager;
+    ArrayList<Integer> drawerImage = new ArrayList<Integer>();
+    ArrayList<String> drawerText = new ArrayList<String>();
+    DrawerAdapter drawerAdapter ;
 
     RelativeLayout rlButtons ;
     FrameLayout flBackImage ;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
-//        flBackImage = (FrameLayout)findViewById(R.id.flBackImage);
 
         if (!mIsServiceStarted) {
             mIsServiceStarted = true;
@@ -96,68 +91,47 @@ public class MainActivity extends AppCompatActivity
             startService(new Intent(this, LocationUpdateService.class));
         }
 
-        mTitle = mDrawerTitle = getTitle();
-        titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
+//        mTitle = mDrawerTitle = getTitle();
+//        titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
 
         toolbarTitle =(TrojanText)findViewById(R.id.toolbarTitle);
 
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
-       // topToolBar.setLogo(R.mipmap.ic_launcher);
         topToolBar.setLogo(R.mipmap.ic_launcher);
-//        topToolBar.setLogoDescription("BeaconShop");
-//        topToolBar.setTitleTextColor(getResources().getColor(R.color.icons));
-//        topToolBar.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
-//       mDrawerToggle.setDrawerIndicatorEnabled(false);
-
-        //Initializing the tablayout
-      /*  tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-
-        //Adding the tabs using addTab() method
-        tabLayout.addTab(tabLayout.newTab().setText("All Offer List"));
-        tabLayout.addTab(tabLayout.newTab().setText("Nearby"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-      */
-
-        //Initializing viewPager
-     /*   viewPager = (ViewPager) findViewById(R.id.pager);
-
-        //Creating our pager adapter
-        LayoutPager adapter = new LayoutPager(getSupportFragmentManager());
-
-        //Adding adapter to pager
-        viewPager.setAdapter(adapter);*/
-
-        //Adding onTabSelectedListener to swipe views
-/*
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-*/
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         LayoutInflater inflater = getLayoutInflater();
-        View listHeaderView = inflater.inflate(R.layout.header_list,null, false);
 
+        View listHeaderView = inflater.inflate(R.layout.header_list,null, false);
         mDrawerList.addHeaderView(listHeaderView);
+
+        // adding values in left drawer
+//        drawerImage.add(R.drawable.ic_home_black_24dp);         // for home
+//        drawerText.add("Home");
+//        drawerImage.add(R.drawable.ic_favorite_black_24dp);     // for home
+//        drawerText.add("Favourites");
+//        drawerImage.add(R.drawable.ic_email_black_24dp);       // for home
+//        drawerText.add("My Vouchers");
+//        drawerImage.add(R.drawable.ic_help_outline_black_24dp);     // for home
+//        drawerText.add("Badges");
+//        drawerImage.add(R.drawable.ic_person_black_24dp);     // for home
+//        drawerText.add("My Account");
+//        drawerImage.add(R.drawable.ic_settings_black_24dp);     // for home
+//        drawerText.add("Settings");
+//        drawerImage.add(R.drawable.ic_help_outline_black_24dp);     // for home
+//        drawerText.add("Help");
+//        drawerImage.add(R.drawable.ic_info_outline_black_24dp);     // for home
+//        drawerText.add("About Us");
+//
+//        drawerAdapter = new DrawerAdapter(getApplicationContext(),drawerImage,drawerText);
+//
+//        mDrawerList.setAdapter(drawerAdapter);
 
         List<ItemObject> listViewItems = new ArrayList<ItemObject>();
         listViewItems.add(new ItemObject("Home", R.drawable.ic_home_black_24dp));
-        listViewItems.add(new ItemObject("Favorites", R.drawable.ic_favorite_black_24dp));
+        listViewItems.add(new ItemObject("Favourites", R.drawable.ic_favorite_black_24dp));
         listViewItems.add(new ItemObject("My Vouchers", R.drawable.ic_email_black_24dp));
         listViewItems.add(new ItemObject("Badges", R.drawable.ic_help_outline_black_24dp));
         listViewItems.add(new ItemObject("My Account", R.drawable.ic_person_black_24dp));
@@ -176,7 +150,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -198,9 +171,9 @@ public class MainActivity extends AppCompatActivity
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // make Toast when click
-                Toast.makeText(getApplicationContext(), "Position " + position, Toast.LENGTH_LONG).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+//                Toast.makeText(getApplicationContext(), "Position " + position, Toast.LENGTH_LONG).show();
                 selectItemFragment(position);
             }
         });
@@ -219,6 +192,7 @@ public class MainActivity extends AppCompatActivity
                 break;*/
             case 1:
                 fragment = new HomeFragment();
+                rlButtons.setVisibility(View.VISIBLE);
                 toolbarTitle.setText("Beacon Shop");
                 break;
             case 2:
@@ -229,7 +203,7 @@ public class MainActivity extends AppCompatActivity
             case 3:
                 fragment = new VoucherFragment();
                 rlButtons.setVisibility(View.INVISIBLE);
-                toolbarTitle.setText("My Vouchers");
+                toolbarTitle.setText("Vouchers");
                 break;
             case 4:
                 fragment = new BadgesFragment();
@@ -237,14 +211,14 @@ public class MainActivity extends AppCompatActivity
                 toolbarTitle.setText("Badges");
                 break;
             case 5:
-                fragment = new MyProfileFragment();
+                fragment = new ProfileFragment();
                 rlButtons.setVisibility(View.INVISIBLE);
-                toolbarTitle.setText("My Account");
+                toolbarTitle.setText("Profile");
                 break;
             case 6:
                 fragment = new SettingsFragment();
                 rlButtons.setVisibility(View.INVISIBLE);
-                toolbarTitle.setText("Settings");
+                toolbarTitle.setText("Setting");
                 break;
             case 7:
                 fragment = new HelpFragment();

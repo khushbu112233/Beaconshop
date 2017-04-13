@@ -24,15 +24,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.PrefUtils;
+import com.amplearch.beaconshop.Utils.TrojanButton;
+import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
 import com.bumptech.glide.Glide;
@@ -47,7 +48,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,13 +62,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
-    Button btnDatePicker;
-    EditText txtDate;
+    Button btnClaimOffers;
+    TrojanText tvGender, btnDatePicker, txtName, tvProfileId, tvOfferNumbers, tvVoucherNumbers, tvBadgeNumbers ;
+    TrojanButton btnGender, txtDate ;
+    LinearLayout llProfileShare , llProfileInvite ;
+    CircleImageView ivImage ;
+    TrojanButton btnLogout, btnSignOut, btnRevokeAccess ;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private Button btnSelect;
-    private CircleImageView ivImage;
     private String userChoosenTask;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -77,11 +80,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
 
-    TextView txtName;
-    private Button btnSignOut, btnRevokeAccess;
-    UserSessionManager session;
-    Button btnLogout;
 
+    UserSessionManager session;
     private User user;
     Bitmap bitmap;
 
@@ -93,17 +93,28 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         View rootView = inflater.inflate(R.layout.profile_account, container, false);
 
-
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
         session = new UserSessionManager(getContext());
         user= PrefUtils.getCurrentUser(getContext());
-        btnDatePicker = (Button) rootView.findViewById(R.id.btn_date);
-        txtDate = (EditText) rootView.findViewById(R.id.in_date);
-        ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
-        txtName = (TextView) rootView.findViewById(R.id.txtName);
-        btnLogout = (Button) rootView.findViewById(R.id.logout);
-        btnSignOut = (Button) rootView.findViewById(R.id.btn_sign_out);
-        btnRevokeAccess = (Button) rootView.findViewById(R.id.btn_revoke_access);
+
+        btnClaimOffers = (Button)rootView.findViewById(R.id.btnProfileClaimOffer);
+        ivImage = (CircleImageView)rootView.findViewById(R.id.profile_picture);
+        llProfileInvite = (LinearLayout)rootView.findViewById(R.id.llProfileInvite);
+        llProfileShare = (LinearLayout)rootView.findViewById(R.id.llProfileShare);
+        btnGender = (TrojanButton)rootView.findViewById(R.id.ProfileGenderButton);
+        txtDate = (TrojanButton)rootView.findViewById(R.id.ProfileDateBirthButton);
+        tvGender = (TrojanText)rootView.findViewById(R.id.ProfileGenderText);
+        btnDatePicker = (TrojanText)rootView.findViewById(R.id.ProfileDateBirthText);
+        txtName = (TrojanText)rootView.findViewById(R.id.tvProfileName);
+        tvProfileId = (TrojanText)rootView.findViewById(R.id.tvProfileId);
+        tvOfferNumbers = (TrojanText)rootView.findViewById(R.id.tvProfileOfferNumbers);
+        tvVoucherNumbers = (TrojanText)rootView.findViewById(R.id.tvProfileVoucherNumbers);
+        tvBadgeNumbers = (TrojanText)rootView.findViewById(R.id.tvProfileBadgeNumbers);
+        btnLogout = (TrojanButton)rootView.findViewById(R.id.btnLogOut);
+        btnSignOut = (TrojanButton)rootView.findViewById(R.id.btnSignOut);
+        btnRevokeAccess = (TrojanButton)rootView.findViewById(R.id.btnRevokeAccess);
+
+
 
         Toast.makeText(getContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
 
