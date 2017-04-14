@@ -3,6 +3,7 @@ package com.amplearch.beaconshop.helper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -252,7 +253,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return td;
 	}
 
-    public Voucher getVoucherByProductId(long todo_id) {
+   /* public Voucher getVoucherByProductId(long todo_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_VOUCHER + " WHERE "
@@ -271,7 +272,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
 
         return td;
-    }
+*/
+
+
+		public List<Voucher> getVoucherByProductId(String tag_name) {
+			List<Voucher> todos = new ArrayList<Voucher>();
+
+			String selectQuery = "SELECT  * FROM " + TABLE_VOUCHER + " WHERE "
+					+ KEY_PRODUCTID + " = " + tag_name;
+
+			Log.e(LOG, selectQuery);
+
+			SQLiteDatabase db = this.getReadableDatabase();
+			Cursor c = db.rawQuery(selectQuery, null);
+
+			// looping through all rows and adding to list
+			if (c.moveToFirst()) {
+				do {
+					Voucher td = new Voucher();
+					td.setProduct_id(c.getString((c.getColumnIndex(KEY_PRODUCTID))));
+					td.setMessage((c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE))));
+					td.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
+					td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+					td.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
+					td.setEnd_date(c.getString(c.getColumnIndex(KEY_ENDDATE)));
+					td.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+					td.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
+					td.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
+					td.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
+					td.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
+					td.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
+					td.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
+
+					// adding to todo list
+					todos.add(td);
+				} while (c.moveToNext());
+			}
+
+			return todos;
+		}
+
+
 
 
 	/**
@@ -302,6 +343,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return todos;
 	}
 
+    public List<Voucher> getVoucherbyID(String tag_name) {
+        List<Voucher> todos = new ArrayList<Voucher>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_VOUCHER + " WHERE "
+                + KEY_PRODUCTID + " = " + tag_name;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Voucher td = new Voucher();
+                td.setProduct_id(c.getString((c.getColumnIndex(KEY_PRODUCTID))));
+                td.setMessage((c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE))));
+                td.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
+                td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+                td.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
+                td.setEnd_date(c.getString(c.getColumnIndex(KEY_ENDDATE)));
+                td.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+                td.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
+                td.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
+                td.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
+                td.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
+                td.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
+                td.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
+
+                // adding to todo list
+                todos.add(td);
+            } while (c.moveToNext());
+        }
+
+        return todos;
+    }
+
+
+    public boolean verification(String product_id) throws SQLException {
+        int count = -1;
+        Cursor c = null;
+        try {
+            String query = "SELECT COUNT(*) FROM "
+                    + TABLE_VOUCHER + " WHERE " + KEY_PRODUCTID + " = ?";
+            SQLiteDatabase db = this.getWritableDatabase();
+            c = db.rawQuery(query, new String[] {product_id});
+            if (c.moveToFirst()) {
+                count = c.getInt(0);
+            }
+            return count > 0;
+        }
+        finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
 	/**
 	 * getting all todos under single tag
 	 * */

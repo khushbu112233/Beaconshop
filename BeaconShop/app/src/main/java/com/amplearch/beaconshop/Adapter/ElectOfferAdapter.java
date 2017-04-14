@@ -8,11 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.github.siyamed.shapeimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ample-arch on 4/7/2017.
@@ -21,29 +24,27 @@ import java.util.ArrayList;
 public class ElectOfferAdapter extends BaseAdapter
 {
     Context context;
-    ArrayList<Integer> elect_Image ;
-    ArrayList<String> elect_Text ;
+    private List<VoucherClass> voucherItems;
 
-    public ElectOfferAdapter(Context applicationContext, ArrayList<Integer> elect_image, ArrayList<String> elect_text)
+    public ElectOfferAdapter(Context applicationContext, List<VoucherClass> voucherItems)
     {
         this.context = applicationContext ;
-        this.elect_Image = elect_image ;
-        this.elect_Text = elect_text ;
+        this.voucherItems = voucherItems ;
     }
 
     @Override
     public int getCount() {
-        return elect_Image.size();
+        return voucherItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return voucherItems.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -55,8 +56,11 @@ public class ElectOfferAdapter extends BaseAdapter
         ImageView imageView = (ImageView)rowView.findViewById(R.id.ivElectImage);
         TrojanText trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
 
-        imageView.setImageResource(elect_Image.get(position));
-        trojanText.setText(elect_Text.get(position));
+        if(voucherItems.get(position).getStore_image() != null) {
+            Picasso.with(context).load(voucherItems.get(position).getStore_image())
+                    .into(imageView);
+        }
+        trojanText.setText(voucherItems.get(position).getOffer_title().toString());
 
         return rowView ;
     }
