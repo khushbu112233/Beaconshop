@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.amplearch.beaconshop.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,8 @@ public class CategoryAdapter extends BaseAdapter {
             txtCategory.setText(name.get(i).toString());
             if (notice.get(i).toString()!=null){
            // imageViewAndroid.setImageResource(gridViewImageId[i]);
+                Picasso.with(mContext).load(notice.get(i).toString())
+                        .into(imageViewAndroid);
             }
         } else {
             gridViewAndroid = (View) convertView;

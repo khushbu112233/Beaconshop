@@ -14,12 +14,12 @@
        android:alpha="0.8"/>
 
    <GridView
-       android:horizontalSpacing="10dp"
+       tools:listitem="@layout/category_row"
        android:verticalSpacing="10dp"
        android:id="@+id/category_list"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:columnWidth="85dp"
+       android:columnWidth="95dp"
        android:gravity="center"
        android:stretchMode="columnWidth"
        android:numColumns="auto_fit"
