@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper
+{
 
 	// Logcat tag
 	private static final String LOG = "DatabaseHelper";
@@ -77,6 +78,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String CREATE_TABLE_VOUCHER = "CREATE TABLE "
+            + TABLE_VOUCHER + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_STORENAME + " TEXT,"
+			+ KEY_LAT + " TEXT,"
             + TABLE_VOUCHER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_STORENAME
             + " TEXT," + KEY_LAT + " TEXT,"
 			+ KEY_PRODUCTID + " TEXT,"
@@ -92,9 +96,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ")";
 
     // Favourites table create statement
-	private static final String CREATE_TABLE_FAVOURITES = "CREATE TABLE " + TABLE_FAVOURITES
-			+ "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_PRODUCTID + " TEXT,"
-			+ KEY_USERID + " TEXT" + ")";
+	private static final String CREATE_TABLE_FAVOURITES = "CREATE TABLE "
+			+ TABLE_FAVOURITES
+			+ "("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_PRODUCTID + " TEXT,"
+			+ KEY_USERID + " TEXT"
+			+ ")";
 
 	// todo_tag table create statement
 	/*private static final String CREATE_TABLE_TODO_TAG = "CREATE TABLE "
@@ -318,28 +326,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * getting all todos
 	 * */
-	public List<Favourites> getAllFavourites() {
+	public List<Favourites> getAllFavourites()
+	{
 		List<Favourites> todos = new ArrayList<Favourites>();
 		String selectQuery = "SELECT  * FROM " + TABLE_FAVOURITES;
-
 		Log.e(LOG, selectQuery);
-
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
-
 		// looping through all rows and adding to list
-		if (c.moveToFirst()) {
-			do {
+		if (c.moveToFirst())
+		{
+			do
+			{
 				Favourites td = new Favourites();
 				td.setId(c.getInt((c.getColumnIndex(KEY_ID))));
 				td.setProduct_id((c.getString(c.getColumnIndex(KEY_PRODUCTID))));
 				td.setUser_id(c.getString(c.getColumnIndex(KEY_USERID)));
-
 				// adding to todo list
 				todos.add(td);
 			} while (c.moveToNext());
 		}
-
 		return todos;
 	}
 

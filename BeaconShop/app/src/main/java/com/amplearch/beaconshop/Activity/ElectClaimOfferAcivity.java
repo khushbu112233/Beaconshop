@@ -89,7 +89,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         }
         if (v == ivFavorite)
         {
-            Toast.makeText(getApplicationContext(),"Wait under process to add favorite.",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
         }
         if (v == btnItemClaimOffer)
         {

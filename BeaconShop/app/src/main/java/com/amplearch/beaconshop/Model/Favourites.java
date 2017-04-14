@@ -29,7 +29,8 @@ public class Favourites {
 		this.id = id;
 	}
 
-	public String getProduct_id() {
+	public String getProduct_id()
+	{
 		return product_id;
 	}
 

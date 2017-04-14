@@ -33,27 +33,40 @@ public class FavoriteFragment extends Fragment
     ArrayList<String>  favText = new ArrayList<String>();
     DatabaseHelper db;
 
+    List<Favourites> favourites ;
+
     public FavoriteFragment() { }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         db = new DatabaseHelper(getContext());
-        favImage.add(R.drawable.ic_audiotrack);
-        favText.add("Fav Offer");
 
-        favImage.add(R.drawable.ic_audiotrack);
-        favText.add("Fav Offer");
+        db.getAllFavourites();
 
-        favImage.add(R.drawable.ic_audiotrack);
-        favText.add("Fav Offer");
+        favourites = db.getAllFavourites();
 
-        favImage.add(R.drawable.ic_audiotrack);
-        favText.add("Fav Offer");
+        for(Favourites fav : favourites)
+        {
+            String pro_id = fav.getProduct_id();
+            favImage.add(R.drawable.ic_audiotrack);
+            favText.add(pro_id);
+        }
 
-        favImage.add(R.drawable.ic_audiotrack);
-        favText.add("Fav Offer");
+
+//        favImage.add(R.drawable.ic_audiotrack);
+//        favText.add("Fav Offer");
+//
+//        favImage.add(R.drawable.ic_audiotrack);
+//        favText.add("Fav Offer");
+//
+//        favImage.add(R.drawable.ic_audiotrack);
+//        favText.add("Fav Offer");
+//
+//        favImage.add(R.drawable.ic_audiotrack);
+//        favText.add("Fav Offer");
 
         favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
 
@@ -61,7 +74,8 @@ public class FavoriteFragment extends Fragment
         Fav_gridView.setAdapter(favoriteAdapter);
 
         List<Favourites> allTags = db.getAllFavourites();
-        for (Favourites tag : allTags) {
+        for (Favourites tag : allTags)
+        {
             Log.d("Favourites Name", tag.getProduct_id());
             Toast.makeText(getContext(), "Product Id = " + tag.getProduct_id() + "  User Id = " + tag.getUser_id(), Toast.LENGTH_LONG).show();
         }
