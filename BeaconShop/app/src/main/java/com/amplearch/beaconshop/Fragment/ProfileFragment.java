@@ -239,9 +239,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .build();
 
 
-        if(session.checkLogin()){
+        /*if(session.checkLogin()){
             getActivity().finish();
-        }
+        }*/
 
         // get user data from session
         final HashMap<String, String> user1 = session.getUserDetails();

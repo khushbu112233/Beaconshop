@@ -76,6 +76,8 @@ public class ElectronicOfferActivity extends AppCompatActivity
                 Intent i = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
                 i.putExtra("offer_title", offers.get(position).getOffer_title() );
                 i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
+                i.putExtra("offer_id", offers.get(position).getId() );
+                i.putExtra("quantity", offers.get(position).getQuantity() );
 
                 startActivity(i);
             }
@@ -192,7 +194,6 @@ public class ElectronicOfferActivity extends AppCompatActivity
                                     //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
                                     VoucherClass voucherClass = new VoucherClass();
                                     voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());
-                                    voucherClass.setStore_id(jsonArrayChanged.getJSONObject(i).get("store_id").toString());
                                     voucherClass.setCategory_id(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
                                     voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("store_name").toString());
                                     voucherClass.setStore_image(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
