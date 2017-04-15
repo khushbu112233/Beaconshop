@@ -50,6 +50,13 @@
                 android:background="@color/logo_color"/>
         </LinearLayout>
 
+    <com.amplearch.beaconshop.Utils.TrojanText
+        android:visibility="gone"
+        android:id="@+id/tvNoOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Offer"
+        android:layout_centerInParent="true"/>
         <ListView
             android:id="@+id/listView_Elect"
             android:layout_width="match_parent"

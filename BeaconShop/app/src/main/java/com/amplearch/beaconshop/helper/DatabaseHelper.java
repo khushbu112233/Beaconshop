@@ -20,27 +20,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
-
+public class DatabaseHelper extends SQLiteOpenHelper
+{
 	// Logcat tag
 	private static final String LOG = "DatabaseHelper";
-
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
-
 	// Database Name
 	private static final String DATABASE_NAME = "BeaconShopDatabase";
-
 	// Table Names
 	private static final String TABLE_STORELOCATION = "store_location";
 	private static final String TABLE_FAVOURITES = "favourites";
 	//	private static final String TABLE_TODO_TAG = "todo_tags";
 	private static final String TABLE_VOUCHER = "voucher";
-
 	// Common column names
 	private static final String KEY_ID = "id";
 	//private static final String KEY_CREATED_AT = "store_name";
-
 	// STORELOCATION & VOUCHER Table - Common column nmaes
 	private static final String KEY_STORENAME = "store_name";
 	private static final String KEY_LAT = "lat";
@@ -49,11 +44,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_OFFERDESC = "offer_desc";
 	private static final String KEY_STARTDATE = "start_date";
 	private static final String KEY_ENDDATE = "end_date";
-
 	// FAVOURITES Table - column names
 	private static final String KEY_PRODUCTID = "product_id";
 	private static final String KEY_USERID = "user_id";
-
 	// VOCHERS Table - column names
 	private static final String KEY_BEACON_MESSAGE = "message";
 	private static final String KEY_UUID = "uuid";
@@ -63,19 +56,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// NOTE_TAGS Table - column names
 	private static final String KEY_TODO_ID = "todo_id";
 	private static final String KEY_TAG_ID = "tag_id";*/
-
 	// Table Create Statements
 	// Store Locations table create statement
 	private static final String CREATE_TABLE_STORELOCATION = "CREATE TABLE "
-			+ TABLE_STORELOCATION + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_STORENAME
-			+ " TEXT," + KEY_LAT + " TEXT,"
+			+ TABLE_STORELOCATION
+			+ "("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_STORENAME + " TEXT,"
+			+ KEY_LAT + " TEXT,"
 			+ KEY_LNG + " TEXT,"
 			+ KEY_OFFERTITLE + " TEXT,"
 			+ KEY_OFFERDESC + " TEXT,"
 			+ KEY_STARTDATE + " DATETIME,"
 			+ KEY_ENDDATE
-			+ " DATETIME" + ")";
-
+			+ " DATETIME"
+			+ ")";
 
 	private static final String CREATE_TABLE_VOUCHER = "CREATE TABLE "
 			+ TABLE_VOUCHER
@@ -136,7 +131,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db) {
+	public void onCreate(SQLiteDatabase db)
+	{
 
 		// creating required tables
 		db.execSQL(CREATE_TABLE_FAVOURITES);
@@ -217,8 +213,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		insertValues.put("start_date", "08/02/2015");
 		insertValues.put("end_date", "14/02/2016");
 		db.insert(TABLE_STORELOCATION, null, insertValues);
-
-
 		//db.execSQL(CREATE_TABLE_TODO_TAG);
 	}
 
@@ -275,21 +269,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			String Table = TABLE_FAVOURITES ;
 			String[] table_Columns = new String[] { " * " };
-			String[] args_Data = new String[] { "1,2,3,4,5,6" };
+			String[] args_Data = new String[] { "1,3,5,7" };
 			String selctioonArgs = Arrays.toString(args_Data);
 
 			selctioonArgs = selctioonArgs.replace("[","(");
 			selctioonArgs = selctioonArgs.replace("]",")");
 
-			String whereClause = KEY_ID + " IN " + value ;
+			String whereClause = KEY_ID + " IN " + selctioonArgs ;
 
 			c = db.query(Table,table_Columns,whereClause,null,null,null,null);
-
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
-
 		if(c.moveToFirst())
 		{
 		do
@@ -298,12 +289,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				fvt.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				fvt.setProduct_id((c.getString(c.getColumnIndex(KEY_PRODUCTID))));
 				fvt.setUser_id(c.getString(c.getColumnIndex(KEY_USERID)));
-
 				todos.add(fvt);
 			}
 			while (c.moveToNext());
 		}
-
 		return todos;
 	}
 	/*
@@ -405,27 +394,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		String whereArgs = Arrays.toString(favData);
 
-//at this point inClause will look like "[23,343,33,55,43]"
-//replace the brackets with parentheses
+		//at this point inClause will look like "[23,343,33,55,43]"
+		//replace the brackets with parentheses
 		whereArgs = whereArgs.replace("[","(");
 		whereArgs = whereArgs.replace("]",")");
-	//now inClause will look like  "(23,343,33,55,43)" so use it to construct your SELECT
-
+		//now inClause will look like  "(23,343,33,55,43)" so use it to construct your SELECT
 		///"id IN (1,2,3,4)"
 		String whereClause = KEY_PRODUCTID + " IN " + whereArgs;
-
 		Cursor c = null;
-try {
-	 c = db.query( TABLE_VOUCHER, settingsProjection, whereClause, null, null, null, null);
-
-	Log.d(LOG, String.valueOf(c));
-
-}catch (Exception e){
-	e.printStackTrace();
-}
-
+		try
+		{
+			 c = db.query( TABLE_VOUCHER, settingsProjection, whereClause, null, null, null, null);
+			Log.d(LOG, String.valueOf(c));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 		// looping through all rows and adding to list
-		if (c.moveToFirst()) {
+		if (c.moveToFirst())
+		{
 			do {
 				Voucher td = new Voucher();
 				td.setProduct_id(c.getString((c.getColumnIndex(KEY_PRODUCTID))));
@@ -514,6 +502,43 @@ try {
 
 		return voucher;
 	}
+    public List<Voucher> getVoucherbyID(String tag_name) {
+        List<Voucher> todos = new ArrayList<Voucher>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_VOUCHER + " WHERE "
+                + KEY_PRODUCTID + " = " + tag_name;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Voucher td = new Voucher();
+                td.setProduct_id(c.getString((c.getColumnIndex(KEY_PRODUCTID))));
+                td.setMessage((c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE))));
+                td.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
+                td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+                td.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
+                td.setEnd_date(c.getString(c.getColumnIndex(KEY_ENDDATE)));
+                td.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+                td.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
+                td.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
+                td.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
+                td.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
+                td.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
+                td.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
+
+                // adding to todo list
+                todos.add(td);
+            } while (c.moveToNext());
+        }
+
+        return todos;
+    }
+
 	/**
 	 * getting all todos under single tag
 	 * */

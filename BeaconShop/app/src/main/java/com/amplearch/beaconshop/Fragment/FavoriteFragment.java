@@ -100,12 +100,6 @@ public class FavoriteFragment extends Fragment
             String user_id = fav.getUser_id();
             String product_id = fav.getProduct_id();
 
-
-
-
-
-
-
             Toast.makeText(getActivity(),"fav_id: "+fav_id,Toast.LENGTH_SHORT).show();
             Toast.makeText(getActivity(),"user_id: "+user_id,Toast.LENGTH_SHORT).show();
             Toast.makeText(getActivity(),"product_id: "+product_id,Toast.LENGTH_SHORT).show();

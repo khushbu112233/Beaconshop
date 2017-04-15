@@ -1,7 +1,9 @@
 package com.amplearch.beaconshop.Fragment;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +37,7 @@ import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.TrojanButton;
 import com.amplearch.beaconshop.Utils.TrojanEditText;
@@ -62,9 +65,14 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
@@ -76,6 +84,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -98,6 +108,9 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -152,6 +165,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     String email;
     String userID;
+    private File file1;
 
     private String UPLOAD_URL ="http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile";
 
@@ -165,6 +179,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     private String upLoadServerUri = null;
     private String imagepath=null;
+    Bitmap reminder_bitmap;
 
     public ProfileFragment() { }
 
@@ -224,9 +239,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .build();
 
 
-        if(session.checkLogin()){
+        /*if(session.checkLogin()){
             getActivity().finish();
-        }
+        }*/
 
         // get user data from session
         final HashMap<String, String> user1 = session.getUserDetails();
@@ -475,7 +490,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }
 
         if (v == btnSave){
-            uploadImage();
+            reminder_bitmap = ivImage.getDrawingCache();
+
+            AsyncUpdateClass asyncRequestObject = new AsyncUpdateClass();
+            asyncRequestObject.execute();
+
+           // uploadImage();
 
            /* dialog = ProgressDialog.show(getContext(), "", "Uploading file...", true);
           //  messageText.setText("uploading started.....");
@@ -823,7 +843,14 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     String picturePath = cursor.getString(columnIndex);
                     cursor.close();
                     Bitmap a = (BitmapFactory.decodeFile(picturePath));
-
+                    file1 = null;
+                    try {
+                        Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
+                                getContext().getContentResolver(), data.getData());
+                        file1 = persistImage(thumbnail1, "profileImage");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     imagepath = getPath(selectedImage);
                     Bitmap bitmap=BitmapFactory.decodeFile(imagepath);
 
@@ -840,11 +867,16 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
+
                 //to generate random file name
                 String fileName = "tempimg.jpg";
 
                 try {
+                    file1 = null;
+                    Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
+                            getContext().getContentResolver(), data.getData());
                     photo = (Bitmap) data.getExtras().get("data");
+                    file1 = persistImage(thumbnail1, "profileImage");
                     //captured image set in imageview
                     ivImage.setImageBitmap(photo);
                 } catch (Exception e) {
@@ -852,6 +884,22 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 }
                 break;
         }
+    }
+
+    private File persistImage(Bitmap bitmap, String name) {
+        File filesDir = getContext().getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+        return imageFile;
     }
 
     @Override
@@ -920,6 +968,190 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             //  llProfileLayout.setVisibility(View.GONE);
         }
     }
+
+    private class AsyncUpdateClass extends AsyncTask<Void, Void, String> {
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Saving Data..");
+            //dialog.setTitle("Saving Reminder");
+            dialog.show();
+            dialog.setCancelable(false);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            HttpParams httpParameters = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 9000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 9000);
+
+            HttpClient httpClient = new DefaultHttpClient(httpParameters);
+
+            String urlString = "http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile";
+
+            HttpPost httpPost = new HttpPost(urlString);
+            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+
+            // Bitmap bmp = BitmapFactory.decodeFile(selectedPath);
+            // ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            //  bmp.compress(Bitmap.CompressFormat.JPEG, 70, bos);
+            //  InputStream in = new ByteArrayInputStream(bos.toByteArray());
+            //  ContentBody foto = new InputStreamBody(in, "image/jpeg", "filename");
+            // FileBody bin1 = new FileBody(file1);
+
+            String jsonResult = "";
+            try {
+
+                org.apache.http.entity.mime.MultipartEntity reqEntity = new org.apache.http.entity.mime.MultipartEntity();
+                /*if (file1 == null) {
+                    file1 = persistImage(reminder_bitmap, "profileimage");
+                    FileBody bin1 = new FileBody(file1);
+                    reqEntity.addPart("id", new StringBody(userID));
+                    reqEntity.addPart("device_id", new StringBody(android_id));
+                    reqEntity.addPart("cate_id", new StringBody(reminder_cate_id));
+                    reqEntity.addPart("post_id", new StringBody(reminder_post_id));
+                    reqEntity.addPart("title", new StringBody(str));
+                    reqEntity.addPart("date", new StringBody(date));
+                    //reqEntity.addPart("reminder_oldimg", new StringBody(reminder_post_image));
+                    reqEntity.addPart("reminder_img", bin1);
+                } else {*/
+                    FileBody bin1 = new FileBody(file1);
+                    reqEntity.addPart("id", new StringBody(userID));
+                    reqEntity.addPart("image", bin1);
+                    reqEntity.addPart("dob", new StringBody("08/08/1996"));
+                    reqEntity.addPart("gender", new StringBody("female"));
+
+
+              //  }
+                httpPost.setEntity(reqEntity);
+                HttpResponse response = httpClient.execute(httpPost);
+                jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
+
+
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return jsonResult;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            dialog.dismiss();
+            Log.e("Resulted Value: ", result);
+            System.out.println("Resulted Value: " + result);
+             Toast.makeText(getContext(), "Resulted value" + result, Toast.LENGTH_LONG).show();
+            if (result.equals("") || result == null) {
+
+                /*Snackbar snackbar = Snackbar.make(mRoot, "Unable to Fetch From Server !", Snackbar.LENGTH_LONG);
+
+                // Changing message text color
+                snackbar.setActionTextColor(Color.RED);
+
+                // Changing action button text color
+                View sbView = snackbar.getView();
+                // sbView.setBackground(getResources().getColor(R.color.actionbar_background));
+                sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.actionbar_background));
+                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                textView.setTextSize(17);
+                snackbar.show();*/
+
+                Toast.makeText(getContext(), "Server connection failed...", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+          /*  String error = returnParsedJsonObject(result);
+
+            String message = returnParsedJsonObject1(result);
+            //Toast.makeText(getApplicationContext(),"error_code : " + error,Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"msg : " + message,Toast.LENGTH_LONG).show();
+
+            if (message.equals("unsuccess") || error.equals("0")) {
+
+                Toast.makeText(getContext(), "Reminder is not Added..", Toast.LENGTH_LONG).show();
+                return;
+            } else if (message.equals("success")) {
+
+
+                if (error.equals("1")) {
+
+                    Toast.makeText(getApplicationContext(), "Reminder Updated Successfully..", Toast.LENGTH_LONG).show();
+
+                    Intent myIntent = new Intent(getApplicationContext(), MyReceiver.class);
+                    myIntent.putExtra("ticker", "Check it out !");
+                    myIntent.putExtra("title", str);
+                    myIntent.putExtra("text", event_category);
+
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, 0);
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+
+                    Intent intent = new Intent(getApplicationContext(), FestivalListPage.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }*/
+
+
+        private String returnParsedJsonObject(String result) {
+
+            JSONObject resultObject = null;
+            String returnedResult = "";
+            try {
+
+                resultObject = new JSONObject(result);
+                JSONArray jsonArray = resultObject.getJSONArray("response");
+                // Toast.makeText(getApplicationContext(), jsonArray.toString(), Toast.LENGTH_LONG).show();
+                returnedResult = jsonArray.getJSONObject(0).getString("error");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return returnedResult;
+        }
+
+        private String returnParsedJsonObject1(String result) {
+
+            JSONObject resultObject = null;
+            String returnedResult = "";
+            try {
+                resultObject = new JSONObject(result);
+                JSONArray jsonArray = resultObject.getJSONArray("response");
+                // Toast.makeText(getApplicationContext(), jsonArray.toString(), Toast.LENGTH_LONG).show();
+                returnedResult = jsonArray.getJSONObject(0).getString("message");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return returnedResult;
+        }
+
+        private StringBuilder inputStreamToString(InputStream is) {
+            String rLine = "";
+            StringBuilder answer = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            try {
+                while ((rLine = br.readLine()) != null) {
+                    answer.append(rLine);
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return answer;
+        }
+    }
+
+
+
 
     private void onCaptureImageResult(Intent data) {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");

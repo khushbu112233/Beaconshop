@@ -58,6 +58,8 @@ public class HomeFragment extends Fragment {
 
     ArrayList<String> title_array = new ArrayList<String>();
     ArrayList<String> notice_array = new ArrayList<String>();
+    ArrayList<String> id_array = new ArrayList<String>();
+    String category_id;
 
     public HomeFragment() {
     }
@@ -79,6 +81,9 @@ public class HomeFragment extends Fragment {
             {
               //  Toast.makeText(getContext(), "GridView Item: " , Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), ElectronicOfferActivity.class);
+                category_id = id_array.get(i).toString();
+                intent.putExtra("category_id", category_id);
+               // Toast.makeText(getContext(), id_array.get(i).toString(), Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
         });
@@ -201,7 +206,8 @@ public class HomeFragment extends Fragment {
 
                                     title_array.add(jsonArrayChanged.getJSONObject(i).get("category_name").toString());
                                     notice_array.add(jsonArrayChanged.getJSONObject(i).get("category_image").toString());
-                                 //  Toast.makeText(getContext(), jObject.getString("category_name").toString(), Toast.LENGTH_LONG).show();
+                                    id_array.add(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
+                                //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                                     CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), title_array, notice_array);
                                     listCategory.setAdapter(adapterViewAndroid);
                                 } catch (JSONException e) {
