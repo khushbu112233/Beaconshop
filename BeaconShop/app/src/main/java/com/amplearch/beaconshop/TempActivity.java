@@ -77,10 +77,10 @@ public class TempActivity extends AppCompatActivity {
         // Getting all Todos
         Log.d("Get Todos", "Getting All ToDos");
 
-        List<Favourites> allToDos = db.getAllFavourites();
-        for (Favourites todo : allToDos) {
-            Log.d("ToDo", todo.getProduct_id());
-        }
+//        List<Favourites> allToDos = db.getAllFavourites();
+//        for (Favourites todo : allToDos) {
+//            Log.d("ToDo", todo.getProduct_id());
+//        }
 
         // Getting todos under "Watchlist" tag name
         Log.d("ToDo", "Get todos under single StoreLocation name");

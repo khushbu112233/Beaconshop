@@ -183,10 +183,11 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(position)
         {
-            default:
-            /*case 0:
+            /*default:
+            case 0:
                 fragment = new HomeFragment();
-                break;*/
+                break;
+            */
             case 1:
                 fragment = new HomeFragment();
                 rlButtons.setVisibility(View.VISIBLE);
@@ -348,7 +349,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Exit Application?");
         alertDialogBuilder

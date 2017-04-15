@@ -13,8 +13,10 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
+import com.amplearch.beaconshop.Adapter.FavoritesAdapter;
 import com.amplearch.beaconshop.Model.Favourites;
 import com.amplearch.beaconshop.Model.StoreLocation;
+import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 
@@ -33,6 +35,15 @@ public class FavoriteFragment extends Fragment
     ArrayList<String>  favText = new ArrayList<String>();
     DatabaseHelper db;
 
+    List<Voucher> vouchers ;
+    ArrayList<String>  StoreName = new ArrayList<String>();
+    ArrayList<String>  OfferTitle = new ArrayList<String>();
+    ArrayList<String>  OfferDesc = new ArrayList<String>();
+    ArrayList<String>  StartDate = new ArrayList<String>();
+    ArrayList<String>  EndDate = new ArrayList<String>();
+
+//    FavoritesAdapter favoritesAdapter ;
+//    String fav_id;
     List<Favourites> favourites ;
 
     public FavoriteFragment() { }
@@ -44,42 +55,97 @@ public class FavoriteFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         db = new DatabaseHelper(getContext());
 
-        db.getAllFavourites();
+        long fav_user_id = 5 ;
 
-        favourites = db.getAllFavourites();
-
-        for(Favourites fav : favourites)
-        {
-            String pro_id = fav.getProduct_id();
-            favImage.add(R.drawable.ic_audiotrack);
-            favText.add(pro_id);
+        List<Voucher> voch = db.getVoucherbyID();
+        if(voch == null) {
+            Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
+            return view;
         }
 
+        for (Voucher todo : voch)
+        {
+//            Log.d("ToDo Product_Id ", todo.getProduct_id());
+            Log.d("ToDo Store Name ", todo.getStore_name());
+            Log.d("ToDo Offer Title ", todo.getOffer_title());
+            Log.d("ToDo Offer Desc ", todo.getOffer_desc());
+            Log.d("ToDo Start Date ", todo.getStart_date());
+            Log.d("ToDo End Date ", todo.getEnd_date());
 
-//        favImage.add(R.drawable.ic_audiotrack);
-//        favText.add("Fav Offer");
-//
-//        favImage.add(R.drawable.ic_audiotrack);
-//        favText.add("Fav Offer");
-//
-//        favImage.add(R.drawable.ic_audiotrack);
-//        favText.add("Fav Offer");
-//
-//        favImage.add(R.drawable.ic_audiotrack);
-//        favText.add("Fav Offer");
+            Toast.makeText(getContext(),"Product_ID "+todo.getProduct_id(),Toast.LENGTH_LONG).show();
+
+            StoreName.add(todo.getStore_name().toString());
+            OfferTitle.add(todo.getOffer_title().toString());
+            OfferDesc.add(todo.getOffer_desc().toString());
+            StartDate.add(todo.getStart_date().toString());
+            EndDate.add(todo.getEnd_date().toString());
+
+            favImage.add(R.drawable.ic_sale);
+            favText.add(todo.getStore_name());
+        }
 
         favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
+//        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
 
         Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
-        Fav_gridView.setAdapter(favoriteAdapter);
+        Fav_gridView.setAdapter(favoriteAdapter);     // adapter for image and text
+//        Fav_gridView.setAdapter(favoritesAdapter);    // adapter for all text
 
-        List<Favourites> allTags = db.getAllFavourites();
-        for (Favourites tag : allTags)
+        // For getting favorites data..
+//        favourites = db.getFavoritesData();
+
+      /*  for(Favourites fav : favourites)
         {
-            Log.d("Favourites Name", tag.getProduct_id());
-            Toast.makeText(getContext(), "Product Id = " + tag.getProduct_id() + "  User Id = " + tag.getUser_id(), Toast.LENGTH_LONG).show();
-        }
+            int fav_id = fav.getId();
+            String user_id = fav.getUser_id();
+            String product_id = fav.getProduct_id();
+
+
+
+
+
+
+
+            Toast.makeText(getActivity(),"fav_id: "+fav_id,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"user_id: "+user_id,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"product_id: "+product_id,Toast.LENGTH_SHORT).show();
+        }*/
+
+//        List<Favourites> allTags = db.getAllFavourites();
+//        for (Favourites fav : favourites)
+//        {
+//            String fav_id = fav.getProduct_id();
+//            Log.d("Fav product_id", fav_id);
+//
+////            List<Voucher> voch = db.getVoucherByProductId(fav_id);
+////            vouchers = db.getVoucherByProductId(fav_id);
+//
+//            if(fav_id == null)
+//            {
+//                Toast.makeText(getContext(), "Product Id = " +fav_id, Toast.LENGTH_LONG).show();
+//            }
+//            else
+//            {
+//                Toast.makeText(getContext(), "Product Id = " +fav_id, Toast.LENGTH_LONG).show();
+//                getVocher(fav_id);
+////                for (Voucher todo : voch)
+////                {
+////                    Log.d("ToDo Product_Id ", todo.getProduct_id());
+////                    Log.d("ToDo Store Name ", todo.getStore_name());
+////                    Log.d("ToDo Offer Title ", todo.getOffer_title());
+////                    Log.d("ToDo Offer Desc ", todo.getOffer_desc());
+////                    Log.d("ToDo Start Date ", todo.getStart_date());
+////                    Log.d("ToDo End Date ", todo.getEnd_date());
+////
+////                    Toast.makeText(getContext(),"Product_id: "+todo.getProduct_id(),Toast.LENGTH_LONG).show();
+////                    Toast.makeText(getContext(),"Store Name: "+todo.getStore_name(),Toast.LENGTH_LONG).show();
+////                }
+//            }
+////            Toast.makeText(getContext(), "Product Id = " +fav_id, Toast.LENGTH_LONG).show();
+//        }
+
 
         return view;
     }
+
 }
