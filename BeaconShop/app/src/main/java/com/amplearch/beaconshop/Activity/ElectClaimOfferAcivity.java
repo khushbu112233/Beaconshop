@@ -127,7 +127,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         }
         if (v == btnItemClaimOffer)
         {
-            Toast.makeText(getApplicationContext(),"You are not ELIGIBLE to claim this offer.",Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplicationContext(),"You are not ELIGIBLE to claim this offer.",Toast.LENGTH_LONG).show();
             connectWithHttpPost(quantity);
         }
     }

@@ -81,8 +81,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
             + TABLE_VOUCHER + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_STORENAME + " TEXT,"
 			+ KEY_LAT + " TEXT,"
-            + TABLE_VOUCHER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_STORENAME
-            + " TEXT," + KEY_LAT + " TEXT,"
 			+ KEY_PRODUCTID + " TEXT,"
             + KEY_LNG + " TEXT,"
             + KEY_OFFERTITLE + " TEXT,"
