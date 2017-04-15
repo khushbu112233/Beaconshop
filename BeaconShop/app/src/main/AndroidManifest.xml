@@ -101,7 +101,6 @@
             android:name=".Activity.ElectronicOfferActivity"
             android:theme="@style/NoActionBar" />
         <activity android:name=".Activity.BconActivity" />
-        <activity android:name=".Activity.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

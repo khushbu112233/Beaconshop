@@ -1,9 +1,13 @@
-package com.amplearch.beaconshop.Activity;
+package com.amplearch.beaconshop.Fragment;
 
+import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,28 +36,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChangePasswordActivity extends AppCompatActivity
+/**
+ * Created by ample-arch on 4/15/2017.
+ */
+
+public class ChangePasswordFragment extends Fragment
 {
+    public ChangePasswordFragment() { }
+
     UserSessionManager session;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
+        View rootView = inflater.inflate(R.layout.fragment_changepassword, container, false);
 
-        session = new UserSessionManager(getApplicationContext());
-//        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
-
+        session = new UserSessionManager(getContext());
         // get user data from session
         final HashMap<String, String> user1 = session.getUserDetails();
         final String login_email = user1.get(UserSessionManager.KEY_EMAIL);
-//        Toast.makeText(getApplicationContext(), "Login Email " + login_email, Toast.LENGTH_LONG).show();
 
-        final EditText etChEmail = (EditText)findViewById(R.id.etChEmail);
-        final EditText etChOldPassword = (EditText)findViewById(R.id.etChOldPassword);
-        final EditText etChNewPassword = (EditText)findViewById(R.id.etChNewPassword);
-        Button btnChange = (Button) findViewById(R.id.btnChange);
+        final EditText etChEmail = (EditText)rootView.findViewById(R.id.etChEmail);
+        final EditText etChOldPassword = (EditText)rootView.findViewById(R.id.etChOldPassword);
+        final EditText etChNewPassword = (EditText)rootView.findViewById(R.id.etChNewPassword);
+        Button btnChange = (Button)rootView.findViewById(R.id.btnChange);
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -72,6 +79,7 @@ public class ChangePasswordActivity extends AppCompatActivity
                 }
             }
         });
+        return rootView;
     }
 
     private void changePassword(String email_id, String oldPassword , String newPassword)
@@ -140,7 +148,7 @@ public class ChangePasswordActivity extends AppCompatActivity
 //                Toast.makeText(getApplicationContext(),"Result: "+result,Toast.LENGTH_LONG).show();
                 if (result.equals(""))
                 {
-                    Toast.makeText(getApplicationContext(), "Email Address..?", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Email Address..?", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -150,10 +158,10 @@ public class ChangePasswordActivity extends AppCompatActivity
 //                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
                         if (res.equals("Invalid Credential"))
                         {
-                            Toast.makeText(getApplicationContext(), "Your Old Password not correct. ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Your Old Password not correct. ", Toast.LENGTH_LONG).show();
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -32,6 +32,7 @@ import com.amplearch.beaconshop.Adapter.CustomAdapter;
 import com.amplearch.beaconshop.Adapter.DrawerAdapter;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
+import com.amplearch.beaconshop.Fragment.ChangePasswordFragment;
 import com.amplearch.beaconshop.Fragment.FavoriteFragment;
 import com.amplearch.beaconshop.Fragment.HomeFragment;
 import com.amplearch.beaconshop.Fragment.ProfileFragment;
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity
         listViewItems.add(new ItemObject("Badges", R.drawable.ic_help_outline_black_24dp));
         listViewItems.add(new ItemObject("My Account", R.drawable.ic_person_black_24dp));
         listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
+        listViewItems.add(new ItemObject("Change Password", R.drawable.ic_swap_horiz_black_24dp));
         listViewItems.add(new ItemObject("Help", R.drawable.ic_help_outline_black_24dp));
         listViewItems.add(new ItemObject("About Us", R.drawable.ic_info_outline_black_24dp));
 
@@ -219,15 +221,19 @@ public class MainActivity extends AppCompatActivity
                 toolbarTitle.setText("Settings");
                 break;
             case 7:
+                fragment = new ChangePasswordFragment();
+                rlButtons.setVisibility(View.GONE);
+                toolbarTitle.setText("Change Password");
+                break;
+            case 8:
                 fragment = new HelpFragment();
                 rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Help");
                 break;
-            case 8:
+            case 9:
                 fragment = new AboutUsFragment();
                 rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("About Us");
-                break;
         }
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
@@ -351,19 +357,32 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        Fragment frag0 = new HomeFragment();
+        Fragment frag1 = new FavoriteFragment();
+        Fragment frag2 = new VoucherFragment();
+        Fragment frag3 = new BadgesFragment();
+        Fragment frag4 = new ProfileFragment();
+        Fragment frag5 = new SettingsFragment();
+        Fragment frag6 = new ChangePasswordFragment();
+        Fragment frag7 = new HelpFragment();
+        Fragment frag8 = new AboutUsFragment();
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        fragmentList.add(0,frag0);
+
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Exit Application?");
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
                                 moveTaskToBack(true);
                                 android.os.Process.killProcess(android.os.Process.myPid());
                                 System.exit(1);
                             }
                         })
-
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
