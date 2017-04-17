@@ -92,10 +92,6 @@
         -->
         <activity android:name=".TempActivity" />
 
-        <provider
-            android:name=".StoreLocations"
-            android:authorities="com.amplearch.beaconshop.StoreLocations" />
-
         <activity android:name=".Activity.OfferDetailActivity" />
         <activity
             android:name=".Activity.ElectronicOfferActivity"

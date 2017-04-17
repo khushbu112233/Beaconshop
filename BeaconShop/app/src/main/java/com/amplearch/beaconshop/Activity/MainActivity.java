@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
 
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
-        topToolBar.setLogo(R.mipmap.ic_launcher);
+        //topToolBar.setLogo(R.mipmap.ic_launcher);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);

@@ -1,7 +1,7 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_height="match_parent">
 
@@ -24,6 +24,7 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            app:logo="@mipmap/ic_launcher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
@@ -32,12 +33,15 @@
 
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="match_parent"
+                android:paddingLeft="-60dp"
                 android:layout_height="wrap_content"
                 android:text="BEACON SHOP"
                 android:textColor="@color/white"
                 android:id="@+id/toolbarTitle"
                 android:layout_marginLeft="0dp"
-                android:textSize="20dp"/>
+                android:textAlignment="center"
+                android:textSize="18dp"/>
+            
         </android.support.v7.widget.Toolbar>
 
     </LinearLayout>
