@@ -61,7 +61,7 @@ public class CategoryAdapter extends BaseAdapter {
             TextView txtCategory = (TextView) gridViewAndroid.findViewById(R.id.txtCategory);
 
 //            txtCategory.setText(name.get(i).toString());
-            txtCategory.setText(notice.get(i).toString());
+            txtCategory.setText(name.get(i).toString());
 
 
 

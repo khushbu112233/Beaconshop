@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment implements
     public void asyncResponse(String response) {
 
 
-        //Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
             Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
