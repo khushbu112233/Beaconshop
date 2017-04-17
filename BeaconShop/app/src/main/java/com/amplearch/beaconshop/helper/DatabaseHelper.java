@@ -52,6 +52,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String KEY_UUID = "uuid";
 	private static final String KEY_MAJOR = "major";
 	private static final String KEY_MINOR = "minor";
+
+	// Home fragment table name
+	private static final String TABLE_HOMEFRAG = "homefragment";
+	// Home fragment table & columns
+	private static final String KEY_NAME = "image_name";
+	private static final String KEY_IMAGE = "image_data";
 /*
 	// NOTE_TAGS Table - column names
 	private static final String KEY_TODO_ID = "todo_id";
@@ -99,6 +105,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			+ KEY_USERID + " TEXT"
 			+ ")";
 
+	private static final String CREATE_TABLE_HOMEFRAG = "CREATE TABLE "
+			+ TABLE_HOMEFRAG
+			+ "("
+			+ KEY_ID + "INTEGER PRIMARY KEY,"
+			+ KEY_NAME + " TEXT,"
+			+ KEY_IMAGE + " BLOB"
+			+ ")";
+
 	// todo_tag table create statement
 	/*private static final String CREATE_TABLE_TODO_TAG = "CREATE TABLE "
 			+ TABLE_TODO_TAG + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -138,6 +152,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		db.execSQL(CREATE_TABLE_FAVOURITES);
 		db.execSQL(CREATE_TABLE_STORELOCATION);
 		db.execSQL(CREATE_TABLE_VOUCHER);
+		db.execSQL(CREATE_TABLE_HOMEFRAG);
 
 		ContentValues insertFavValues = new ContentValues();
 		insertFavValues.put("product_id", "5");
@@ -222,10 +237,20 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVOURITES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_STORELOCATION);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VOUCHER);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOMEFRAG);
 		//db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_TAG);
 
 		// create new tables
 		onCreate(db);
+	}
+
+	public void addImageData(String name, byte[] image)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_NAME, name);
+		cv.put(KEY_NAME, image);
+		db.insert(TABLE_HOMEFRAG, null , cv);
 	}
 
 	// ------------------------ "todos" table methods ----------------//
