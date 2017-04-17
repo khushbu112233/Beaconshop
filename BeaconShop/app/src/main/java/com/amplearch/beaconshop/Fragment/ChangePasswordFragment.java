@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.SignInActivity;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
@@ -60,7 +61,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_changepassword, container, false);
-
+        checkConnection();
         session = new UserSessionManager(getContext());
         // get user data from session
         final HashMap<String, String> user1 = session.getUserDetails();
@@ -70,6 +71,8 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
          etChOldPassword = (EditText)rootView.findViewById(R.id.etChOldPassword);
          etChNewPassword = (EditText)rootView.findViewById(R.id.etChNewPassword);
          btnChange = (Button)rootView.findViewById(R.id.btnChange);
+
+
 
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +88,18 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
                 }
                 else {
                     etChEmail.setError(null);
-                    params = getParams();
-                    AsyncRequest getPosts = new AsyncRequest(ChangePasswordFragment.this,getActivity(), "GET", params, "");
-                    getPosts.execute(changePasswordURL);
+                    if (checkConnection() == true)
+                    {
+                        params = getParams();
+                        AsyncRequest getPosts = new AsyncRequest(ChangePasswordFragment.this,getActivity(), "GET", params, "");
+                        getPosts.execute(changePasswordURL);
+                    }
                 }
             }
         });
         return rootView;
+
+
     }
 
     private ArrayList<NameValuePair> getParams() {
@@ -132,4 +140,19 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
         }
     }
 
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return true;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
 }

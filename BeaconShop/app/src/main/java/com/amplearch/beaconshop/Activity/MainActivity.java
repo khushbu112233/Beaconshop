@@ -27,9 +27,11 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
 import com.amplearch.beaconshop.Adapter.DrawerAdapter;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
 import com.amplearch.beaconshop.Fragment.ChangePasswordFragment;
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkConnection();
 
         rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
 
@@ -426,5 +430,21 @@ public class MainActivity extends AppCompatActivity
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 }

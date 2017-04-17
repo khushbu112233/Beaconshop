@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.CallSoap;
 import com.amplearch.beaconshop.Utils.Caller;
@@ -64,7 +65,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
+        checkConnection();
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
         etEmailAdd = (TrojanEditText)findViewById(R.id.etEmailAdd);
         etPass = (TrojanEditText)findViewById(R.id.etPass);
@@ -96,9 +97,13 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                 }
 
                 else {
-                  params = getParams();
-                  AsyncRequest getPosts = new AsyncRequest(SignInActivity.this, "GET", params);
-                  getPosts.execute(loginURL);
+
+                  if (checkConnection())
+                  {
+                      params = getParams();
+                      AsyncRequest getPosts = new AsyncRequest(SignInActivity.this, "GET", params);
+                      getPosts.execute(loginURL);
+                  }
               }
             }
         });
@@ -119,9 +124,12 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                     public void onClick(DialogInterface dialog, int which)
                     {
                         forgot_Email = etInputEmail.getEditableText().toString();
-                        params = getForgotParams();
-                        AsyncRequest getPosts = new AsyncRequest(SignInActivity.this, "GET", params);
-                        getPosts.execute(forgotURL);
+                        if (checkConnection()==true)
+                        {
+                            params = getForgotParams();
+                            AsyncRequest getPosts = new AsyncRequest(SignInActivity.this, "GET", params);
+                            getPosts.execute(forgotURL);
+                        }
                     }
                 });
                 inputEmail.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -175,6 +183,22 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
         nameValuePair.add(new BasicNameValuePair("type", "simple"));
         nameValuePair.add(new BasicNameValuePair("pwd", login_Password));
         return nameValuePair;
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

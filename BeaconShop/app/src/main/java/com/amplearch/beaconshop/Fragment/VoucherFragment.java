@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.UserRedeem;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
@@ -62,7 +63,7 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_voucher, container, false);
-
+        checkConnection();
         session = new UserSessionManager(getContext());
         gridView_Vouch = (GridView)view.findViewById(R.id.gridView_Vouch);
         tvNoVoucher = (TrojanText) view.findViewById(R.id.tvNoVoucher);
@@ -73,8 +74,12 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
         userID = user1.get(UserSessionManager.KEY_USER_ID);
         voucherURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID?user_id="+userID;
 
-        AsyncRequest getPosts = new AsyncRequest(VoucherFragment.this,getActivity(), "GET", null, "");
-        getPosts.execute(voucherURL);
+        if (checkConnection()== true)
+        {
+            AsyncRequest getPosts = new AsyncRequest(VoucherFragment.this,getActivity(), "GET", null, "");
+            getPosts.execute(voucherURL);
+        }
+
 
         gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -169,6 +174,22 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
                 e.printStackTrace();
             }
         }
+    }
 
+    private boolean checkConnection()
+    {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 }

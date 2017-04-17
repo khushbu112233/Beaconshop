@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanButton;
 import com.amplearch.beaconshop.Utils.TrojanCheckBox;
@@ -70,6 +71,9 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         facebookSDKInitialize();
         setContentView(R.layout.claim_offers);
+
+        checkConnection();
+
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
         offer_title = intent.getStringExtra("offer_title");
@@ -98,7 +102,11 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         // get name
         userID = user1.get(UserSessionManager.KEY_USER_ID);
-        getQuantityWithHttpPost(userID, offer_id);
+        if (checkConnection() == true)
+        {
+            getQuantityWithHttpPost(userID, offer_id);
+        }
+
 
         chAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -147,9 +155,15 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         if (v == btnItemClaimOffer)
         {
            // Toast.makeText(getApplicationContext(),"You are not ELIGIBLE to claim this offer.",Toast.LENGTH_LONG).show();
-            if (isAgreeChecked) {
-                connectWithHttpPost(userID, offer_id, quantity, "1", offer_image, offer_title, offer_desc);
-            }else {
+            if (isAgreeChecked)
+            {
+                if (checkConnection() == true )
+                {
+                    connectWithHttpPost(userID, offer_id, quantity, "1", offer_image, offer_title, offer_desc);
+                }
+
+            }
+            else {
                 Toast.makeText(getApplicationContext(), "Please Agree to Terms & Conditions before Claim Offer..", Toast.LENGTH_LONG).show();
             }
         }
@@ -461,6 +475,22 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         shareDialog.show(content);
 
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected ;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
 

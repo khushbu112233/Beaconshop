@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.Images;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
@@ -45,7 +46,7 @@ public class ImageActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
-
+        checkConnection();
         urlSrc = " http://beacon.ample-arch.com/Images/vmart.jpg ";
 
         tvImageUrl = (TextView) findViewById(R.id.tvImageUrl);
@@ -65,6 +66,21 @@ public class ImageActivity extends AppCompatActivity
                 myAsync.execute();
             }
         });
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     public class MyAsync extends AsyncTask<Void, Void, Bitmap>

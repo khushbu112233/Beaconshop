@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.BadgeAdapter;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class BadgesFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.fragment_badges, container, false);
 
+        checkConnection();
         badgeImages.add(R.drawable.award);
         badgeText.add(" GOLD\nDIGGER");
         badgeImages.add(R.drawable.award);
@@ -57,6 +59,11 @@ public class BadgesFragment extends Fragment
 
         gridView = (GridView)rootView.findViewById(R.id.gridView);
         gridView.setAdapter(badgeAdapter);
+
+        if (checkConnection() == true)
+        {
+            
+        }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -82,4 +89,19 @@ public class BadgesFragment extends Fragment
         return rootView;
     }
 
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
 }

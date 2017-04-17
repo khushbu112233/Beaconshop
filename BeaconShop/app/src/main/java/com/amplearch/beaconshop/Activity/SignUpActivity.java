@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
@@ -49,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        checkConnection();
         etEmailAddress = (EditText) findViewById(R.id.etEmailAddress);
         etPassword = (EditText) findViewById(R.id.etPassword);
         etRePassword = (EditText) findViewById(R.id.etRePassword);
@@ -74,9 +75,13 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
                 }
                 else
                 {
-                    params = getParams();
-                    AsyncRequest getPosts = new AsyncRequest(SignUpActivity.this, "GET", params);
-                    getPosts.execute(apiURL);
+                    if (checkConnection() == true)
+                    {
+                        params = getParams();
+                        AsyncRequest getPosts = new AsyncRequest(SignUpActivity.this, "GET", params);
+                        getPosts.execute(apiURL);
+                    }
+
                 }
             }
         });
@@ -130,7 +135,22 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
                 e.printStackTrace();
             }
         }
+    }
 
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected ;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
 }

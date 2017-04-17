@@ -7,6 +7,7 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Utils.FileHelper;
 import com.facebook.FacebookSdk;
 
@@ -26,24 +27,28 @@ public class MyApplication extends Application {
     private BeaconManager beaconManager;
     private Region region;
 
+    private static MyApplication mInstance ;
+
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
+
+        mInstance = this ;
+
         FacebookSdk.sdkInitialize(getApplicationContext());
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.amplearch.beaconshop",  // replace with your unique package name
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
+        try
+        {
+            PackageInfo info = getPackageManager().getPackageInfo("com.amplearch.beaconshop", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures)
+            {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
         }
+        catch (PackageManager.NameNotFoundException e) { }
+        catch ( NoSuchAlgorithmException e ) {  }
 
         fileHelper = new FileHelper(getExternalFilesDir(null));
         // Allow scanning to continue in the background.
@@ -79,5 +84,15 @@ public class MyApplication extends Application {
         return beaconManager;
     }
     public Region getRegion() {return region; }
+
+    public static synchronized MyApplication getInstance() {
+        return mInstance;
+    }
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener)
+    {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
+    }
+
 
 }

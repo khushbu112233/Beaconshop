@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 
 import org.apache.http.NameValuePair;
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        checkConnection();
         listCategory =(GridView) rootView.findViewById(R.id.category_list);
 
         listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -74,9 +75,13 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
             }
         });
 
-        params = getParams();
-        AsyncRequest getPosts = new AsyncRequest(HomeFragment.this,getActivity(), "GET", params, "");
-        getPosts.execute(apiURL);
+        if(checkConnection() == true)
+        {
+            params = getParams();
+            AsyncRequest getPosts = new AsyncRequest(HomeFragment.this,getActivity(), "GET", params, "");
+            getPosts.execute(apiURL);
+        }
+
 
         return rootView;
     }
@@ -133,6 +138,22 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
         params.add(new BasicNameValuePair("limit", "10"));
         params.add(new BasicNameValuePair("fields", "id,title"));
         return params;
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
    /* private void connectWithHttpPost() {
 
