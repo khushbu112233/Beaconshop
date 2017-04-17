@@ -1,7 +1,6 @@
 package com.amplearch.beaconshop.Fragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,36 +11,21 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
-import com.amplearch.beaconshop.Activity.MainActivity;
-import com.amplearch.beaconshop.Activity.SignInActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Activity.StoreListActivity;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 
+import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements
+        AsyncRequest.OnAsyncRequestComplete{
 
     GridView listCategory;
    // String[] web;
@@ -61,6 +45,9 @@ public class HomeFragment extends Fragment {
     ArrayList<String> id_array = new ArrayList<String>();
     String category_id;
 
+    String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/GetCategories";
+    ArrayList<NameValuePair> params;
+
     public HomeFragment() {
     }
 
@@ -69,8 +56,6 @@ public class HomeFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-       // web = new String[imageId.length];
         listCategory =(GridView) rootView.findViewById(R.id.category_list);
 
         listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -88,12 +73,66 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        connectWithHttpPost();
+        params = getParams();
+        AsyncRequest getPosts = new AsyncRequest(HomeFragment.this,getActivity(), "GET", params, "");
+        getPosts.execute(apiURL);
 
         return rootView;
     }
 
-    private void connectWithHttpPost() {
+    @Override
+    public void asyncResponse(String response) {
+
+
+        //Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+
+        if (response.equals("")) {
+            Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
+        } else {
+            // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("category");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res == null) {
+
+                    Toast.makeText(getContext(), "No Categories are Available..", Toast.LENGTH_LONG).show();
+                } else {
+
+                    JSONArray jsonArrayChanged = jsonObject.getJSONArray("category");
+                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                        try {
+                            //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+
+                            title_array.add(jsonArrayChanged.getJSONObject(i).get("category_name").toString());
+                            notice_array.add(jsonArrayChanged.getJSONObject(i).get("category_image").toString());
+                            id_array.add(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
+                            //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                            CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), title_array, notice_array);
+                            listCategory.setAdapter(adapterViewAndroid);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    private ArrayList<NameValuePair> getParams() {
+        // define and ArrayList whose elements are of type NameValuePair
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("start", "0"));
+        params.add(new BasicNameValuePair("limit", "10"));
+        params.add(new BasicNameValuePair("fields", "id,title"));
+        return params;
+    }
+   /* private void connectWithHttpPost() {
 
         // Connect with a server is a time consuming process.
         //Therefore we use AsyncTask to handle it
@@ -188,7 +227,7 @@ public class HomeFragment extends Fragment {
                         }
                         else {
 
-                           /* JSONArray jsonArrayChanged = jsonObject.getJSONArray("User");
+                           *//* JSONArray jsonArrayChanged = jsonObject.getJSONArray("User");
 
                             String email_id = jsonArrayChanged.getJSONObject(0).get("email_id").toString();
                             String user_id = jsonArrayChanged.getJSONObject(0).get("id").toString();
@@ -197,7 +236,7 @@ public class HomeFragment extends Fragment {
                             String dob = jsonArrayChanged.getJSONObject(0).get("dob").toString();
                             String gender = jsonArrayChanged.getJSONObject(0).get("gender").toString();
                             String password = jsonArrayChanged.getJSONObject(0).get("password").toString();
-*/
+*//*
 
                             JSONArray jsonArrayChanged = jsonObject.getJSONArray("category");
                             for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
@@ -216,12 +255,12 @@ public class HomeFragment extends Fragment {
                             }
 
                            // Toast.makeText(getContext(), res, Toast.LENGTH_LONG).show();
-                           /* Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
+                           *//* Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
                             session.createUserLoginSession(username, email_id, image, password, user_id);
 
                             Intent intent=new Intent(SignInActivity.this,MainActivity.class);
                             startActivity(intent);
-                            finish();*/
+                            finish();*//*
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -237,7 +276,7 @@ public class HomeFragment extends Fragment {
         httpGetAsyncTask.execute();
 
     }
-
+*/
 
 
 }

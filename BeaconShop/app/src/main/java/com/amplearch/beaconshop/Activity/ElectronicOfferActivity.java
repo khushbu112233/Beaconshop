@@ -15,12 +15,15 @@ import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +35,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElectronicOfferActivity extends AppCompatActivity
+public class ElectronicOfferActivity extends AppCompatActivity implements
+        AsyncRequest.OnAsyncRequestComplete
 {
     ListView listView_Elect ;
     ElectOfferAdapter  electOfferAdapter ;
@@ -41,6 +45,8 @@ public class ElectronicOfferActivity extends AppCompatActivity
     String category_id;
     List<VoucherClass> offers;
     TrojanText tvNoOffer;
+    String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getOfferbyCategoryID";
+    ArrayList<NameValuePair> params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,11 +90,92 @@ public class ElectronicOfferActivity extends AppCompatActivity
             }
         });
 
-        connectWithHttpPost();
+        params = getParams();
+        AsyncRequest getPosts = new AsyncRequest(this, "GET", params);
+        getPosts.execute(apiURL);
+
+       // connectWithHttpPost();
+    }
+
+    private ArrayList<NameValuePair> getParams() {
+        // define and ArrayList whose elements are of type NameValuePair
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("category_id", category_id));
+        return params;
+    }
+
+    @Override
+    public void asyncResponse(String response) {
+
+     //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+
+        if (response.equals("")){
+            Toast.makeText(getApplicationContext(), "Offers not Loaded..", Toast.LENGTH_LONG).show();
+        }else {
+            //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("offers");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res==null){
+
+                    Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                }
+                else {
+
+                    JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
+                    String strCount = jsonObject.getString("count");
+                    Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
+                    if (jsonArrayChanged.length() == 0){
+                        tvNoOffer.setVisibility(View.VISIBLE);
+                        tvNoOffer.setText("No Offers are Available..");
+                        //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                    }else {
+                        tvNoOffer.setVisibility(View.GONE);
+                    }
+                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                        try {
+                            //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                            VoucherClass voucherClass = new VoucherClass();
+                            voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());
+                            voucherClass.setCategory_id(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
+                            voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("store_name").toString());
+                            voucherClass.setStore_image(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
+                            voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("offer_title").toString());
+                            voucherClass.setOffer_desc(jsonArrayChanged.getJSONObject(i).get("offer_desc").toString());
+                            voucherClass.setStart_date(jsonArrayChanged.getJSONObject(i).get("start_date").toString());
+                            voucherClass.setEnd_date(jsonArrayChanged.getJSONObject(i).get("end_date").toString());
+                            voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("message").toString());
+                            voucherClass.setUuid(jsonArrayChanged.getJSONObject(i).get("uuid").toString());
+                            voucherClass.setMajor(jsonArrayChanged.getJSONObject(i).get("major").toString());
+                            voucherClass.setMinor(jsonArrayChanged.getJSONObject(i).get("minor").toString());
+                            voucherClass.setQuantity(jsonArrayChanged.getJSONObject(i).get("quantity").toString());
+                            voucherClass.setPaid_banner(jsonArrayChanged.getJSONObject(i).get("paid_banner").toString());
+                            voucherClass.setPaid_start_date(jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString());
+                            voucherClass.setPaid_end_date(jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString());
+                            voucherClass.setLat(jsonArrayChanged.getJSONObject(i).get("lat").toString());
+                            voucherClass.setLng(jsonArrayChanged.getJSONObject(i).get("lng").toString());
+
+                            //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                            offers.add(voucherClass);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    electOfferAdapter = new ElectOfferAdapter(getApplicationContext(), offers);
+                    // adapter = new CustomFrameList(FestivalListPage.this, friends);
+                    listView_Elect.setAdapter(electOfferAdapter);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
-    private void connectWithHttpPost() {
+    /*private void connectWithHttpPost() {
 
         // Connect with a server is a time consuming process.
         //Therefore we use AsyncTask to handle it
@@ -183,6 +270,8 @@ public class ElectronicOfferActivity extends AppCompatActivity
                         else {
 
                             JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
+                            String strCount = jsonObject.getString("count");
+                            Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
                             if (jsonArrayChanged.length() == 0){
                                 tvNoOffer.setVisibility(View.VISIBLE);
                                 tvNoOffer.setText("No Offers are Available..");
@@ -224,12 +313,12 @@ public class ElectronicOfferActivity extends AppCompatActivity
                            // adapter = new CustomFrameList(FestivalListPage.this, friends);
                             listView_Elect.setAdapter(electOfferAdapter);
                             // Toast.makeText(getContext(), res, Toast.LENGTH_LONG).show();
-                           /* Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
+                           *//* Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
                             session.createUserLoginSession(username, email_id, image, password, user_id);
 
                             Intent intent=new Intent(SignInActivity.this,MainActivity.class);
                             startActivity(intent);
-                            finish();*/
+                            finish();*//*
 
                         }
                     } catch (JSONException e) {
@@ -245,5 +334,5 @@ public class ElectronicOfferActivity extends AppCompatActivity
         // We are passing the connectWithHttpGet() method arguments to that
         httpGetAsyncTask.execute();
 
-    }
+    }*/
 }
