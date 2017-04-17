@@ -47,7 +47,7 @@
     </RelativeLayout>
 
     <TextView
-        android:layout_marginTop="-12dp"
+        android:layout_marginTop="-19dp"
         android:background="@drawable/badge_item_count"
         android:visibility="visible"
         android:layout_gravity="center"

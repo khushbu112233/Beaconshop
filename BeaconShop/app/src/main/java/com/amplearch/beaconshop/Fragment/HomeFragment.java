@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment implements
     ArrayList<String> title_array = new ArrayList<String>();
     ArrayList<String> notice_array = new ArrayList<String>();
     ArrayList<String> id_array = new ArrayList<String>();
+    ArrayList<String> count_array = new ArrayList<String>();
     String category_id;
 
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/GetCategories";
@@ -108,8 +109,9 @@ public class HomeFragment extends Fragment implements
                             title_array.add(jsonArrayChanged.getJSONObject(i).get("category_name").toString());
                             notice_array.add(jsonArrayChanged.getJSONObject(i).get("category_image").toString());
                             id_array.add(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
+                            count_array.add(jsonArrayChanged.getJSONObject(i).get("count").toString());
                             //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
-                            CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), title_array, notice_array);
+                            CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), title_array, notice_array, count_array);
                             listCategory.setAdapter(adapterViewAndroid);
                         } catch (JSONException e) {
                             e.printStackTrace();

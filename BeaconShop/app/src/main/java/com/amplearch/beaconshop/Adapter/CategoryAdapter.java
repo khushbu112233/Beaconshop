@@ -21,15 +21,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class CategoryAdapter extends BaseAdapter {
-    private static ArrayList name,notice;
+    private static ArrayList name, notice, count;
     private Context mContext;
  //   private final String[] gridViewString;
    // private final int[] gridViewImageId;
 
-    public CategoryAdapter(Context context, ArrayList name, ArrayList image) {
+    public CategoryAdapter(Context context, ArrayList name, ArrayList image, ArrayList count) {
         mContext = context;
         notice = image;
         this.name = name;
+        this.count = count;
     }
 
     @Override
@@ -59,10 +60,18 @@ public class CategoryAdapter extends BaseAdapter {
            // TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.android_gridview_text);
             CircleImageView imageViewAndroid = (CircleImageView) gridViewAndroid.findViewById(R.id.imgCategory);
             TextView txtCategory = (TextView) gridViewAndroid.findViewById(R.id.txtCategory);
+            TextView badgeCategory = (TextView) gridViewAndroid.findViewById(R.id.badgeCategory);
 
 //            txtCategory.setText(name.get(i).toString());
             txtCategory.setText(name.get(i).toString());
 
+            badgeCategory.setText(count.get(i).toString());
+            if (count.get(i).toString().equals("0")){
+                badgeCategory.setVisibility(View.INVISIBLE);
+            }
+            else {
+                badgeCategory.setVisibility(View.VISIBLE);
+            }
 
 
             if (notice.get(i).toString()!=null)
