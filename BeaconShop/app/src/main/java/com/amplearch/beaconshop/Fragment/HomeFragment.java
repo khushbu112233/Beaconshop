@@ -3,6 +3,7 @@ package com.amplearch.beaconshop.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,8 @@ import java.util.ArrayList;
 
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
-public class HomeFragment extends Fragment implements
-        AsyncRequest.OnAsyncRequestComplete{
-
+public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncRequestComplete
+{
     GridView listCategory;
    // String[] web;
     int[] imageId = {
@@ -82,10 +82,10 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void asyncResponse(String response) {
-
-
-        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+    public void asyncResponse(String response)
+    {
+        Log.i("Home res: ", response);
+//        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
             Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
