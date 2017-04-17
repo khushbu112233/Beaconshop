@@ -102,6 +102,8 @@
             android:theme="@style/NoActionBar" />
         <activity android:name=".Activity.BconActivity" >
             </activity>
+
+        <activity android:name=".Activity.ImageActivity"></activity>
     </application>
 
 </manifest>

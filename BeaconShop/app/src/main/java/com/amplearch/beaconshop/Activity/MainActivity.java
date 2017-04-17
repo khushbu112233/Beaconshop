@@ -176,8 +176,29 @@ public class MainActivity extends AppCompatActivity
                 selectItemFragment(position);
             }
         });
+
+
     }
 
+    public Fragment getItem(int position)
+    {
+        List<Fragment> fragList = new ArrayList<Fragment>();
+        fragList.add(new HomeFragment());
+        fragList.add(new FavoriteFragment());
+        fragList.add(new VoucherFragment());
+        fragList.add(new BadgesFragment());
+        fragList.add(new ProfileFragment());
+        fragList.add(new SettingsFragment());
+        fragList.add(new ChangePasswordFragment());
+        fragList.add(new HelpFragment());
+        fragList.add(new AboutUsFragment());
+
+        Fragment fragment = fragList.get(position);
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     private void selectItemFragment(int position){
 
@@ -357,6 +378,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+       /* Fragment frag = new Fragment();
         Fragment frag0 = new HomeFragment();
         Fragment frag1 = new FavoriteFragment();
         Fragment frag2 = new VoucherFragment();
@@ -368,8 +390,19 @@ public class MainActivity extends AppCompatActivity
         Fragment frag8 = new AboutUsFragment();
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         fragmentList.add(0,frag0);
+        fragmentList.add(1,frag1);
+        fragmentList.add(2,frag2);
+        fragmentList.add(3,frag3);
+        fragmentList.add(4,frag4);
+        fragmentList.add(5,frag5);
+        fragmentList.add(6,frag6);
+        fragmentList.add(7,frag7);
+        fragmentList.add(8,frag8);
+        if(fragmentList.indexOf(0) == 0)
+        {
 
-
+        }
+*/
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Exit Application?");
         alertDialogBuilder

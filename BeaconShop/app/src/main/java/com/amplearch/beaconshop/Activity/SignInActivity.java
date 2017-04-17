@@ -264,9 +264,7 @@ public class SignInActivity extends AppCompatActivity
                 // Create an intermediate to connect with the Internet
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/Login");
-                httpPost.setHeader(HTTP.CONTENT_TYPE,
-                        "applic" +
-                                "ation/x-www-form-urlencoded;charset=UTF-8");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "applic" + "ation/x-www-form-urlencoded;charset=UTF-8");
 
                 //Post Data
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);

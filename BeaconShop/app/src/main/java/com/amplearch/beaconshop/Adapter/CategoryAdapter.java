@@ -50,23 +50,28 @@ public class CategoryAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup parent) {
         View gridViewAndroid;
-        LayoutInflater inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (convertView == null) {
-
+        if (convertView == null)
+        {
             gridViewAndroid = new View(mContext);
             gridViewAndroid = inflater.inflate(R.layout.category_row, null);
            // TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.android_gridview_text);
             CircleImageView imageViewAndroid = (CircleImageView) gridViewAndroid.findViewById(R.id.imgCategory);
             TextView txtCategory = (TextView) gridViewAndroid.findViewById(R.id.txtCategory);
-            txtCategory.setText(name.get(i).toString());
-            if (notice.get(i).toString()!=null){
+
+//            txtCategory.setText(name.get(i).toString());
+            txtCategory.setText(notice.get(i).toString());
+
+
+
+            if (notice.get(i).toString()!=null)
+            {
            // imageViewAndroid.setImageResource(gridViewImageId[i]);
-                Picasso.with(mContext).load(notice.get(i).toString())
-                        .into(imageViewAndroid);
+                Picasso.with(mContext).load(notice.get(i).toString()).into(imageViewAndroid);
             }
-        } else {
+        }
+        else {
             gridViewAndroid = (View) convertView;
         }
 
