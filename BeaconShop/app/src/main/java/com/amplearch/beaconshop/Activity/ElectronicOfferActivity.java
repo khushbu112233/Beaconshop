@@ -78,6 +78,7 @@ public class ElectronicOfferActivity extends AppCompatActivity
                 i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
                 i.putExtra("offer_id", offers.get(position).getId() );
                 i.putExtra("quantity", offers.get(position).getQuantity() );
+                i.putExtra("offer_image", offers.get(position).getStore_image() );
 
                 startActivity(i);
             }

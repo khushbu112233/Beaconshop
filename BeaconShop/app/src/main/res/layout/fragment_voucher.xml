@@ -7,6 +7,13 @@
     android:paddingRight="20dp"
     android:paddingBottom="20dp">
 
+    <com.amplearch.beaconshop.Utils.TrojanText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvNoVoucher"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
     <GridView
         android:id="@+id/gridView_Vouch"
         android:layout_width="fill_parent"

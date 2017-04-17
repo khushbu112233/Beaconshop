@@ -9,10 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.Model.UserRedeem;
+import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.github.siyamed.shapeimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ample-arch on 3/31/2017.
@@ -21,29 +25,27 @@ import java.util.ArrayList;
 public class VoucherAdapter extends BaseAdapter
 {
     Context context;
-    ArrayList<Integer> vouchImage;
-    ArrayList<String> vouchText ;
+    private List<UserRedeem> voucherItems;
 
-    public VoucherAdapter(FragmentActivity activity, ArrayList<Integer> vouchImage, ArrayList<String> vouchText)
+    public VoucherAdapter(FragmentActivity activity, List<UserRedeem> voucherItems)
     {
         this.context = activity;
-        this.vouchImage = vouchImage ;
-        this.vouchText = vouchText;
+        this.voucherItems = voucherItems ;
     }
 
     @Override
     public int getCount() {
-        return vouchImage.size();
+        return voucherItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return voucherItems.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -57,8 +59,13 @@ public class VoucherAdapter extends BaseAdapter
        TextView tvVouchText = (TextView)rView.findViewById(R.id.tvVouchText);
 
 //        ivVouchImage.setImageResource(vouchImage.get(position));
-        roundedImage.setImageResource(vouchImage.get(position));
-        tvVouchText.setText(vouchText.get(position));
+      //  roundedImage.setImageResource(vouchImage.get(position));
+        tvVouchText.setText(voucherItems.get(position).getOffer_title());
+
+        if(voucherItems.get(position).getOffer_image() != null) {
+            Picasso.with(context).load(voucherItems.get(position).getOffer_image())
+                    .into(roundedImage);
+        }
 
         return rView;
     }
