@@ -35,8 +35,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElectronicOfferActivity extends AppCompatActivity implements
-        AsyncRequest.OnAsyncRequestComplete
+public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
 {
     ListView listView_Elect ;
     ElectOfferAdapter  electOfferAdapter ;

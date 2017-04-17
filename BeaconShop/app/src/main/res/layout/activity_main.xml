@@ -36,8 +36,7 @@
                 android:text="BEACON SHOP"
                 android:textColor="@color/white"
                 android:id="@+id/toolbarTitle"
-                android:layout_marginLeft="80dp"
-                android:textAlignment="center"
+                android:layout_marginLeft="0dp"
                 android:textSize="20dp"/>
         </android.support.v7.widget.Toolbar>
 
