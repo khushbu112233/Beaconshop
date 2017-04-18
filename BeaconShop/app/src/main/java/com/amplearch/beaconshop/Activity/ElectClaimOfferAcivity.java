@@ -104,7 +104,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         userID = user1.get(UserSessionManager.KEY_USER_ID);
         if (checkConnection() == true)
         {
-            getQuantityWithHttpPost(userID, offer_id);
+           // getQuantityWithHttpPost(userID, offer_id);
         }
 
 

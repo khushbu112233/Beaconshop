@@ -115,6 +115,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     protected String mLastUpdateTimeLabel;
 
     protected Boolean mRequestingLocationUpdates;
+    Boolean isConnected = false;
 
     /**
      * Time when the location was updated represented as a String.
@@ -129,7 +130,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_account);
 
-        checkConnection();
+        isConnected = checkConnection();
 
         session = new UserSessionManager(getApplicationContext());
 
@@ -215,7 +216,9 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         btnSignIn.setSize(SignInButton.SIZE_STANDARD);
         btnSignIn.setScopes(gso.getScopeArray());
 
-        btnSignIn.setOnClickListener(this);
+        if (isConnected) {
+            btnSignIn.setOnClickListener(this);
+        }
         txtSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,22 +307,23 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
 
-                progressDialog = new ProgressDialog(AccountActivity.this);
-                progressDialog.setMessage("Loading...");
-                progressDialog.show();
+                if (isConnected) {
+                    progressDialog = new ProgressDialog(AccountActivity.this);
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.show();
 
-                loginButton.performClick();
+                    loginButton.performClick();
 
-                loginButton.setPressed(true);
+                    loginButton.setPressed(true);
 
-                loginButton.invalidate();
+                    loginButton.invalidate();
 
-                loginButton.registerCallback(callbackManager, mCallBack);
+                    loginButton.registerCallback(callbackManager, mCallBack);
 
-                loginButton.setPressed(false);
+                    loginButton.setPressed(false);
 
-                loginButton.invalidate();
-
+                    loginButton.invalidate();
+                }
             }
         });
     }
@@ -647,13 +651,14 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         alertDialog.show();
     }
 
-    private void checkConnection() {
+    private boolean checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
         showSnack(isConnected);
+        return  isConnected;
     }
 
     private void showSnack(boolean isConnected) {
-        String message = "Sorry! No Internet connection.";
+        String message = "Check For Data Connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {

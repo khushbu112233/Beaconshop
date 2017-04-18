@@ -10,11 +10,30 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.SignUpActivity;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 
 public class Utility {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
+
+    public boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+       // showSnack(isConnected);
+        return  isConnected;
+    }
+
+   /* private void showSnack(boolean isConnected) {
+        String message = "Check For Data Connection..";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(g(), message, Toast.LENGTH_LONG).show();
+        }
+    }*/
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static boolean checkPermission(final Context context)

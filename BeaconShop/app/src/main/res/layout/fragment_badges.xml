@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:paddingBottom="10dp">
 
+    <com.amplearch.beaconshop.Utils.TrojanText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comming Soon.."
+        android:layout_centerInParent="true"/>
 
     <GridView
         android:id="@+id/gridView"

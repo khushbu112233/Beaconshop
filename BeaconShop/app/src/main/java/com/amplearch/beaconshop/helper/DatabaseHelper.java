@@ -49,10 +49,17 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String KEY_PRODUCTID = "product_id";
 	private static final String KEY_USERID = "user_id";
 	// VOCHERS Table - column names
-	private static final String KEY_BEACON_MESSAGE = "message";
+	private static final String KEY_CATEGORYID = "category_id";
+    private static final String KEY_STORE_IMAGE = "store_image";
+    private static final String KEY_QUANTITY = "quantity";
+    private static final String KEY_PAID_BANNER = "paid_banner";
+    private static final String KEY_PAID_START_DATE = "paid_start_date";
+    private static final String KEY_PAID_END_DATE = "paid_end_date";
+
 	private static final String KEY_UUID = "uuid";
 	private static final String KEY_MAJOR = "major";
 	private static final String KEY_MINOR = "minor";
+    private static final String KEY_BEACON_MESSAGE = "message";
 
 	// Home fragment table name
 	private static final String TABLE_HOMEFRAG = "homefragment";
@@ -84,17 +91,23 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			+ "("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_PRODUCTID + " TEXT,"
+            + KEY_CATEGORYID + " TEXT,"
 			+ KEY_STORENAME + " TEXT,"
+            + KEY_STORE_IMAGE + " BLOB,"
 			+ KEY_LAT + " TEXT,"
 			+ KEY_LNG + " TEXT,"
 			+ KEY_OFFERTITLE + " TEXT,"
 			+ KEY_OFFERDESC + " TEXT,"
 			+ KEY_STARTDATE + " DATETIME,"
 			+ KEY_ENDDATE + " DATETIME, "
+            + KEY_QUANTITY + " TEXT,"
+            + KEY_PAID_BANNER + " TEXT,"
+            + KEY_PAID_START_DATE + " DATETIME,"
+            + KEY_PAID_END_DATE + " DATETIME,"
 			+ KEY_BEACON_MESSAGE + " TEXT,"
 			+ KEY_UUID + " TEXT,"
 			+ KEY_MAJOR + " TEXT,"
-			+ KEY_MINOR + " TEXT"
+			+ KEY_MINOR + " TEXT "
 			+ ")";
 
 	// Favourites table create statement
@@ -145,6 +158,16 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		}
 	}
 
+	public void deleteStoreLocaion(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_STORELOCATION, null, null);
+    }
+
+    public void deleteVoucher(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_VOUCHER, null, null);
+    }
+
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
@@ -187,7 +210,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		insertVoucherValues.put("minor", "0");
 		db.insert(TABLE_VOUCHER, null, insertVoucherValues);
 
-		insertVoucherValues.put("product_id", "5");
+		/*insertVoucherValues.put("product_id", "5");
 		insertVoucherValues.put("store_name", "Levie");
 		insertVoucherValues.put("lat", "23.057506");
 		insertVoucherValues.put("lng", "72.543392");
@@ -199,10 +222,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		insertVoucherValues.put("uuid", "f18aa677-3b40-48c5-a937-9e2c9e9f8");
 		insertVoucherValues.put("major", "0");
 		insertVoucherValues.put("minor", "0");
-		db.insert(TABLE_VOUCHER, null, insertVoucherValues);
+		db.insert(TABLE_VOUCHER, null, insertVoucherValues);*/
 
 
-		ContentValues insertValues = new ContentValues();
+		/*ContentValues insertValues = new ContentValues();
 		insertValues.put("store_name", "Ghatlodia Police Station");
 		insertValues.put("lat", "23.057506");
 		insertValues.put("lng", "72.543392");
@@ -228,7 +251,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		insertValues.put("offer_desc", "70% Cashback");
 		insertValues.put("start_date", "08/02/2015");
 		insertValues.put("end_date", "14/02/2016");
-		db.insert(TABLE_STORELOCATION, null, insertValues);
+		db.insert(TABLE_STORELOCATION, null, insertValues);*/
 		//db.execSQL(CREATE_TABLE_TODO_TAG);
 	}
 
@@ -693,6 +716,36 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		return tag_id;
 	}
 
+
+    public long createVoucher(Voucher tag) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_STORENAME, tag.getStore_name());
+        values.put(KEY_LAT, tag.getLat());
+        values.put(KEY_LNG, tag.getLng());
+        values.put(KEY_OFFERTITLE, tag.getOffer_title());
+        values.put(KEY_OFFERDESC, tag.getOffer_desc());
+        values.put(KEY_STARTDATE, tag.getStart_date());
+        values.put(KEY_ENDDATE, tag.getEnd_date());
+        values.put(KEY_PRODUCTID, tag.getProduct_id());
+        values.put(KEY_CATEGORYID, tag.getCategory_id());
+        values.put(KEY_STORE_IMAGE, tag.getStore_image());
+        values.put(KEY_BEACON_MESSAGE, tag.getMessage());
+        values.put(KEY_UUID, tag.getUuid());
+        values.put(KEY_MAJOR, tag.getMajor());
+        values.put(KEY_MINOR, tag.getMinor());
+        values.put(KEY_QUANTITY, tag.getQuantity());
+        values.put(KEY_PAID_BANNER, tag.getPaid_banner());
+        values.put(KEY_PAID_START_DATE, tag.getPaid_start_date());
+        values.put(KEY_PAID_END_DATE, tag.getPaid_end_date());
+
+        // insert row
+        long tag_id = db.insert(TABLE_VOUCHER, null, values);
+
+        return tag_id;
+    }
+
 	/**
 	 * getting all tags
 	 * */
@@ -750,8 +803,16 @@ public class DatabaseHelper extends SQLiteOpenHelper
 				t.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
 				t.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
 				t.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
+                t.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
+                t.setCategory_id(c.getString(c.getColumnIndex(KEY_CATEGORYID)));
+                t.setStore_image(c.getBlob(c.getColumnIndex(KEY_STORE_IMAGE)));
+                t.setQuantity(c.getString(c.getColumnIndex(KEY_QUANTITY)));
+                t.setPaid_banner(c.getString(c.getColumnIndex(KEY_PAID_BANNER)));
+                t.setPaid_start_date(c.getString(c.getColumnIndex(KEY_PAID_START_DATE)));
+                t.setPaid_end_date(c.getString(c.getColumnIndex(KEY_PAID_END_DATE)));
 
-				// adding to tags list
+
+                // adding to tags list
 				tags.add(t);
 			} while (c.moveToNext());
 		}

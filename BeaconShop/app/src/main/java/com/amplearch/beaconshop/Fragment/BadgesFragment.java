@@ -65,6 +65,7 @@ public class BadgesFragment extends Fragment
             
         }
 
+        gridView.setVisibility(View.GONE);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
