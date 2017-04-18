@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -32,7 +33,7 @@ public class OfferDetailActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         facebookSDKInitialize();
         setContentView(R.layout.activity_offer_detail);
-
+        checkConnection();
         shareDialog = new ShareDialog(this);
         imgFavourite = (ImageView) findViewById(R.id.imgFavourites);
         imgShare = (ImageView) findViewById(R.id.imgShare);
@@ -84,6 +85,22 @@ public class OfferDetailActivity extends AppCompatActivity implements View.OnCli
             }
         }
 
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected ;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

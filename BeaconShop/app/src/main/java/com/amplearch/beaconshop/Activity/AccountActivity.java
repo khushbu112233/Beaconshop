@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;
@@ -116,6 +117,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_account);
+
+        checkConnection();
 
         session = new UserSessionManager(getApplicationContext());
 
@@ -600,4 +603,20 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.amplearch.beaconshop.Model.Favourites;
+import com.amplearch.beaconshop.Model.Images;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.Voucher;
 
@@ -251,7 +252,40 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		cv.put(KEY_NAME, name);
 		cv.put(KEY_NAME, image);
 		db.insert(TABLE_HOMEFRAG, null , cv);
+		db.close();
 	}
+
+	public List<Images> getImageData()
+    {
+        List<Images> todos = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selecQuery  =  "SELECT * FROM " + TABLE_HOMEFRAG ;
+        Cursor c = db.rawQuery(selecQuery, null);
+
+        if(c.moveToFirst())
+        {
+            do
+            {
+				try
+				{
+					Images td = new Images();
+					td.setId(c.getInt(0));
+					td.setName(c.getString(1));
+					td.setImage(c.getBlob(2));
+
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+            }
+            while (c.moveToNext());
+        }
+        db.close();
+
+        return todos;
+    }
 
 	// ------------------------ "todos" table methods ----------------//
 

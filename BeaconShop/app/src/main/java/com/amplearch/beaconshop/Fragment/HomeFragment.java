@@ -72,11 +72,11 @@ public class HomeFragment extends Fragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id)
             {
-              //  Toast.makeText(getContext(), "GridView Item: " , Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getContext(), "GridView Item: " , Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), ElectronicOfferActivity.class);
                 category_id = id_array.get(i).toString();
                 intent.putExtra("category_id", category_id);
-               // Toast.makeText(getContext(), id_array.get(i).toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getContext(), id_array.get(i).toString(), Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
         });
@@ -100,14 +100,14 @@ public class HomeFragment extends Fragment implements
                         // do whatever
                         if(offers.get(position).getStore_image() != null) {
 
-                                Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
-                                i.putExtra("offer_title", offers.get(position).getOffer_title() );
-                                i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
-                                i.putExtra("offer_id", offers.get(position).getId() );
-                                i.putExtra("quantity", offers.get(position).getQuantity() );
-                                i.putExtra("offer_image", offers.get(position).getStore_image() );
+                            Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
+                            i.putExtra("offer_title", offers.get(position).getOffer_title() );
+                            i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
+                            i.putExtra("offer_id", offers.get(position).getId() );
+                            i.putExtra("quantity", offers.get(position).getQuantity() );
+                            i.putExtra("offer_image", offers.get(position).getStore_image() );
 
-                                startActivity(i);
+                            startActivity(i);
 
                             /*Picasso.with(getApplicationContext()).load("http://www.kumbhdesign.in/mobile-app/depost/api/assets/"+back_list.get(position).getBackground_img())
                                     .into(main_image.set);*/
@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void asyncResponse(String response) {
 
-      //  Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+        //  Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
             Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment implements
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
                     if (jsonArrayChanged.length() == 0){
                         recyclerPaidBanner.setVisibility(View.GONE);
-                      //  tvNoOffer.setText("No Offers are Available..");
+                        //  tvNoOffer.setText("No Offers are Available..");
                         //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                     }else {
                         recyclerPaidBanner.setVisibility(View.VISIBLE);

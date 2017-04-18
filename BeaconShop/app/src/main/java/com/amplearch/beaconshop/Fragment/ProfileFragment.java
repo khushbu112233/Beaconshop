@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
@@ -184,10 +185,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     public ProfileFragment() { }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-
+        checkConnection();
         upLoadServerUri = "http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile";
         Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
         session = new UserSessionManager(getContext());
@@ -205,9 +207,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         btnSignOut = (TrojanButton) rootView.findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (TrojanButton) rootView.findViewById(R.id.btn_revoke_access);
 
-        Toast.makeText(getContext(),
-                "User Login Status: " + session.isUserLoggedIn(),
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
 
         ivImage.setOnClickListener(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
@@ -301,6 +301,22 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
         return rootView;
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected ;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void uploadImage(){

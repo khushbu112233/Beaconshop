@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
 import com.amplearch.beaconshop.Adapter.FavoritesAdapter;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.Favourites;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.Voucher;
@@ -54,8 +55,13 @@ public class FavoriteFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         db = new DatabaseHelper(getContext());
-
+        checkConnection();
         long fav_user_id = 5 ;
+
+        if (checkConnection() == true)
+        {
+
+        }
 
         List<Voucher> voch = db.getVoucherbyID();
         if(voch == null) {
@@ -140,6 +146,22 @@ public class FavoriteFragment extends Fragment
 
 
         return view;
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected ;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
 }

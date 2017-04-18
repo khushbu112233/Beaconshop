@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,13 +19,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by admin on 04/17/2017.
  */
 
-public class AsyncRequest extends AsyncTask<String, Integer, String> {
+public class AsyncRequest extends AsyncTask<String, Integer, String>
+{
 
     String label;
     OnAsyncRequestComplete caller;
@@ -59,6 +62,9 @@ public class AsyncRequest extends AsyncTask<String, Integer, String> {
         caller = (OnAsyncRequestComplete) a;
         context = a;
     }
+
+
+
 
     // Interface to be implemented by calling activity
     public interface OnAsyncRequestComplete {
@@ -106,25 +112,24 @@ public class AsyncRequest extends AsyncTask<String, Integer, String> {
     }
 
     @SuppressWarnings("deprecation")
-    private String get(String address) {
-        try {
-
-            if (parameters != null) {
-
+    private String get(String address)
+    {
+        try
+        {
+            if (parameters != null)
+            {
                 String query = "";
                 String EQ = "="; String AMP = "&";
                 for (NameValuePair param : parameters) {
                     query += param.getName() + EQ + URLEncoder.encode(param.getValue()) + AMP;
                 }
-
-                if (query != "") {
+                if (query != "")
+                {
                     address += "?" + query;
                 }
             }
-
             HttpClient client = new DefaultHttpClient();
             HttpGet get= new HttpGet(address);
-
             HttpResponse response = client.execute(get);
             return stringifyResponse(response);
 

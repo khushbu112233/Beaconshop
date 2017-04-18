@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
@@ -40,8 +41,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class ElectronicOfferActivity extends AppCompatActivity implements
-        AsyncRequest.OnAsyncRequestComplete
+public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
 {
     ListView listView_Elect ;
     ElectOfferAdapter  electOfferAdapter ;
@@ -58,6 +58,7 @@ public class ElectronicOfferActivity extends AppCompatActivity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electronic_offer);
+        checkConnection();
         final Intent intent = getIntent();
         category_id = intent.getStringExtra("category_id");
        // getIntent();
@@ -95,14 +96,19 @@ public class ElectronicOfferActivity extends AppCompatActivity implements
             }
         });
 
-        params = getParams();
-        AsyncRequest getPosts = new AsyncRequest(this, "GET", params);
-        getPosts.execute(apiURL);
+        if (checkConnection() == true)
+        {
+            params = getParams();
+            AsyncRequest getPosts = new AsyncRequest(this, "GET", params);
+            getPosts.execute(apiURL);
+        }
+
 
        // connectWithHttpPost();
     }
 
-    private ArrayList<NameValuePair> getParams() {
+    private ArrayList<NameValuePair> getParams()
+    {
         // define and ArrayList whose elements are of type NameValuePair
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("category_id", category_id));
@@ -188,6 +194,22 @@ public class ElectronicOfferActivity extends AppCompatActivity implements
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return isConnected;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Sorry! No Internet connection.";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
     }
 
