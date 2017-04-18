@@ -25,6 +25,7 @@ import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;
 import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
+import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -46,16 +47,20 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, LocationListener, AsyncRequest.OnAsyncRequestComplete {
     TextView txtSignIn, txtSignUp;
 
   //  private static final String TAG = MainActivity.class.getSimpleName();
@@ -72,6 +77,12 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private TextView btnLogin;
     private ProgressDialog progressDialog;
     User user;
+
+    String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterGoogleUser" ;
+    ArrayList<NameValuePair> params ;
+
+    String apiURLFacebook = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterFacebookUser" ;
+    ArrayList<NameValuePair> paramsFacebook ;
 
     protected static final String TAG = "location-updates-sample";
 
@@ -319,6 +330,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    String personName= "";
+    String personPhotoUrl = "";
+    String email = "";
+    String googleID = "";
+
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -327,14 +343,29 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
-            String personName = acct.getDisplayName();
-            String personPhotoUrl = acct.getPhotoUrl().toString();
-            String email = acct.getEmail();
+            googleID = acct.getId().toString();
+           personName = acct.getDisplayName();
+             personPhotoUrl = acct.getPhotoUrl().toString();
+            email = acct.getEmail();
 
             Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
 
-            session.createUserLoginSession(personName, email, personPhotoUrl, "gpass", "2977");
+
+            ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+            nameValuePair.add(new BasicNameValuePair("name", acct.getDisplayName().toString()));
+            nameValuePair.add(new BasicNameValuePair("email", acct.getEmail().toString()));
+            nameValuePair.add(new BasicNameValuePair("contact", ""));
+            nameValuePair.add(new BasicNameValuePair("pass", "gmailpass"));
+            nameValuePair.add(new BasicNameValuePair("type", "gmail"));
+            nameValuePair.add(new BasicNameValuePair("google_id", acct.getId().toString()));
+            nameValuePair.add(new BasicNameValuePair("image", personPhotoUrl));
+
+            params = nameValuePair;
+            AsyncRequest getPosts = new AsyncRequest(AccountActivity.this, "GET", params);
+            getPosts.execute(apiURL);
+
+        //    session.createUserLoginSession(personName, email, personPhotoUrl, "gpass", "2977");
 
 
             // txtName.setText(personName);
@@ -345,7 +376,6 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imgProfilePic);
 */
-            updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
@@ -399,7 +429,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                                 GraphResponse response) {
 
                             Log.e("response: ", response + "");
-                            Toast.makeText(AccountActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(AccountActivity.this, response.toString(), Toast.LENGTH_LONG).show();
                             try {
                                 user = new User();
                                 user.facebookID = object.getString("id").toString();
@@ -408,15 +438,28 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                                 user.gender = object.getString("gender").toString();
                                 PrefUtils.setCurrentUser(user,AccountActivity.this);
 
-                                session.createUserLoginSession(user.name, user.email, "", "", "");
+                                personPhotoUrl = "https://graph.facebook.com/" + user.facebookID + "/picture?type=large";
+
+                                ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+                                nameValuePair.add(new BasicNameValuePair("name", user.name.toString()));
+                                nameValuePair.add(new BasicNameValuePair("email", user.email.toString()));
+                                nameValuePair.add(new BasicNameValuePair("contact", ""));
+                                nameValuePair.add(new BasicNameValuePair("pass", "fbpass"));
+                                nameValuePair.add(new BasicNameValuePair("type", "facebook"));
+                                nameValuePair.add(new BasicNameValuePair("facebook_id", user.facebookID));
+                                nameValuePair.add(new BasicNameValuePair("image", personPhotoUrl));
+
+                                paramsFacebook = nameValuePair;
+                                AsyncRequest getPosts = new AsyncRequest(AccountActivity.this, "GET", paramsFacebook);
+                                getPosts.execute(apiURLFacebook);
+
+
+                              //  session.createUserLoginSession(user.name, user.email, "", "", "");
 
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            Toast.makeText(AccountActivity.this,"welcome "+user.name,Toast.LENGTH_LONG).show();
-                            Intent intent=new Intent(AccountActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                          //  Toast.makeText(AccountActivity.this,"welcome "+user.name,Toast.LENGTH_LONG).show();
 
                         }
 
@@ -619,4 +662,71 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    public void asyncResponse(String response) {
+
+        Toast.makeText(getApplicationContext(), "Response "+response, Toast.LENGTH_LONG).show();
+        Log.i("SignUp Response ", response);
+
+        if (response.equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "Server Connection Failed..", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("message");
+                String userId = jsonObject.getString("userId");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res.equals("Success Google") || res.equalsIgnoreCase("Already Exists"))
+                {
+                    session.createUserLoginSession(personName, email, personPhotoUrl, "gmailpass", userId);
+                    updateUI(true);
+                }
+                else
+                {
+                    updateUI(false);
+                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+//                            session.createUserLoginSession(username, email_id, image, password, user_id);
+                    //etEmailAddress.setError("Email Address, Already Exist!");
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("message");
+                String userId = jsonObject.getString("userId");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res.equals("Success Facebook") || res.equalsIgnoreCase("Already Exists"))
+                {
+                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId);
+                    Intent intent=new Intent(AccountActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+//                            session.createUserLoginSession(username, email_id, image, password, user_id);
+                    //etEmailAddress.setError("Email Address, Already Exist!");
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 }
