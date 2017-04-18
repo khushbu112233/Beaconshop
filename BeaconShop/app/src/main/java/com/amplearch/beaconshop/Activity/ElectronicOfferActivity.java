@@ -32,7 +32,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class ElectronicOfferActivity extends AppCompatActivity implements
@@ -126,7 +131,7 @@ public class ElectronicOfferActivity extends AppCompatActivity implements
 
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
                     String strCount = jsonObject.getString("count");
-                    Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
                     if (jsonArrayChanged.length() == 0){
                         tvNoOffer.setVisibility(View.VISIBLE);
                         tvNoOffer.setText("No Offers are Available..");
@@ -164,6 +169,18 @@ public class ElectronicOfferActivity extends AppCompatActivity implements
                         }
 
                     }
+
+                    Collections.sort(offers, new Comparator<VoucherClass>() {
+                        @Override
+                        public int compare(VoucherClass o1, VoucherClass o2) {
+
+                            String s1 = o1.getPaid_banner();
+                            String s2 = o2.getPaid_banner();
+                            return s2.compareToIgnoreCase(s1);
+                        }
+
+                    });
+
                     electOfferAdapter = new ElectOfferAdapter(getApplicationContext(), offers);
                     // adapter = new CustomFrameList(FestivalListPage.this, friends);
                     listView_Elect.setAdapter(electOfferAdapter);

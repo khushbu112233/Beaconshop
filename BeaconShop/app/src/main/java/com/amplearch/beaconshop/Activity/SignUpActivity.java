@@ -65,8 +65,8 @@ public class SignUpActivity extends AppCompatActivity
 
                 if (!validate(UserName,EmailAddress,ContactNo,Password,RePassword))
                 {
-
                     Toast.makeText(getApplicationContext(), "Form Fill Invalid!", Toast.LENGTH_SHORT).show();
+
 
                 }
                 else {
@@ -176,7 +176,7 @@ public class SignUpActivity extends AppCompatActivity
                 super.onPostExecute(result);
 
                 if (result.equals("")){
-                    Toast.makeText(getApplicationContext(), "Login attempt Failed..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Register attempt Failed..", Toast.LENGTH_LONG).show();
                 }else {
                     // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {

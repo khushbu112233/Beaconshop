@@ -396,6 +396,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                                 GraphResponse response) {
 
                             Log.e("response: ", response + "");
+                            Toast.makeText(AccountActivity.this, response.toString(), Toast.LENGTH_LONG).show();
                             try {
                                 user = new User();
                                 user.facebookID = object.getString("id").toString();

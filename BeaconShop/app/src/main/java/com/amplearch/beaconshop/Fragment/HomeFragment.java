@@ -1,8 +1,11 @@
 package com.amplearch.beaconshop.Fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
+import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
+import com.amplearch.beaconshop.Adapter.PaidBannerHorizontal;
+import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 
 import org.apache.http.NameValuePair;
@@ -20,34 +27,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.amplearch.beaconshop.Utils.RecyclerItemClickListener;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
 public class HomeFragment extends Fragment implements
         AsyncRequest.OnAsyncRequestComplete{
 
     GridView listCategory;
-   // String[] web;
-    int[] imageId = {
-            R.drawable.ic_round,
-            R.drawable.ic_round,
-            R.drawable.ic_round,
-            R.drawable.ic_round,
-            R.drawable.ic_round,
-            R.drawable.ic_round,
-            R.drawable.ic_round
-
-    };
 
     ArrayList<String> title_array = new ArrayList<String>();
     ArrayList<String> notice_array = new ArrayList<String>();
     ArrayList<String> id_array = new ArrayList<String>();
     ArrayList<String> count_array = new ArrayList<String>();
-    String category_id;
 
+    RecyclerView recyclerPaidBanner;
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/GetCategories";
     ArrayList<NameValuePair> params;
+
+    String apiURLPaidBanner = "http://beacon.ample-arch.com/BeaconWebService.asmx/getPaidOffer";
+    ArrayList<NameValuePair> paramsPaid;
+
+    String category_id;
+    List<VoucherClass> offers;
+    PaidBannerHorizontal paidBannerHorizontal;
 
     public HomeFragment() {
     }
@@ -58,7 +64,8 @@ public class HomeFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         listCategory =(GridView) rootView.findViewById(R.id.category_list);
-
+        recyclerPaidBanner = (RecyclerView) rootView.findViewById(R.id.recyclerPaidBanner);
+        offers = new ArrayList<VoucherClass>();
         listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
 
@@ -73,10 +80,45 @@ public class HomeFragment extends Fragment implements
                 startActivity(intent);
             }
         });
+        recyclerPaidBanner.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recyclerPaidBanner.setLayoutManager(layoutManager);
 
         params = getParams();
         AsyncRequest getPosts = new AsyncRequest(HomeFragment.this,getActivity(), "GET", params, "");
         getPosts.execute(apiURL);
+
+
+        paramsPaid = getParamPaid();
+        AsyncRequest getPostBanner = new AsyncRequest(HomeFragment.this,getActivity(), "GET", paramsPaid, "");
+        getPostBanner.execute(apiURLPaidBanner);
+
+        recyclerPaidBanner.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), recyclerPaidBanner ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                        if(offers.get(position).getStore_image() != null) {
+
+                                Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
+                                i.putExtra("offer_title", offers.get(position).getOffer_title() );
+                                i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
+                                i.putExtra("offer_id", offers.get(position).getId() );
+                                i.putExtra("quantity", offers.get(position).getQuantity() );
+                                i.putExtra("offer_image", offers.get(position).getStore_image() );
+
+                                startActivity(i);
+
+                            /*Picasso.with(getApplicationContext()).load("http://www.kumbhdesign.in/mobile-app/depost/api/assets/"+back_list.get(position).getBackground_img())
+                                    .into(main_image.set);*/
+                        }
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
         return rootView;
     }
@@ -84,8 +126,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void asyncResponse(String response) {
 
-
-        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+      //  Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
             Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
@@ -122,6 +163,64 @@ public class HomeFragment extends Fragment implements
                 e.printStackTrace();
             }
 
+
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("offers");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res==null){
+
+                    Toast.makeText(getContext(), "No Paid Offers are Available..", Toast.LENGTH_LONG).show();
+                }
+                else {
+
+                    JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
+                    if (jsonArrayChanged.length() == 0){
+                        recyclerPaidBanner.setVisibility(View.GONE);
+                      //  tvNoOffer.setText("No Offers are Available..");
+                        //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                    }else {
+                        recyclerPaidBanner.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                        try {
+                            //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                            VoucherClass voucherClass = new VoucherClass();
+                            voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());
+                            voucherClass.setCategory_id(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
+                            voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("store_name").toString());
+                            voucherClass.setStore_image(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
+                            voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("offer_title").toString());
+                            voucherClass.setOffer_desc(jsonArrayChanged.getJSONObject(i).get("offer_desc").toString());
+                            voucherClass.setStart_date(jsonArrayChanged.getJSONObject(i).get("start_date").toString());
+                            voucherClass.setEnd_date(jsonArrayChanged.getJSONObject(i).get("end_date").toString());
+                            voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("message").toString());
+                            voucherClass.setUuid(jsonArrayChanged.getJSONObject(i).get("uuid").toString());
+                            voucherClass.setMajor(jsonArrayChanged.getJSONObject(i).get("major").toString());
+                            voucherClass.setMinor(jsonArrayChanged.getJSONObject(i).get("minor").toString());
+                            voucherClass.setQuantity(jsonArrayChanged.getJSONObject(i).get("quantity").toString());
+                            voucherClass.setPaid_banner(jsonArrayChanged.getJSONObject(i).get("paid_banner").toString());
+                            voucherClass.setPaid_start_date(jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString());
+                            voucherClass.setPaid_end_date(jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString());
+                            voucherClass.setLat(jsonArrayChanged.getJSONObject(i).get("lat").toString());
+                            voucherClass.setLng(jsonArrayChanged.getJSONObject(i).get("lng").toString());
+
+                            //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                            offers.add(voucherClass);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    paidBannerHorizontal = new PaidBannerHorizontal(getActivity(), offers);
+                    // adapter = new CustomFrameList(FestivalListPage.this, friends);
+                    recyclerPaidBanner.setAdapter(paidBannerHorizontal);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -132,6 +231,14 @@ public class HomeFragment extends Fragment implements
         params.add(new BasicNameValuePair("start", "0"));
         params.add(new BasicNameValuePair("limit", "10"));
         params.add(new BasicNameValuePair("fields", "id,title"));
+        return params;
+    }
+
+
+    private ArrayList<NameValuePair> getParamPaid() {
+        // define and ArrayList whose elements are of type NameValuePair
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("paid_banner", "1"));
         return params;
     }
    /* private void connectWithHttpPost() {

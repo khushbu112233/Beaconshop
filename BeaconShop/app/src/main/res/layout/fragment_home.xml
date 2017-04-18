@@ -13,17 +13,36 @@
        android:src="@drawable/fasion_home"
        android:alpha="0.8"/>
 
-   <GridView
-       tools:listitem="@layout/category_row"
-       android:verticalSpacing="10dp"
-       android:id="@+id/category_list"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:columnWidth="95dp"
-       android:gravity="center"
-       android:stretchMode="columnWidth"
-       android:numColumns="auto_fit"
-       android:padding="16dp"/>
+    <LinearLayout
+        android:gravity="center"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerPaidBanner"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+
+        <GridView
+            tools:listitem="@layout/category_row"
+            android:verticalSpacing="10dp"
+            android:id="@+id/category_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="95dp"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
+            android:numColumns="auto_fit"
+            android:padding="16dp"/>
+
+
+    </LinearLayout>
+
 
 
 </FrameLayout>
