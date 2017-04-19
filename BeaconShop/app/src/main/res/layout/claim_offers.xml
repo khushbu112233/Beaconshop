@@ -56,14 +56,16 @@
                 android:layout_height="2dp"
                 android:background="@color/red"
                 android:rotation="-45"
-                android:layout_marginTop="160dp"/>
+                android:layout_marginTop="160dp"
+                android:visibility="gone"/>
             <View
                 android:id="@+id/crosslineSecond"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/red"
                 android:rotation="45"
-                android:layout_marginTop="160dp"/>
+                android:layout_marginTop="160dp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
       <com.amplearch.beaconshop.Utils.TrojanCheckBox
