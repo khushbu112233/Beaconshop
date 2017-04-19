@@ -486,16 +486,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
 
-
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     new DatePickerDialog.OnDateSetListener() {
-
                         @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+                        {
                             txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -621,8 +617,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
+        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Add Photo!");

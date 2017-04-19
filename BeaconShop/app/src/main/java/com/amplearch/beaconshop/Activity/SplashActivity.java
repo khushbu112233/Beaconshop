@@ -38,10 +38,11 @@ public class SplashActivity extends AppCompatActivity
         showSnack(isConnected);
     }
 
-    private void checkConnection()
+    private boolean checkConnection()
     {
         boolean isConnected = ConnectivityReceiver.isConnected();
         showSnack(isConnected);
+        return isConnected ;
     }
 
     private void showSnack(boolean isConnected) {

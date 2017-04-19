@@ -12,11 +12,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
+import com.amplearch.beaconshop.Model.Favourites;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanButton;
 import com.amplearch.beaconshop.Utils.TrojanCheckBox;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
+import com.amplearch.beaconshop.helper.DatabaseHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -53,6 +55,7 @@ import java.util.List;
 
 public class ElectClaimOfferAcivity extends AppCompatActivity implements View.OnClickListener
 {
+    DatabaseHelper db ;
     TrojanText tvItemOffers, tvItemOfferDetails ;
     TrojanCheckBox tvCheckAgree ;
     TrojanButton btnItemClaimOffer ;
@@ -73,6 +76,8 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         setContentView(R.layout.claim_offers);
 
         checkConnection();
+
+        db = new DatabaseHelper(getApplicationContext());
 
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
@@ -150,7 +155,12 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         }
         if (v == ivFavorite)
         {
-            Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
+            Favourites tag1 = new Favourites(offer_id, userID);
+            db.createFavorites(tag1);
+            Toast.makeText(getApplicationContext(),"Voucher added to Favorites.",Toast.LENGTH_LONG).show();
+            // Inserting tags in db
+//            long tag1_id = db.createFavorites(tag1);
         }
         if (v == btnItemClaimOffer)
         {
@@ -161,7 +171,6 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 {
                     connectWithHttpPost(userID, offer_id, quantity, "1", offer_image, offer_title, offer_desc);
                 }
-
             }
             else {
                 Toast.makeText(getApplicationContext(), "Please Agree to Terms & Conditions before Claim Offer..", Toast.LENGTH_LONG).show();
