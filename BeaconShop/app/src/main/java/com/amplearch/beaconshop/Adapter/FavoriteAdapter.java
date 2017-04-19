@@ -1,6 +1,7 @@
 package com.amplearch.beaconshop.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,10 @@ import java.util.ArrayList;
 public class FavoriteAdapter extends BaseAdapter
 {
     Context context;
-    ArrayList<Integer> favImage;
+    ArrayList<Bitmap> favImage;
     ArrayList<String> favText;
 
-    public FavoriteAdapter(FragmentActivity activity, ArrayList<Integer> favImage, ArrayList<String> favText)
+    public FavoriteAdapter(FragmentActivity activity, ArrayList<Bitmap> favImage, ArrayList<String> favText)
     {
         this.context = activity ;
         this.favImage = favImage ;
@@ -54,7 +55,7 @@ public class FavoriteAdapter extends BaseAdapter
         RoundedImageView roundedImageView = (RoundedImageView)rowView.findViewById(R.id.imgOffer);
         TextView tvFavText = (TextView)rowView.findViewById(R.id.tvFavText);
 
-        roundedImageView.setImageResource(favImage.get(position));
+        roundedImageView.setImageBitmap(favImage.get(position));
         tvFavText.setText(favText.get(position));
 
         return rowView ;

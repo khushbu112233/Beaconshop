@@ -1,22 +1,27 @@
 package com.amplearch.beaconshop.Activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
+import com.amplearch.beaconshop.Model.Favourites;
+import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanButton;
 import com.amplearch.beaconshop.Utils.TrojanCheckBox;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
+import com.amplearch.beaconshop.helper.DatabaseHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -64,6 +69,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     String userID;
     TrojanCheckBox chAgree;
     Boolean isAgreeChecked = false;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,6 +80,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         checkConnection();
 
+        db = new DatabaseHelper(getApplicationContext());
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
         offer_title = intent.getStringExtra("offer_title");
@@ -107,6 +114,15 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
            // getQuantityWithHttpPost(userID, offer_id);
         }
 
+        Boolean exists = db.verification(offer_id);
+
+        if (exists) {
+
+            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
+        }
+        else {
+            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
+        }
 
         chAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -150,7 +166,36 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         }
         if (v == ivFavorite)
         {
-            Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
+/*            List<Favourites> allTags = db.getAllFavouritesRecords();
+            for (Favourites tag : allTags) {
+                Log.d("StoreLocation Name", tag.getProduct_id());
+                Toast.makeText(getApplicationContext(), tag.getProduct_id() + " " + tag.getUser_id(), Toast.LENGTH_LONG).show();
+
+            }*/
+
+
+            Boolean exists = db.verification(offer_id);
+
+            if (exists) {
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
+
+                Boolean del = db.deleteFavourites(offer_id);
+                if (del) {
+                    Toast.makeText(getApplicationContext(), "Removed from Favourites", Toast.LENGTH_LONG).show();
+                    ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
+                }
+            }
+            else {
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
+                db.addFavourites(offer_id, userID);
+
+                Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
+
+            }
+
+
+
         }
         if (v == btnItemClaimOffer)
         {

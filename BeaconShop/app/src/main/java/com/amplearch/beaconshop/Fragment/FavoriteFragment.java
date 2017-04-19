@@ -1,6 +1,8 @@
 package com.amplearch.beaconshop.Fragment;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,7 +34,7 @@ public class FavoriteFragment extends Fragment
 {
     GridView Fav_gridView;
     FavoriteAdapter favoriteAdapter ;
-    ArrayList<Integer> favImage = new ArrayList<Integer>();
+    ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
     ArrayList<String>  favText = new ArrayList<String>();
     DatabaseHelper db;
 
@@ -86,7 +88,9 @@ public class FavoriteFragment extends Fragment
             StartDate.add(todo.getStart_date().toString());
             EndDate.add(todo.getEnd_date().toString());
 
-            favImage.add(R.drawable.ic_sale);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(todo.getStore_image(), 0, todo.getStore_image().length);
+
+            favImage.add(bitmap);
             favText.add(todo.getStore_name());
         }
 

@@ -137,12 +137,18 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
+    public boolean deleteFavourites(String productt_id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_FAVOURITES, KEY_PRODUCTID + "=" + productt_id, null) > 0;
+    }
+
 	public boolean verification(String product_id) throws SQLException
 	{
 		int count = -1;
 		Cursor c = null;
 		try {
-			String query = "SELECT COUNT(*) FROM " + TABLE_VOUCHER + " WHERE " + KEY_PRODUCTID + " = ?";
+			String query = "SELECT COUNT(*) FROM " + TABLE_FAVOURITES + " WHERE " + KEY_PRODUCTID + " = ?";
 			SQLiteDatabase db = this.getWritableDatabase();
 			c = db.rawQuery(query, new String[] {product_id});
 			if (c.moveToFirst())
@@ -498,19 +504,26 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		{
 			do {
 				Voucher td = new Voucher();
-				td.setProduct_id(c.getString((c.getColumnIndex(KEY_PRODUCTID))));
-				td.setMessage((c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE))));
-				td.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
-				td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
-				td.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
-				td.setEnd_date(c.getString(c.getColumnIndex(KEY_ENDDATE)));
-				td.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				td.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
-				td.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
-				td.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
-				td.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
-				td.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
-				td.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
+
+                td.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                td.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
+                td.setCategory_id(c.getString(c.getColumnIndex(KEY_CATEGORYID)));
+                td.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+                td.setStore_image(c.getBlob(c.getColumnIndex(KEY_STORE_IMAGE)));
+                td.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
+                td.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
+                td.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
+                td.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
+                td.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
+                td.setEnd_date(c.getString(c.getColumnIndex(KEY_ENDDATE)));
+                td.setQuantity(c.getString(c.getColumnIndex(KEY_QUANTITY)));
+                td.setPaid_banner(c.getString(c.getColumnIndex(KEY_PAID_BANNER)));
+                td.setPaid_start_date(c.getString(c.getColumnIndex(KEY_PAID_START_DATE)));
+                td.setPaid_end_date(c.getString(c.getColumnIndex(KEY_PAID_END_DATE)));
+                td.setMessage(c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE)));
+                td.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
+                td.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
+                td.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
 
 				// adding to todo list
 				todos.add(td);
@@ -600,8 +613,32 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     }
 
+    public void addFavourites(String product_id,String user_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
 
-	public List<Voucher> getAllVouchers()
+        /*initialValues.put(KEY_DESCRIPTION , description);
+        initialValues.put(KEY_WHY, why);
+        initialValues.put(KEY_ACCOUNTABILITY, accontability);
+        initialValues.put(KEY_ALARM_TYPE, alarm_type);
+
+        initialValues.put(KEY_ALARM_VOLUME, alarm_vol);
+        initialValues.put(KEY_BG_IMAGE, bg_image);
+        initialValues.put(KEY_CATEGORY, category);
+        initialValues.put(KEY_DATE_TIME, goalDateTime);
+        initialValues.put(KEY_STATUS, status);*/
+
+
+        initialValues.put(KEY_PRODUCTID, product_id);
+        initialValues.put(KEY_USERID, user_id);
+
+        long rowId = db.insert(TABLE_FAVOURITES , null, initialValues);
+
+
+    }
+
+
+    public List<Voucher> getAllVouchers()
 	{
 		List<Voucher> voucher = new ArrayList<Voucher>();
 //		String selectQuery = "SELECT * FROM " + TABLE_VOUCHER + " WHERE " + KEY_PRODUCTID + " = " + 5 ;
@@ -825,6 +862,30 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		}
 		return tags;
 	}
+
+
+    public List<Favourites> getAllFavouritesRecords() {
+        List<Favourites> tags = new ArrayList<Favourites>();
+        String selectQuery = "SELECT  * FROM " + TABLE_FAVOURITES;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Favourites t = new Favourites();
+                t.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                t.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
+                t.setUser_id(c.getString(c.getColumnIndex(KEY_USERID)));
+                // adding to tags list
+                tags.add(t);
+            } while (c.moveToNext());
+        }
+        return tags;
+    }
 
 	public List<Voucher> getAllBeaconVouchers() {
 		List<Voucher> tags = new ArrayList<Voucher>();
