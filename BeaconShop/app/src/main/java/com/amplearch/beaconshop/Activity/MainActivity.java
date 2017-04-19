@@ -86,8 +86,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements
-        AsyncRequest.OnAsyncRequestComplete {
+public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
+{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     String[] titles ;
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements
 //        titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
 
         toolbarTitle =(TrojanText)findViewById(R.id.toolbarTitle);
-
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
         //topToolBar.setLogo(R.mipmap.ic_launcher);
@@ -215,9 +214,9 @@ public class MainActivity extends AppCompatActivity implements
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(false);
+//        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.content_frame, new HomeFragment());

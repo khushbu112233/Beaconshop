@@ -136,8 +136,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 ShareLinkContent linkContent = new ShareLinkContent.Builder()
                         .setContentTitle("How to integrate Linkedin from your app")
                         .setImageUrl(Uri.parse("https://www.numetriclabz.com/wp-content/uploads/2015/11/114.png"))
-                        .setContentDescription(
-                                "simple LinkedIn integration")
+                        .setContentDescription("simple LinkedIn integration")
                         .setContentUrl(Uri.parse("https://www.numetriclabz.com/android-linkedin-integration-login-tutorial/"))
                         .build();
 
@@ -207,8 +206,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 // Create an intermediate to connect with the Internet
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/addRedeemUser");
-                httpPost.setHeader(HTTP.CONTENT_TYPE,
-                        "application/x-www-form-urlencoded;charset=UTF-8");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
 
                 //Post Data
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);

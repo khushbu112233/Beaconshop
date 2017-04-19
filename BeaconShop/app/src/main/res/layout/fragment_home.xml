@@ -22,11 +22,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerPaidBanner"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
+            android:layout_height="130dp"
             android:layout_width="match_parent"
-            />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="-20dp"/>
 
         <GridView
             tools:listitem="@layout/category_row"
@@ -38,7 +37,7 @@
             android:gravity="center"
             android:stretchMode="columnWidth"
             android:numColumns="auto_fit"
-            android:padding="16dp"/>
+            android:padding="10dp" />
 
 
     </LinearLayout>

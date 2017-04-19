@@ -49,16 +49,15 @@ public class SplashActivity extends AppCompatActivity
         String message;
         int color;
         if (isConnected) {
-            message = "Good! Connected to Internet";
+//            message = "Good! Connected to Internet";
 //            color = Color.WHITE;
         } else {
             message = "Sorry! Not connected to internet";
 //            color = Color.RED;
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
 
 //        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), message, Snackbar.LENGTH_LONG);
-
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
 //        View sbView = snackbar.getView();
 //        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);

@@ -18,10 +18,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
-
         android:background="@android:color/transparent">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/llItemsOffer"
             android:layout_width="match_parent"
             android:layout_height="300dp"
@@ -46,10 +45,26 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:text="Flat 10%"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:id="@+id/tvItemOfferDetails"/>
-        </LinearLayout>
+                android:id="@+id/tvItemOfferDetails"
+                android:layout_below="@+id/tvItemOffer"/>
+            <View
+                android:id="@+id/crosslineFirst"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/red"
+                android:rotation="-45"
+                android:layout_marginTop="160dp"/>
+            <View
+                android:id="@+id/crosslineSecond"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/red"
+                android:rotation="45"
+                android:layout_marginTop="160dp"/>
+        </RelativeLayout>
 
       <com.amplearch.beaconshop.Utils.TrojanCheckBox
           android:layout_width="match_parent"

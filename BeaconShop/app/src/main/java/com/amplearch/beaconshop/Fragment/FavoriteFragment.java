@@ -51,7 +51,6 @@ public class FavoriteFragment extends Fragment
     DatabaseHelper db;
     Context context ;
 
-    List<UserRedeem> redeemList;
     UserSessionManager session;
     String userID;
     String voucherURL  ;
@@ -64,12 +63,9 @@ public class FavoriteFragment extends Fragment
     ArrayList<String>  StartDate = new ArrayList<String>();
     ArrayList<String>  EndDate = new ArrayList<String>();
 
-    String Offertitle , Offerdesc;
 //    FavoritesAdapter favoritesAdapter ;
 //    String fav_id;
     List<Favourites> favourites ;
-
-    String[] list ;
 
     public FavoriteFragment() { }
 
@@ -117,27 +113,14 @@ public class FavoriteFragment extends Fragment
             favImage.add(R.drawable.ic_sale);
             favText.add(todo.getStore_name());
 
-            Offertitle = todo.getOffer_title().toString();
-            Offerdesc = todo.getOffer_desc().toString();
-
-           list = new String[]{ Offertitle, Offerdesc };
         }
 
-//        SharedPreferences sharedPref = context.getSharedPreferences("DATA", Context.MODE_PRIVATE);
-//
-//        SharedPreferences.Editor editor = context.getSharedPreferences("DATA", Context.MODE_PRIVATE).edit();
-//        editor.putString("offer_title", Offertitle);
-//        editor.putString("offer_desc", Offerdesc);
-//        editor.commit();
 
         favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
-
         Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
         Fav_gridView.setAdapter(favoriteAdapter);     // adapter for image and text
 //        Fav_gridView.setAdapter(favoritesAdapter);    // adapter for all text
-
-        redeemList = new ArrayList<UserRedeem>();
 
         Fav_gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
