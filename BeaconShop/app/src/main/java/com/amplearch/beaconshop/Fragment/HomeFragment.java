@@ -34,8 +34,8 @@ import java.util.List;
 import com.amplearch.beaconshop.Utils.RecyclerItemClickListener;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
-public class HomeFragment extends Fragment implements
-        AsyncRequest.OnAsyncRequestComplete{
+public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncRequestComplete
+{
 
     GridView listCategory;
 
@@ -81,21 +81,21 @@ public class HomeFragment extends Fragment implements
             }
         });
         recyclerPaidBanner.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerPaidBanner.setLayoutManager(layoutManager);
 
         params = getParams();
         AsyncRequest getPosts = new AsyncRequest(HomeFragment.this,getActivity(), "GET", params, "");
         getPosts.execute(apiURL);
 
-
         paramsPaid = getParamPaid();
         AsyncRequest getPostBanner = new AsyncRequest(HomeFragment.this,getActivity(), "GET", paramsPaid, "");
         getPostBanner.execute(apiURLPaidBanner);
 
-        recyclerPaidBanner.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(), recyclerPaidBanner ,new RecyclerItemClickListener.OnItemClickListener() {
+        recyclerPaidBanner.addOnItemTouchListener
+                (
+                new RecyclerItemClickListener(getContext(), recyclerPaidBanner ,new RecyclerItemClickListener.OnItemClickListener()
+                {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
                         if(offers.get(position).getStore_image() != null) {

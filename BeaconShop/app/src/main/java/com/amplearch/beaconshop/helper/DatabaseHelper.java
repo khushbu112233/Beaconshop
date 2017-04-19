@@ -470,7 +470,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 	public List<Voucher> getVoucherbyID()
 	{
-
 		List<Voucher> todos = new ArrayList<Voucher>();
 		SQLiteDatabase db = this.getReadableDatabase();
 
@@ -800,6 +799,18 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		return tag_id;
 	}
 
+	public long createFavorites(Favourites tag) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_PRODUCTID, tag.getProduct_id());
+		values.put(KEY_USERID, tag.getUser_id());
+
+		// insert row
+		long tag_id = db.insert(TABLE_FAVOURITES, null, values);
+
+		return tag_id;
+	}
 
     public long createVoucher(Voucher tag) {
         SQLiteDatabase db = this.getWritableDatabase();

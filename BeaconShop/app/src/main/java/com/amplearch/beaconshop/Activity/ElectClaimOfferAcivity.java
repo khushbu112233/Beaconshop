@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.Favourites;
-import com.amplearch.beaconshop.Model.StoreLocation;
+
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanButton;
 import com.amplearch.beaconshop.Utils.TrojanCheckBox;
@@ -81,6 +81,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         checkConnection();
 
         db = new DatabaseHelper(getApplicationContext());
+
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
         offer_title = intent.getStringExtra("offer_title");
@@ -147,8 +148,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 ShareLinkContent linkContent = new ShareLinkContent.Builder()
                         .setContentTitle("How to integrate Linkedin from your app")
                         .setImageUrl(Uri.parse("https://www.numetriclabz.com/wp-content/uploads/2015/11/114.png"))
-                        .setContentDescription(
-                                "simple LinkedIn integration")
+                        .setContentDescription("simple LinkedIn integration")
                         .setContentUrl(Uri.parse("https://www.numetriclabz.com/android-linkedin-integration-login-tutorial/"))
                         .build();
 
@@ -196,6 +196,12 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
 
 
+//            Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
+            Favourites tag1 = new Favourites(offer_id, userID);
+            db.createFavorites(tag1);
+            Toast.makeText(getApplicationContext(),"Voucher added to Favorites.",Toast.LENGTH_LONG).show();
+            // Inserting tags in db
+//            long tag1_id = db.createFavorites(tag1);
         }
         if (v == btnItemClaimOffer)
         {
@@ -206,7 +212,6 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 {
                     connectWithHttpPost(userID, offer_id, quantity, "1", offer_image, offer_title, offer_desc);
                 }
-
             }
             else {
                 Toast.makeText(getApplicationContext(), "Please Agree to Terms & Conditions before Claim Offer..", Toast.LENGTH_LONG).show();
@@ -243,8 +248,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 // Create an intermediate to connect with the Internet
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/addRedeemUser");
-                httpPost.setHeader(HTTP.CONTENT_TYPE,
-                        "application/x-www-form-urlencoded;charset=UTF-8");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
 
                 //Post Data
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);

@@ -20,7 +20,7 @@ import java.util.HashMap;
  * Created by admin on 04/05/2017.
  */
 
-public class StoreLocations extends ContentProvider {
+public class  StoreLocations extends ContentProvider {
 
     static final String PROVIDER_NAME = "com.amplearch.beaconshop.StoreLocations";
     static final String URL = "content://" + PROVIDER_NAME + "/locations";

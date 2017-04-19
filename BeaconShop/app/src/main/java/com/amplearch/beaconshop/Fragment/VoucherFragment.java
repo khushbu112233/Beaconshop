@@ -82,19 +82,19 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
 
         gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
-                i.putExtra("offer_title", redeemList.get(position).getOffer_title() );
-                i.putExtra("offer_desc", redeemList.get(position).getOffer_desc() );
-                i.putExtra("offer_id", redeemList.get(position).getId() );
-                i.putExtra("quantity", redeemList.get(position).getQuantity() );
-                i.putExtra("offer_image", redeemList.get(position).getOffer_image() );
-                startActivity(i);
-            }
-        });
+            Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
+            i.putExtra("offer_title", redeemList.get(position).getOffer_title() );
+            i.putExtra("offer_desc", redeemList.get(position).getOffer_desc() );
+            i.putExtra("offer_id", redeemList.get(position).getId() );
+            i.putExtra("quantity", redeemList.get(position).getQuantity() );
+            i.putExtra("offer_image", redeemList.get(position).getOffer_image() );
+            startActivity(i);
+        }
+    });
 
         return view ;
     }

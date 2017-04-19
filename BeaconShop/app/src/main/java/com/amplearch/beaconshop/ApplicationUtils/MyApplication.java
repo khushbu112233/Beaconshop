@@ -94,5 +94,4 @@ public class MyApplication extends Application {
         ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 
-
 }

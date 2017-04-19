@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
@@ -19,30 +20,37 @@ import java.util.List;
  * Created by admin on 04/17/2017.
  */
 
-public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizontal.MyViewHolder>  {
-
+public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizontal.MyViewHolder>
+{
     private Activity activity;
     private List<VoucherClass> movieItems;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public RoundedImageView imageView;
+    public class MyViewHolder extends RecyclerView.ViewHolder
+    {
+//        public RoundedImageView imageView;
+        public ImageView imageView ;
+        public TextView bannerTitle, bannerDesc ;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view)
+        {
             super(view);
-            imageView = (RoundedImageView) view.findViewById(R.id.custom_sticker_image);
+            imageView = (ImageView) view.findViewById(R.id.custom_sticker_image);
+            bannerTitle = (TextView)view.findViewById(R.id.tvCustomTitle);
+//            bannerDesc = (TextView)view.findViewById(R.id.tvCustomDesc);
+
             view.setClickable(true);
 
         }
     }
-    public PaidBannerHorizontal(Activity activity, List<VoucherClass> movieItems) {
+    public PaidBannerHorizontal(Activity activity, List<VoucherClass> movieItems)
+    {
         this.activity = activity;
         this.movieItems = movieItems;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_paidbanner, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_paidbanner, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -51,12 +59,16 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //holder.imageView.setBackgroundResource(imageId[position]);
 
-        if(movieItems.get(position).getStore_image() != null) {
-            Picasso.with(activity).load(movieItems.get(position).getStore_image())
-                    .into(holder.imageView);
+        if(movieItems.get(position).getStore_image() != null)
+        {
+            Picasso.with(activity).load(movieItems.get(position).getStore_image()).into(holder.imageView);
         }
 
         holder.imageView.setSelected(movieItems.contains(position));
+
+        holder.bannerTitle.setText(movieItems.get(position).getOffer_title());
+//        holder.bannerDesc.setText(movieItems.get(position).getOffer_desc());
+
         //holder.getp.setSelected(mSelectedRows.contains(i));
        /* holder.txtView.setOnClickListener(new View.OnClickListener() {
             @Override
