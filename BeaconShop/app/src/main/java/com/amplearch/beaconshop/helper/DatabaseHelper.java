@@ -178,12 +178,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		db.execSQL(CREATE_TABLE_VOUCHER);
 		db.execSQL(CREATE_TABLE_HOMEFRAG);
 
-		ContentValues insertFavValues = new ContentValues();
+		/*ContentValues insertFavValues = new ContentValues();
 		insertFavValues.put("product_id", "5");
 		insertFavValues.put("user_id", "11");
 		db.insert(TABLE_FAVOURITES, null, insertFavValues);
-
-		insertFavValues.put("product_id", "6");
+*/
+		/*insertFavValues.put("product_id", "6");
 		insertFavValues.put("user_id", "22");
 		db.insert(TABLE_FAVOURITES, null, insertFavValues);
 
@@ -208,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		insertVoucherValues.put("uuid", "e71c1a56-58e5-7b1f-abbe-9bf13e06f36a");
 		insertVoucherValues.put("major", "0");
 		insertVoucherValues.put("minor", "0");
-		db.insert(TABLE_VOUCHER, null, insertVoucherValues);
+		db.insert(TABLE_VOUCHER, null, insertVoucherValues);*/
 
 		/*insertVoucherValues.put("product_id", "5");
 		insertVoucherValues.put("store_name", "Levie");
@@ -486,7 +486,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		Cursor c = null;
 		try
 		{
-			 c = db.query( TABLE_VOUCHER, settingsProjection, whereClause, null, null, null, null);
+            c = db.query( TABLE_VOUCHER, settingsProjection, whereClause, null, null, null, null);
 			Log.d(LOG, String.valueOf(c));
 		}
 		catch (Exception e)
@@ -553,6 +553,53 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 		return FavId;
 	}
+
+
+    public void addRecord(String product_id,String category_id, String store_name, byte[] store_image,
+                          String lat, String lng, String offer_title, String offer_desc,String start_date,
+                          String end_date, String quantity, String paid_banner, String paid_start_date, String paid_end_date,
+                          String message, String uuid, String major, String minor){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+
+        /*initialValues.put(KEY_DESCRIPTION , description);
+        initialValues.put(KEY_WHY, why);
+        initialValues.put(KEY_ACCOUNTABILITY, accontability);
+        initialValues.put(KEY_ALARM_TYPE, alarm_type);
+
+        initialValues.put(KEY_ALARM_VOLUME, alarm_vol);
+        initialValues.put(KEY_BG_IMAGE, bg_image);
+        initialValues.put(KEY_CATEGORY, category);
+        initialValues.put(KEY_DATE_TIME, goalDateTime);
+        initialValues.put(KEY_STATUS, status);*/
+
+
+        initialValues.put(KEY_PRODUCTID, product_id);
+        initialValues.put(KEY_CATEGORYID, category_id);
+        initialValues.put(KEY_STORENAME, store_name);
+        initialValues.put(KEY_STORE_IMAGE, store_image);
+        initialValues.put(KEY_LAT, lat);
+        initialValues.put(KEY_LNG, lng);
+        initialValues.put(KEY_OFFERTITLE, offer_title);
+        initialValues.put(KEY_OFFERDESC, offer_desc);
+        initialValues.put(KEY_STARTDATE, start_date);
+        initialValues.put(KEY_ENDDATE, end_date);
+        initialValues.put(KEY_QUANTITY, quantity);
+        initialValues.put(KEY_PAID_BANNER, paid_banner);
+        initialValues.put(KEY_PAID_START_DATE, paid_start_date);
+        initialValues.put(KEY_PAID_END_DATE, paid_end_date);
+        initialValues.put(KEY_BEACON_MESSAGE, message);
+        initialValues.put(KEY_UUID, uuid);
+        initialValues.put(KEY_MAJOR, major);
+        initialValues.put(KEY_MINOR, minor);
+
+
+
+        long rowId = db.insert(TABLE_VOUCHER , null, initialValues);
+
+
+    }
+
 
 	public List<Voucher> getAllVouchers()
 	{
@@ -721,24 +768,25 @@ public class DatabaseHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+		values.put(KEY_PRODUCTID, tag.getProduct_id());
+		values.put(KEY_CATEGORYID, tag.getCategory_id());
         values.put(KEY_STORENAME, tag.getStore_name());
+		values.put(KEY_STORE_IMAGE, tag.getStore_image());
         values.put(KEY_LAT, tag.getLat());
         values.put(KEY_LNG, tag.getLng());
         values.put(KEY_OFFERTITLE, tag.getOffer_title());
         values.put(KEY_OFFERDESC, tag.getOffer_desc());
         values.put(KEY_STARTDATE, tag.getStart_date());
         values.put(KEY_ENDDATE, tag.getEnd_date());
-        values.put(KEY_PRODUCTID, tag.getProduct_id());
-        values.put(KEY_CATEGORYID, tag.getCategory_id());
-        values.put(KEY_STORE_IMAGE, tag.getStore_image());
+		values.put(KEY_QUANTITY, tag.getQuantity());
+		values.put(KEY_PAID_BANNER, tag.getPaid_banner());
+		values.put(KEY_PAID_START_DATE, tag.getPaid_start_date());
+		values.put(KEY_PAID_END_DATE, tag.getPaid_end_date());
         values.put(KEY_BEACON_MESSAGE, tag.getMessage());
         values.put(KEY_UUID, tag.getUuid());
         values.put(KEY_MAJOR, tag.getMajor());
         values.put(KEY_MINOR, tag.getMinor());
-        values.put(KEY_QUANTITY, tag.getQuantity());
-        values.put(KEY_PAID_BANNER, tag.getPaid_banner());
-        values.put(KEY_PAID_START_DATE, tag.getPaid_start_date());
-        values.put(KEY_PAID_END_DATE, tag.getPaid_end_date());
+
 
         // insert row
         long tag_id = db.insert(TABLE_VOUCHER, null, values);
@@ -792,24 +840,24 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			do {
 				Voucher t = new Voucher();
 				t.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                t.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
+                t.setCategory_id(c.getString(c.getColumnIndex(KEY_CATEGORYID)));
 				t.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+                t.setStore_image(c.getBlob(c.getColumnIndex(KEY_STORE_IMAGE)));
 				t.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
 				t.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
 				t.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
 				t.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
 				t.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
 				t.setEnd_date(c.getString(c.getColumnIndex(KEY_ENDDATE)));
-				t.setMessage(c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE)));
-				t.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
-				t.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
-				t.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
-                t.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
-                t.setCategory_id(c.getString(c.getColumnIndex(KEY_CATEGORYID)));
-                t.setStore_image(c.getBlob(c.getColumnIndex(KEY_STORE_IMAGE)));
                 t.setQuantity(c.getString(c.getColumnIndex(KEY_QUANTITY)));
                 t.setPaid_banner(c.getString(c.getColumnIndex(KEY_PAID_BANNER)));
                 t.setPaid_start_date(c.getString(c.getColumnIndex(KEY_PAID_START_DATE)));
                 t.setPaid_end_date(c.getString(c.getColumnIndex(KEY_PAID_END_DATE)));
+				t.setMessage(c.getString(c.getColumnIndex(KEY_BEACON_MESSAGE)));
+				t.setUuid(c.getString(c.getColumnIndex(KEY_UUID)));
+				t.setMajor(c.getString(c.getColumnIndex(KEY_MAJOR)));
+				t.setMinor(c.getString(c.getColumnIndex(KEY_MINOR)));
 
 
                 // adding to tags list

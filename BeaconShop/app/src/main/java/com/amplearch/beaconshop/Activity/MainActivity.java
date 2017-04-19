@@ -513,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements
     public void asyncResponse(String response) {
 
 
-      //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
             Toast.makeText(getApplicationContext(), "No Offers..", Toast.LENGTH_LONG).show();
@@ -535,7 +535,6 @@ public class MainActivity extends AppCompatActivity implements
                     Log.d("StoreLocation Count", "After Delete StoreLocation Count: " + db.getAllLocations().size());
                   //  Toast.makeText(getApplicationContext(), "After Delete StoreLocation Count: " + db.getAllLocations().size(), Toast.LENGTH_LONG ).show();
 
-                    MyAsync myAsync = new MyAsync();
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("Voucher");
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
                         try {
@@ -595,17 +594,17 @@ public class MainActivity extends AppCompatActivity implements
                             myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                             array = stream.toByteArray();
 
-                            Voucher voucher = new Voucher(jsonArrayChanged.getJSONObject(i).get("store_name").toString(), jsonArrayChanged.getJSONObject(i).get("lat").toString(), jsonArrayChanged.getJSONObject(i).get("lng").toString()
-                                    , jsonArrayChanged.getJSONObject(i).get("offer_title").toString(), jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(), jsonArrayChanged.getJSONObject(i).get("end_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("message").toString(), jsonArrayChanged.getJSONObject(i).get("uuid").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("major").toString(), jsonArrayChanged.getJSONObject(i).get("minor").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("category_id").toString(),
-                                    array, jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                            db.addRecord(jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("category_id").toString(), jsonArrayChanged.getJSONObject(i).get("store_name").toString()
+                                    , array, jsonArrayChanged.getJSONObject(i).get("lat").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(), jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(), jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString(), jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
                                     jsonArrayChanged.getJSONObject(i).get("paid_banner").toString(), jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString());
+                                    jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("message").toString(), jsonArrayChanged.getJSONObject(i).get("uuid").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("major").toString(), jsonArrayChanged.getJSONObject(i).get("minor").toString());
 
-                            db.createVoucher(voucher);
+                          //  db.createVoucher(voucher);
 
                             StoreLocation tag1 = new StoreLocation(jsonArrayChanged.getJSONObject(i).get("store_name").toString(), jsonArrayChanged.getJSONObject(i).get("lat").toString(), jsonArrayChanged.getJSONObject(i).get("lng").toString()
                             , jsonArrayChanged.getJSONObject(i).get("offer_title").toString(), jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
@@ -618,8 +617,6 @@ public class MainActivity extends AppCompatActivity implements
                             //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                            offers.add(voucherClass);
 
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -627,17 +624,17 @@ public class MainActivity extends AppCompatActivity implements
                         }
                     }
 
-                   /* List<StoreLocation> allTags = db.getAllLocations();
+                    List<StoreLocation> allTags = db.getAllLocations();
                     for (StoreLocation tag : allTags) {
                         Log.d("StoreLocation Name", tag.getStore_name());
                         Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getOffer_title(), Toast.LENGTH_LONG).show();
 
-                    }*/
+                    }
 
                     List<Voucher> allVoucher = db.getAllBeaconVouchers();
                     for (Voucher tag : allVoucher) {
                         Log.d("StoreLocation Name", tag.getStore_name());
-                        Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getCategory_id(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getStore_image(), Toast.LENGTH_LONG).show();
 
                     }
 
