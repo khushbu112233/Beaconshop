@@ -51,6 +51,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by ample-arch on 4/13/2017.
@@ -58,7 +59,7 @@ import java.util.List;
 
 public class ElectClaimOfferAcivity extends AppCompatActivity implements View.OnClickListener
 {
-    TrojanText tvItemOffers, tvItemOfferDetails ;
+    TrojanText tvItemOffers, tvItemOfferDetails, tvItemOfferCode ;
     TrojanCheckBox tvCheckAgree ;
     TrojanButton btnItemClaimOffer ;
     ImageView ivFacebook, ivFavorite, ivShare ;
@@ -70,6 +71,9 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     TrojanCheckBox chAgree;
     Boolean isAgreeChecked = false;
     DatabaseHelper db;
+    View crossline1, crossline2;
+    TrojanText claim;
+    String offerCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -81,6 +85,11 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         checkConnection();
 
         db = new DatabaseHelper(getApplicationContext());
+
+        crossline1 = findViewById(R.id.crosslineFirst);
+        crossline2 = findViewById(R.id.crosslineSecond);
+        claim = (TrojanText) findViewById(R.id.claim);
+        tvItemOfferCode = (TrojanText) findViewById(R.id.tvItemOfferCode);
 
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
@@ -112,7 +121,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         userID = user1.get(UserSessionManager.KEY_USER_ID);
         if (checkConnection() == true)
         {
-           // getQuantityWithHttpPost(userID, offer_id);
+            getQuantityWithHttpPost(userID, offer_id);
         }
 
         Boolean exists = db.verification(offer_id);
@@ -144,12 +153,14 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     {
         if (v == ivFacebook)
         {
+            final String appPackageName = getPackageName();
             if (ShareDialog.canShow(ShareLinkContent.class)) {
                 ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                        .setContentTitle("How to integrate Linkedin from your app")
-                        .setImageUrl(Uri.parse("https://www.numetriclabz.com/wp-content/uploads/2015/11/114.png"))
-                        .setContentDescription("simple LinkedIn integration")
-                        .setContentUrl(Uri.parse("https://www.numetriclabz.com/android-linkedin-integration-login-tutorial/"))
+                        .setContentTitle("BeaconShop")
+                        .setImageUrl(Uri.parse("http://beacon.ample-arch.com/Images/ic_launcher.png"))
+                        .setContentDescription(
+                                "Hey Download this App before going to any Mall and Get best offer of mall in your Apps")
+                        .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName))
                         .build();
 
                 shareDialog.show(linkContent);  // Show facebook ShareDialog
@@ -157,10 +168,12 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         }
         if (v == ivShare)
         {
-            String shareBody = "Here is the share content body";
+            final String appPackageName = getPackageName();
+            String shareBody = "Hey Download this App before going to any Mall and Get best offer of mall in your Apps  \n" +
+                    "https://play.google.com/store/apps/details?id=" + appPackageName;
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Reddem Code");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "BeaconShop");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share Via"));
         }
@@ -197,9 +210,6 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
 
 //            Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
-            Favourites tag1 = new Favourites(offer_id, userID);
-            db.createFavorites(tag1);
-            Toast.makeText(getApplicationContext(),"Voucher added to Favorites.",Toast.LENGTH_LONG).show();
             // Inserting tags in db
 //            long tag1_id = db.createFavorites(tag1);
         }
@@ -210,7 +220,8 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
             {
                 if (checkConnection() == true )
                 {
-                    connectWithHttpPost(userID, offer_id, quantity, "1", offer_image, offer_title, offer_desc);
+                    offerCode = tvItemOfferCode.getText().toString();
+                    connectWithHttpPost(userID, offer_id, quantity, "1", offer_image, offer_title, offer_desc, offerCode);
                 }
             }
             else {
@@ -220,7 +231,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     }
 
 
-    private void connectWithHttpPost(final String user_id, final String offer_id, final String quantity, final String redeem, final String offer_image, final String offer_title, final String offer_desc)
+    private void connectWithHttpPost(final String user_id, final String offer_id, final String quantity, final String redeem, final String offer_image, final String offer_title, final String offer_desc, final String offer_code)
     {
         // Connect with a server is a time consuming process.
         //Therefore we use AsyncTask to handle it
@@ -242,6 +253,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 String paramOfferImage = params[4];
                 String paramOfferTitle = params[5];
                 String paramOfferDesc = params[6];
+                String paramOfferCode = params[7];
 
             //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
 
@@ -259,6 +271,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 nameValuePair.add(new BasicNameValuePair("offer_image", paramOfferImage));
                 nameValuePair.add(new BasicNameValuePair("offer_title", paramOfferTitle));
                 nameValuePair.add(new BasicNameValuePair("offer_desc", paramOfferDesc));
+                nameValuePair.add(new BasicNameValuePair("offer_code", paramOfferCode));
 
 
                 //Encoding POST data
@@ -340,6 +353,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         if (res.equals("Success")){
 
                             Toast.makeText(getApplicationContext(), "Successfully Claimed..", Toast.LENGTH_LONG).show();
+
                             getQuantityWithHttpPost(userID, offer_id);
                         }
                         else {
@@ -356,7 +370,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
         // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
         // We are passing the connectWithHttpGet() method arguments to that
-        httpGetAsyncTask.execute(user_id, offer_id, quantity, redeem, offer_image, offer_title, offer_desc);
+        httpGetAsyncTask.execute(user_id, offer_id, quantity, redeem, offer_image, offer_title, offer_desc, offer_code);
 
     }
 
@@ -383,7 +397,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
                 // Create an intermediate to connect with the Internet
                 HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserIDOfferID");
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/CheckRedeemUser");
                 httpPost.setHeader(HTTP.CONTENT_TYPE,
                         "application/x-www-form-urlencoded;charset=UTF-8");
 
@@ -468,17 +482,31 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                     //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        String res = jsonObject.getString("redeem");
+                        String res = jsonObject.getString("message");
                         // String message = jsonObject.getString("User");
                         //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                        if (res == null){
+                        if (res.equalsIgnoreCase("not exists")){
                            // Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                            crossline1.setVisibility(View.GONE);
+                            crossline2.setVisibility(View.GONE);
+                            claim.setVisibility(View.GONE);
+
+                            final String ALLOWED_CHARACTERS ="0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
+
+                            final Random random=new Random();
+                            final StringBuilder sb=new StringBuilder(6);
+                            for(int i=0;i<6;++i)
+                                sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
+                            //return sb.toString();
+                            tvItemOfferCode.setText(sb.toString());
                         }
-                        else {
+                        else if (res.equalsIgnoreCase("exists")){
+                            crossline1.setVisibility(View.VISIBLE);
+                            crossline2.setVisibility(View.VISIBLE);
+                            claim.setVisibility(View.VISIBLE);
 
-                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
-
-                            quantity = jsonArrayChanged.getJSONObject(0).get("quantity").toString();
+                            String code = jsonObject.getString("code");
+                            tvItemOfferCode.setText(code);
                           //  Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {

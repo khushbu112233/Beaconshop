@@ -63,9 +63,6 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         context = a;
     }
 
-
-
-
     // Interface to be implemented by calling activity
     public interface OnAsyncRequestComplete {
         public void asyncResponse(String response);

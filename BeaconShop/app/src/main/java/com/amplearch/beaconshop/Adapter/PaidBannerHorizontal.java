@@ -1,7 +1,10 @@
 package com.amplearch.beaconshop.Adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +64,11 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
 
         if(movieItems.get(position).getStore_image() != null)
         {
-            Picasso.with(activity).load(movieItems.get(position).getStore_image()).into(holder.imageView);
+            //Picasso.with(activity).load(movieItems.get(position).getStore_image()).into(holder.imageView);
+            byte[] decodedString = Base64.decode(movieItems.get(position).getStore_image(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+            holder.imageView.setImageBitmap(decodedByte);
         }
 
         holder.imageView.setSelected(movieItems.contains(position));

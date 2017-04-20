@@ -129,22 +129,18 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
                 String res = jsonObject.getString("offers");
                 // String message = jsonObject.getString("User");
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                if (res==null){
-
-                    Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                if (res.equals("")){
+                    tvNoOffer.setVisibility(View.VISIBLE);
+                    tvNoOffer.setText("No Offers are Available..");
+                   // Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                 }
                 else {
 
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
                     String strCount = jsonObject.getString("count");
                    // Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
-                    if (jsonArrayChanged.length() == 0){
-                        tvNoOffer.setVisibility(View.VISIBLE);
-                        tvNoOffer.setText("No Offers are Available..");
-                        //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
-                    }else {
+
                         tvNoOffer.setVisibility(View.GONE);
-                    }
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
                         try {
                             //JSONObject jObject = jsonArrayChanged.getJSONObject(i);

@@ -28,6 +28,7 @@ import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.UserRedeem;
 import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
@@ -61,9 +62,12 @@ public class FavoriteFragment extends Fragment
     List<Voucher> vouchers ;
     ArrayList<String>  StoreName = new ArrayList<String>();
     ArrayList<String>  OfferTitle = new ArrayList<String>();
+    ArrayList<String>  OfferID = new ArrayList<String>();
+    ArrayList<String>  OfferQuantity = new ArrayList<String>();
     ArrayList<String>  OfferDesc = new ArrayList<String>();
     ArrayList<String>  StartDate = new ArrayList<String>();
     ArrayList<String>  EndDate = new ArrayList<String>();
+    TrojanText tvNoFavourites;
 
 //    FavoritesAdapter favoritesAdapter ;
 //    String fav_id;
@@ -89,9 +93,11 @@ public class FavoriteFragment extends Fragment
 //        AsyncRequest getPosts = new AsyncRequest(FavoriteFragment.this,getActivity(), "GET", null, "");
 //        getPosts.execute(voucherURL);
 
+        tvNoFavourites = (TrojanText) view.findViewById(R.id.tvNoFavourites);
         List<Voucher> voch = db.getVoucherbyID();
         if(voch == null) {
-            Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
+            tvNoFavourites.setText("No Favourites are Added..");
             return view;
         }
 
@@ -104,10 +110,12 @@ public class FavoriteFragment extends Fragment
             Log.d("ToDo Start Date ", todo.getStart_date());
             Log.d("ToDo End Date ", todo.getEnd_date());
 
-            Toast.makeText(getContext(),"Product_ID "+todo.getProduct_id(),Toast.LENGTH_LONG).show();
+           // Toast.makeText(getContext(),"Product_ID "+todo.getProduct_id(),Toast.LENGTH_LONG).show();
 
             StoreName.add(todo.getStore_name().toString());
             OfferTitle.add(todo.getOffer_title().toString());
+            OfferQuantity.add(todo.getQuantity().toString());
+            OfferID.add(todo.getProduct_id().toString());
             OfferDesc.add(todo.getOffer_desc().toString());
             StartDate.add(todo.getStart_date().toString());
             EndDate.add(todo.getEnd_date().toString());
@@ -134,8 +142,8 @@ public class FavoriteFragment extends Fragment
                 Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
                 i.putExtra("offer_title", OfferTitle.get(position).toString() );
                 i.putExtra("offer_desc", OfferDesc.get(position).toString() );
-//                i.putExtra("offer_id", redeemList.get(position).getId() );
-//                i.putExtra("quantity", redeemList.get(position).getQuantity() );
+                i.putExtra("offer_id", OfferID.get(position).toString());
+                i.putExtra("quantity", OfferQuantity.get(position).toString() );
 //                i.putExtra("offer_image", redeemList.get(position).getOffer_image() );
                 startActivity(i);
             }
@@ -188,8 +196,6 @@ public class FavoriteFragment extends Fragment
 ////            Toast.makeText(getContext(), "Product Id = " +fav_id, Toast.LENGTH_LONG).show();
 //        }
 
-
-
         return view;
     }
 
@@ -200,7 +206,7 @@ public class FavoriteFragment extends Fragment
     }
 
     private void showSnack(boolean isConnected) {
-        String message = "Sorry! No Internet connection.";
+        String message = "Check For Data Connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {

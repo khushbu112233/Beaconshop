@@ -352,7 +352,7 @@ public class LocationUpdateService extends Service implements
         }
 
         logToDisplay(scanString.toString());
-        Toast.makeText(getApplicationContext(), scanString.toString() + "\n", Toast.LENGTH_LONG).show();
+     //   Toast.makeText(getApplicationContext(), scanString.toString() + "\n", Toast.LENGTH_LONG).show();
 
         scanString.append("\n");
 
@@ -436,7 +436,7 @@ public class LocationUpdateService extends Service implements
                         //   logBeaconData(beacon);
                         Log.i(TAG, "The first beacon I see is about " + beacon.getDistance() + " meters away.");
 
-                        Toast.makeText(getApplicationContext(), "The first beacon I see is about " + beacon.getDistance() + " meters away.", Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(getApplicationContext(), "The first beacon I see is about " + beacon.getDistance() + " meters away.", Toast.LENGTH_LONG).show();
 
                         List<Voucher> allTags = db.getAllBeaconVouchers();
                         for (Voucher tag : allTags) {
@@ -474,7 +474,7 @@ public class LocationUpdateService extends Service implements
         new MainActivity().runOnUiThread(new Runnable() {
             public void run() {
 
-                Toast.makeText(getApplicationContext(), line + "\n", Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), line + "\n", Toast.LENGTH_LONG).show();
                 //  editText.append(line + "\n");
 
                 // Temp code - don't really want to do this for every line logged, will look for a
@@ -505,8 +505,8 @@ public class LocationUpdateService extends Service implements
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
-        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
-                Toast.LENGTH_SHORT).show();
+       /* Toast.makeText(this, getResources().getString(R.string.location_updated_message),
+                Toast.LENGTH_SHORT).show();*/
     }
 
     @Override
@@ -549,8 +549,8 @@ public class LocationUpdateService extends Service implements
      */
     private void updateUI() {
         setLocationData();
-        Toast.makeText(this, "Latitude: =" + mCurrentLocation.getLatitude() + " Longitude:=" + mCurrentLocation
-                .getLongitude(), Toast.LENGTH_SHORT).show();
+      /*  Toast.makeText(this, "Latitude: =" + mCurrentLocation.getLatitude() + " Longitude:=" + mCurrentLocation
+                .getLongitude(), Toast.LENGTH_SHORT).show();*/
         Log.d(TAG, "Latitude:==" + mCurrentLocation.getLatitude() + "\n Longitude:==" + mCurrentLocation.getLongitude
                 ());
 
@@ -658,7 +658,7 @@ public class LocationUpdateService extends Service implements
 
             if (dist_int > 0 && dist_int < 500) {
                 int mId = Integer.parseInt(String.valueOf(tag.getId()));
-                Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (!mBluetoothAdapter.isEnabled()) {
                     mBluetoothAdapter.enable();
@@ -678,16 +678,16 @@ public class LocationUpdateService extends Service implements
 
                 //     tvStatus.setText("Status: "+"Please! Enable Bluetooth Mode.");
             } else if (dist_int > 500 && dist_int < 1000) {
-                Toast.makeText(getApplicationContext(), "You are nearest to Mall within" + dist_int + " Meter", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "You are nearest to Mall within" + dist_int + " Meter", Toast.LENGTH_LONG).show();
                 //       tvStatus.setText("Status: "+"You are nearest to Mall within "+dist_int+" meters.");
             } else if (dist_int > 1000 && dist_int < 2000) {
-                Toast.makeText(getApplicationContext(), "Your distance from Mall is: " + dist_int + " Meters.", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Your distance from Mall is: " + dist_int + " Meters.", Toast.LENGTH_LONG).show();
                 //       tvStatus.setText("Status: "+"Your distance from Mall is "+distt_km+" km.");
             } else if (dist_int > 2000 && dist_int < 3000) {
-                Toast.makeText(getApplicationContext(), "Distance from mall: " + distt_km + " Km", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Distance from mall: " + distt_km + " Km", Toast.LENGTH_LONG).show();
                 //      tvStatus.setText("Status: "+"Find Alpha-One Mall in range of "+distt_km+" kms distance.");
             } else if (dist_int > 3000) {
-                Toast.makeText(getApplicationContext(), "Away from.." + distt_km + " Km", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Away from.." + distt_km + " Km", Toast.LENGTH_LONG).show();
                 //   tvStatus.setText("You are away from Alpha-One Mall at "+distt_km+" Km.");
             } else {
                 //    tvStatus.setText("Ta-Ta Bye.. Bye.. "+distt_km+" Km.");

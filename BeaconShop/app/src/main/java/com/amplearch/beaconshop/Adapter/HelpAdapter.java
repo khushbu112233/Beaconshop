@@ -16,9 +16,8 @@ import com.amplearch.beaconshop.R;
 public class HelpAdapter extends PagerAdapter {
     Context context;
     private int[] GalImages = new int[] {
-            R.drawable.ic_sale,
-            R.drawable.ic_sale,
-            R.drawable.ic_sale
+            R.drawable.help1,
+            R.drawable.help2
     };
     public HelpAdapter(Context context){
         this.context=context;
@@ -38,7 +37,7 @@ public class HelpAdapter extends PagerAdapter {
         ImageView imageView = new ImageView(context);
         int padding = context.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
         imageView.setPadding(padding, padding, padding, padding);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageResource(GalImages[position]);
         ((ViewPager) container).addView(imageView, 0);
         return imageView;

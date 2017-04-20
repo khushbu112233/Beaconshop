@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,14 +31,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.AccountActivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
+import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
+import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.User;
+import com.amplearch.beaconshop.Model.UserRedeem;
+import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.PrefUtils;
@@ -45,6 +52,7 @@ import com.amplearch.beaconshop.Utils.TrojanEditText;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
+import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.android.internal.http.multipart.MultipartEntity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -55,7 +63,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -66,11 +81,14 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -87,10 +105,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -99,6 +124,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -131,12 +157,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, AsyncRequest.OnAsyncRequestComplete{
 
-    Button btnSave;
+    TrojanButton btnSave;
+    int count = 0;
 
     TrojanText btnDatePicker;
     TrojanText txtDate;
+    ShareDialog shareDialog;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -144,6 +172,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private Button btnSelect;
     private CircleImageView ivImage;
     private String userChoosenTask;
+    TrojanText voucher, Offer;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 007;
@@ -161,7 +190,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     Bitmap photo;
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
-
+    private static final int CAMERA_REQUEST = 1888;
     String name;
 
     String email;
@@ -181,7 +210,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private String upLoadServerUri = null;
     private String imagepath=null;
     Bitmap reminder_bitmap;
-
+    public String SERVER = "http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile",
+            timestamp;
+    Spinner spinner;
+    String password;
+    LinearLayout share, invite;
+    String voucherURL  ;
+    ArrayList<NameValuePair> params;
     public ProfileFragment() { }
 
     @Override
@@ -190,24 +225,27 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         checkConnection();
+        shareDialog = new ShareDialog(this);
         upLoadServerUri = "http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile";
-        Spinner spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
+        spinner = (Spinner) rootView.findViewById(R.id.gender_spinner);
         session = new UserSessionManager(getContext());
         user= PrefUtils.getCurrentUser(getContext());
         btnDatePicker = (TrojanText) rootView.findViewById(R.id.btn_date);
         txtDate = (TrojanText) rootView.findViewById(R.id.in_date);
         ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
 
-        btnSave = (Button) rootView.findViewById(R.id.btnSave);
-
-
+        btnSave = (TrojanButton) rootView.findViewById(R.id.btnSave);
+        share = (LinearLayout) rootView.findViewById(R.id.share);
+        invite = (LinearLayout) rootView.findViewById(R.id.invite);
         txtName = (TrojanText) rootView.findViewById(R.id.txtName);
         txtUserID = (TrojanText) rootView.findViewById(R.id.txtUser_id);
         btnLogout = (TrojanButton) rootView.findViewById(R.id.logout);
         btnSignOut = (TrojanButton) rootView.findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (TrojanButton) rootView.findViewById(R.id.btn_revoke_access);
+        voucher = (TrojanText) rootView.findViewById(R.id.voucher);
+        Offer = (TrojanText) rootView.findViewById(R.id.offer);
 
-        Toast.makeText(getContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
+       // Toast.makeText(getContext(), "User Login Status: " + session.isUserLoggedIn(), Toast.LENGTH_LONG).show();
 
         ivImage.setOnClickListener(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
@@ -247,21 +285,36 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         final HashMap<String, String> user1 = session.getUserDetails();
 
         // get name
-       name = user1.get(UserSessionManager.KEY_NAME);
+      // name = user1.get(UserSessionManager.KEY_NAME);
 
         // get email
-       email = user1.get(UserSessionManager.KEY_EMAIL);
+       //email = user1.get(UserSessionManager.KEY_EMAIL);
 
         userID = user1.get(UserSessionManager.KEY_USER_ID);
+        voucherURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID";
+        if (checkConnection()== true)
+        {
+            params = getParams();
+            AsyncRequest getPosts = new AsyncRequest(ProfileFragment.this.getActivity(), "GET", params);
+            getPosts.execute(voucherURL);
+        }
+
+       // password = user1.get(UserSessionManager.KEY_PASSWORD);
         // Show user data on activity
 
         btnSave.setOnClickListener(this);
-        txtName.setText(name);
-        txtUserID.setText(user1.get(UserSessionManager.KEY_USER_ID));
-        Toast.makeText(getContext(), name + " " + email, Toast.LENGTH_LONG).show();
+       // txtName.setText(name);
+      //  txtUserID.setText(user1.get(UserSessionManager.KEY_USER_ID));
+       // Toast.makeText(getContext(), name + " " + email, Toast.LENGTH_LONG).show();
 
         // Customizing G+ button
 
+        if (checkConnection() == true)
+        {
+            connectWithHttpPost(userID);
+            connectWithHttpPostVoucher(userID);
+          //  connectWithHttpPostOffers();
+        }
 
         new AsyncTask<Void,Void,Void>(){
             @Override
@@ -300,7 +353,495 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }.execute();
 
 
+
+        share.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getActivity().getPackageName();
+                String shareBody = "Hey Download this App before going to any Mall and Get best offer of mall in your Apps  \n" +
+                        "https://play.google.com/store/apps/details?id=" + appPackageName;
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "BeaconShop");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share Via"));
+            }
+        });
+
+        invite.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String appPackageName = getActivity().getPackageName();
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                            .setContentTitle("BeaconShop")
+                            .setImageUrl(Uri.parse("http://beacon.ample-arch.com/Images/ic_launcher.png"))
+                            .setContentDescription(
+                                    "Hey Download this App before going to any Mall and Get best offer of mall in your Apps")
+                            .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName))
+                            .build();
+
+                    shareDialog.show(linkContent);  // Show facebook ShareDialog
+                }
+            }
+        });
+
         return rootView;
+    }
+
+
+    private void connectWithHttpPost(final String user_id)
+    {
+        // Connect with a server is a time consuming process.
+        //Therefore we use AsyncTask to handle it
+        // From the three generic types;
+        //First type relate with the argument send in execute()
+        //Second type relate with onProgressUpdate method which I haven't use in this code
+        //Third type relate with the return type of the doInBackground method, which also the input type of the onPostExecute method
+        class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                // As you can see, doInBackground has taken an Array of Strings as the argument
+                //We need to specifically get the givenUsername and givenPassword
+                String paramUserID = params[0];
+                //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
+
+                // Create an intermediate to connect with the Internet
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/getUserbyUserID");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
+                nameValuePair.add(new BasicNameValuePair("id", paramUserID));
+
+                //Encoding POST data
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                } catch (UnsupportedEncodingException e) {
+                    // log exception
+                    e.printStackTrace();
+                }
+
+                // Sending a GET request to the web page that we want
+                // Because of we are sending a GET request, we have to pass the values through the URL
+                try {
+                    // execute(); executes a request using the default context.
+                    // Then we assign the execution result to HttpResponse
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+                    System.out.println("httpResponse");
+
+                    // getEntity() ; obtains the message entity of this response
+                    // getContent() ; creates a new InputStream object of the entity.
+                    // Now we need a readable source to read the byte stream that comes as the httpResponse
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+
+                    // We have a byte stream. Next step is to convert it to a Character stream
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                    // Then we have to wraps the existing reader (InputStreamReader) and buffer the input
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    // InputStreamReader contains a buffer of bytes read from the source stream and converts these into characters as needed.
+                    //The buffer size is 8K
+                    //Therefore we need a mechanism to append the separately coming chunks in to one String element
+                    // We have to use a class that can handle modifiable sequence of characters for use in creating String
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    String bufferedStrChunk = null;
+
+                    // There may be so many buffered chunks. We have to go through each and every chunk of characters
+                    //and assign a each chunk to bufferedStrChunk String variable
+                    //and append that value one by one to the stringBuilder
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+
+                    // Now we have the whole response as a String value.
+                    //We return that value then the onPostExecute() can handle the content
+                    System.out.println("Returning value of doInBackground :" + stringBuilder.toString());
+
+                    // If the Username and Password match, it will return "working" as response
+                    // If the Username or Password wrong, it will return "invalid" as response
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("Exception generates caz of httpResponse :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second exception generates caz of httpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+
+                return null;
+            }
+
+            // Argument comes for this method according to the return type of the doInBackground() and
+            //it is the third generic type of the AsyncTask
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+
+                if (result.equals("")){
+                    Toast.makeText(getContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                }else {
+                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String res = jsonObject.getString("user");
+                        // String message = jsonObject.getString("User");
+                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                        if (res.equals("")){
+                            Toast.makeText(getContext(), "User does not exists..", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+
+                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("user");
+                            for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                                try {
+                                    //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                                    userID = jsonArrayChanged.getJSONObject(i).get("id").toString();
+                                    email =  jsonArrayChanged.getJSONObject(i).get("email_id").toString();
+                                    //  voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("contact").toString());
+                                    name = jsonArrayChanged.getJSONObject(i).get("username").toString();
+                                    //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
+                                    byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+                                    byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString(), Base64.DEFAULT);
+                                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                                    ivImage.setImageBitmap(decodedByte);
+                                    // byte[] byteArray =  Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes(), Base64.DEFAULT) ;
+                                  //  Bitmap bmp1 = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+                                   // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                  //  ivImage.setImageBitmap(bmp1);
+                                    txtDate.setText(jsonArrayChanged.getJSONObject(i).get("dob").toString());
+                                     String gen = jsonArrayChanged.getJSONObject(i).get("gender").toString();
+                                    // voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("type").toString());
+                                    if (gen.equalsIgnoreCase("Male")){
+                                        spinner.setSelection (1);
+                                    }
+                                    else if (gen.equalsIgnoreCase("Female")){
+                                        spinner.setSelection (2);
+                                    }
+
+                                    txtUserID.setText(userID);
+                                    txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
+                                    //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+        // We are passing the connectWithHttpGet() method arguments to that
+        httpGetAsyncTask.execute(user_id);
+
+    }
+
+    private void connectWithHttpPostVoucher(final String user_id)
+    {
+        // Connect with a server is a time consuming process.
+        //Therefore we use AsyncTask to handle it
+        // From the three generic types;
+        //First type relate with the argument send in execute()
+        //Second type relate with onProgressUpdate method which I haven't use in this code
+        //Third type relate with the return type of the doInBackground method, which also the input type of the onPostExecute method
+        class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                // As you can see, doInBackground has taken an Array of Strings as the argument
+                //We need to specifically get the givenUsername and givenPassword
+                String paramUserID = params[0];
+                //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
+
+                // Create an intermediate to connect with the Internet
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
+                nameValuePair.add(new BasicNameValuePair("user_id", paramUserID));
+
+                //Encoding POST data
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                } catch (UnsupportedEncodingException e) {
+                    // log exception
+                    e.printStackTrace();
+                }
+
+                // Sending a GET request to the web page that we want
+                // Because of we are sending a GET request, we have to pass the values through the URL
+                try {
+                    // execute(); executes a request using the default context.
+                    // Then we assign the execution result to HttpResponse
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+                    System.out.println("httpResponse");
+
+                    // getEntity() ; obtains the message entity of this response
+                    // getContent() ; creates a new InputStream object of the entity.
+                    // Now we need a readable source to read the byte stream that comes as the httpResponse
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+
+                    // We have a byte stream. Next step is to convert it to a Character stream
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                    // Then we have to wraps the existing reader (InputStreamReader) and buffer the input
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    // InputStreamReader contains a buffer of bytes read from the source stream and converts these into characters as needed.
+                    //The buffer size is 8K
+                    //Therefore we need a mechanism to append the separately coming chunks in to one String element
+                    // We have to use a class that can handle modifiable sequence of characters for use in creating String
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    String bufferedStrChunk = null;
+
+                    // There may be so many buffered chunks. We have to go through each and every chunk of characters
+                    //and assign a each chunk to bufferedStrChunk String variable
+                    //and append that value one by one to the stringBuilder
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+
+                    // Now we have the whole response as a String value.
+                    //We return that value then the onPostExecute() can handle the content
+                    System.out.println("Returning value of doInBackground :" + stringBuilder.toString());
+
+                    // If the Username and Password match, it will return "working" as response
+                    // If the Username or Password wrong, it will return "invalid" as response
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("Exception generates caz of httpResponse :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second exception generates caz of httpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+
+                return null;
+            }
+
+            // Argument comes for this method according to the return type of the doInBackground() and
+            //it is the third generic type of the AsyncTask
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                //Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+                if (result.equals(""))
+                {
+                    count = 0;
+                }
+                else
+                {
+                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String res = jsonObject.getString("redeem");
+                        // String message = jsonObject.getString("User");
+                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                        if (res==null)
+                        {
+                            count = 0;
+                        }
+                        else
+                        {
+                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
+                            if (jsonArrayChanged.length() == 0)
+                            {
+                                count = 0;
+                            }
+                            else
+                            {
+                                count = jsonArrayChanged.length();
+                            }
+                        }
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                voucher.setText(String.valueOf(count));
+            }
+        }
+
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+        // We are passing the connectWithHttpGet() method arguments to that
+        httpGetAsyncTask.execute(user_id);
+
+    }
+
+    int OfferCount = 0;
+    private void connectWithHttpPostOffers()
+    {
+        // Connect with a server is a time consuming process.
+        //Therefore we use AsyncTask to handle it
+        // From the three generic types;
+        //First type relate with the argument send in execute()
+        //Second type relate with onProgressUpdate method which I haven't use in this code
+        //Third type relate with the return type of the doInBackground method, which also the input type of the onPostExecute method
+        class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                // As you can see, doInBackground has taken an Array of Strings as the argument
+                //We need to specifically get the givenUsername and givenPassword
+                String paramUserID = params[0];
+                //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
+
+                // Create an intermediate to connect with the Internet
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/getVoucherList");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
+               // nameValuePair.add(new BasicNameValuePair("user_id", paramUserID));
+
+                //Encoding POST data
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                } catch (UnsupportedEncodingException e) {
+                    // log exception
+                    e.printStackTrace();
+                }
+
+                // Sending a GET request to the web page that we want
+                // Because of we are sending a GET request, we have to pass the values through the URL
+                try {
+                    // execute(); executes a request using the default context.
+                    // Then we assign the execution result to HttpResponse
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+                    System.out.println("httpResponse");
+
+                    // getEntity() ; obtains the message entity of this response
+                    // getContent() ; creates a new InputStream object of the entity.
+                    // Now we need a readable source to read the byte stream that comes as the httpResponse
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+
+                    // We have a byte stream. Next step is to convert it to a Character stream
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                    // Then we have to wraps the existing reader (InputStreamReader) and buffer the input
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    // InputStreamReader contains a buffer of bytes read from the source stream and converts these into characters as needed.
+                    //The buffer size is 8K
+                    //Therefore we need a mechanism to append the separately coming chunks in to one String element
+                    // We have to use a class that can handle modifiable sequence of characters for use in creating String
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    String bufferedStrChunk = null;
+
+                    // There may be so many buffered chunks. We have to go through each and every chunk of characters
+                    //and assign a each chunk to bufferedStrChunk String variable
+                    //and append that value one by one to the stringBuilder
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+
+                    // Now we have the whole response as a String value.
+                    //We return that value then the onPostExecute() can handle the content
+                    System.out.println("Returning value of doInBackground :" + stringBuilder.toString());
+
+                    // If the Username and Password match, it will return "working" as response
+                    // If the Username or Password wrong, it will return "invalid" as response
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("Exception generates caz of httpResponse :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second exception generates caz of httpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+
+                return null;
+            }
+
+            // Argument comes for this method according to the return type of the doInBackground() and
+            //it is the third generic type of the AsyncTask
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                //Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+                if (result.equals(""))
+                {
+                    OfferCount = 0;
+                }
+                else
+                {
+                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String res = jsonObject.getString("Voucher");
+                        // String message = jsonObject.getString("User");
+                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                        if (res==null)
+                        {
+                            OfferCount = 0;
+                        }
+                        else
+                        {
+                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("Voucher");
+                            if (jsonArrayChanged.length() == 0)
+                            {
+                                OfferCount = 0;
+                            }
+                            else
+                            {
+                                OfferCount = jsonArrayChanged.length();
+                            }
+                        }
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Offer.setText(String.valueOf(OfferCount));
+            }
+        }
+
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+        // We are passing the connectWithHttpGet() method arguments to that
+        httpGetAsyncTask.execute();
+
+    }
+
+    private ArrayList<NameValuePair> getParams()
+    {
+        // define and ArrayList whose elements are of type NameValuePair
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("user_id", userID));
+        return params;
     }
 
     private boolean checkConnection() {
@@ -309,8 +850,25 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         return isConnected ;
     }
 
+    public void ShareDialog(Bitmap imagePath){
+
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(imagePath)
+                .build();
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        shareDialog.show(content);
+
+    }
+
+
+    // Initialize the facebook sdk and then callback manager will handle the login responses.
+
+
     private void showSnack(boolean isConnected) {
-        String message = "Sorry! No Internet connection.";
+        String message = "Check For Data Connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {
@@ -475,7 +1033,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             updateUI(false);
         }
     }
-
+    String gender;
+    String date;
     @Override
     public void onClick(View v) {
         if (v == btnDatePicker) {
@@ -491,7 +1050,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
                         {
-                            txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            Date date = new Date(year-1900, monthOfYear,dayOfMonth);
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            String cdate = formatter.format(date);
+                            txtDate.setText(cdate);
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -502,13 +1064,34 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }
 
         if (v == btnSave){
-            reminder_bitmap = ivImage.getDrawingCache();
+           // reminder_bitmap = ivImage.getDrawingCache();
 
-            AsyncUpdateClass asyncRequestObject = new AsyncUpdateClass();
-            asyncRequestObject.execute();
+            /*AsyncUpdateClass asyncRequestObject = new AsyncUpdateClass();
+            asyncRequestObject.execute();*/
 
-           // uploadImage();
 
+            boolean isConnected = false;
+            isConnected = checkConnection();
+            if (isConnected) {
+                gender = spinner.getSelectedItem().toString();
+                date = txtDate.getText().toString();
+                Bitmap image = ((BitmapDrawable) ivImage.getDrawable()).getBitmap();
+                Drawable myDrawable = ivImage.getDrawable();
+                if(ivImage.getDrawable().getConstantState().equals
+                        (getResources().getDrawable(R.drawable.default1).getConstantState())){
+                    Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
+                } else if (date.equals("")) {
+                    Toast.makeText(getContext(), "Please Select BirthDate..", Toast.LENGTH_LONG).show();
+                } else if (gender.equals("Select")) {
+                    Toast.makeText(getContext(), "Please Select Gender..", Toast.LENGTH_LONG).show();
+                } else if (image == null) {
+                    Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
+                } else {
+                    //execute the async task and upload the image to server
+                    new Upload(image, "IMG_" + timestamp).execute();
+                    // uploadImage();
+                }
+            }
            /* dialog = ProgressDialog.show(getContext(), "", "Uploading file...", true);
           //  messageText.setText("uploading started.....");
             new Thread(new Runnable() {
@@ -539,6 +1122,48 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             session.logoutUser();
 
         }
+
+    }
+
+    @Override
+    public void asyncResponse(String response) {
+
+        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+        if (response.equals(""))
+        {
+           count = 0;
+        }
+        else
+        {
+            //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("redeem");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res==null)
+                {
+                    count = 0;
+                }
+                else
+                {
+                    JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
+                    if (jsonArrayChanged.length() == 0)
+                    {
+                        count = 0;
+                    }
+                    else
+                    {
+                       count = jsonArrayChanged.length();
+                    }
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        voucher.setText(String.valueOf(count));
 
     }
 
@@ -628,8 +1253,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
                 if (items[item].equals("Take Photo")) {
                     userChoosenTask ="Take Photo";
-                    if(result)
-                        activeTakePhoto();
+                    if(result) {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    }
 
                 } else if (items[item].equals("Choose from Library")) {
                     userChoosenTask ="Choose from Library";
@@ -817,7 +1444,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
                        // messageText.setText("Got Exception : see logcat ");
-                        Toast.makeText(getContext(), "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getContext(), "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
                     }
                 });
                 Log.e("Upload file to server Exception", "Exception : "  + e.getMessage(), e);
@@ -864,7 +1491,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     }
                     imagepath = getPath(selectedImage);
                     Bitmap bitmap=BitmapFactory.decodeFile(imagepath);
-
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    timestamp = tsLong.toString();
                  //   photo = scaleBitmap(a, 200, 200);
                     photo = scaleDown(bitmap, 100, true);
                     ivImage.setImageBitmap(photo);
@@ -888,13 +1516,120 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                             getContext().getContentResolver(), data.getData());
                     photo = (Bitmap) data.getExtras().get("data");
                     file1 = persistImage(thumbnail1, "profileImage");
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    timestamp = tsLong.toString();
                     //captured image set in imageview
-                    ivImage.setImageBitmap(photo);
+                    ivImage.setImageBitmap(thumbnail);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
+
+            case CAMERA_REQUEST:
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 90, bytes1);
+                ivImage.setImageBitmap(photo);
+                break;
         }
+    }
+
+
+    private String hashMapToUrl(HashMap<String, String> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for(Map.Entry<String, String> entry : params.entrySet()){
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+        }
+
+        return result.toString();
+    }
+
+    private class Upload extends AsyncTask<Void,Void,String>{
+        private Bitmap image;
+        private String name1;
+
+        public Upload(Bitmap image,String name1){
+            this.image = image;
+            this.name1 = name1;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            //compress the image to jpg format
+            //  image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            /*
+            * encode image to base64 so that it can be picked by saveImage.php file
+            * */
+            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.DEFAULT);
+
+            // Bitmap bm = BitmapFactory.decodeFile("/path/to/image.jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+
+            String imgString = Base64.encodeToString(getBytesFromBitmap(image),
+                    Base64.NO_WRAP);
+
+            byte[] b = baos.toByteArray();
+            //generate hashMap to store encodedImage and the name
+            HashMap<String,String> detail = new HashMap<>();
+            detail.put("id", userID);
+            detail.put("dob", date);
+            detail.put("gender", gender);
+            detail.put("image", imgString);
+
+            try{
+                //convert this HashMap to encodedUrl to send to php file
+                String dataToSend = hashMapToUrl(detail);
+                //make a Http request and send data to saveImage.php file
+                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER,dataToSend);
+
+                //return the response
+                return response;
+
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e(TAG,"ERROR  "+e);
+                return null;
+            }
+        }
+
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            //show image uploaded
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
+                String res = jsonObject.getString("message");
+                if (res.equalsIgnoreCase("Success")){
+                    Toast.makeText(getContext(),"Data Uploaded Successfully..",Toast.LENGTH_SHORT).show();
+                   // session.createUserLoginSession(name, email, "", password, userID);
+                }
+                else {
+                    Toast.makeText(getContext(),"Data not Uploaded..",Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
     }
 
     private File persistImage(Bitmap bitmap, String name) {
@@ -1057,7 +1792,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             dialog.dismiss();
             Log.e("Resulted Value: ", result);
             System.out.println("Resulted Value: " + result);
-             Toast.makeText(getContext(), "Resulted value" + result, Toast.LENGTH_LONG).show();
+          //   Toast.makeText(getContext(), "Resulted value" + result, Toast.LENGTH_LONG).show();
             if (result.equals("") || result == null) {
 
                 /*Snackbar snackbar = Snackbar.make(mRoot, "Unable to Fetch From Server !", Snackbar.LENGTH_LONG);

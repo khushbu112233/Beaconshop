@@ -1,7 +1,10 @@
 package com.amplearch.beaconshop.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,8 +66,12 @@ public class VoucherAdapter extends BaseAdapter
         tvVouchText.setText(voucherItems.get(position).getOffer_title());
 
         if(voucherItems.get(position).getOffer_image() != null) {
-            Picasso.with(context).load(voucherItems.get(position).getOffer_image())
-                    .into(roundedImage);
+            /*Picasso.with(context).load(voucherItems.get(position).getOffer_image())
+                    .into(roundedImage);*/
+
+            byte[] decodedString = Base64.decode(voucherItems.get(position).getOffer_image(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            roundedImage.setImageBitmap(decodedByte);
         }
 
         return rView;

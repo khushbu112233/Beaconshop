@@ -54,7 +54,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".InternetCheck"/>
+        <activity android:name=".InternetCheck" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -101,15 +101,14 @@
             android:value="AIzaSyAYWxi1tvDrSA7fLp_qoMaTDMqGvnLHveY" />
         -->
         <activity android:name=".TempActivity" />
-
         <activity android:name=".Activity.OfferDetailActivity" />
         <activity
             android:name=".Activity.ElectronicOfferActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".Activity.BconActivity" >
-            </activity>
-
-        <activity android:name=".Activity.ImageActivity"></activity>
+        <activity android:name=".Activity.BconActivity" />
+        <activity android:name=".Activity.ImageActivity" />
+        <activity android:name=".ImageUpload" />
+        <activity android:name=".NearbyOffers"></activity>
     </application>
 
 </manifest>

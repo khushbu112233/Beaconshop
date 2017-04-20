@@ -1,6 +1,9 @@
 package com.amplearch.beaconshop.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +60,12 @@ public class ElectOfferAdapter extends BaseAdapter
         TrojanText trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
 
         if(voucherItems.get(position).getStore_image() != null) {
-            Picasso.with(context).load(voucherItems.get(position).getStore_image())
-                    .into(imageView);
+           /* Picasso.with(context).load(voucherItems.get(position).getStore_image())
+                    .into(imageView);*/
+            byte[] decodedString = Base64.decode(voucherItems.get(position).getStore_image(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+            imageView.setImageBitmap(decodedByte);
         }
         trojanText.setText(voucherItems.get(position).getOffer_title().toString());
 

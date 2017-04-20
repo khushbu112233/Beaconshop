@@ -55,6 +55,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
     String changePasswordURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/ChangePassword" ;
     ArrayList<NameValuePair> params ;
     String user_Email, user_OldPassword, user_NewPassword ;
+    String email, password, userId, name;
 
     @Nullable
     @Override
@@ -66,6 +67,11 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
         // get user data from session
         final HashMap<String, String> user1 = session.getUserDetails();
         final String login_email = user1.get(UserSessionManager.KEY_EMAIL);
+
+        email = user1.get(UserSessionManager.KEY_EMAIL);
+        name = user1.get(UserSessionManager.KEY_NAME);
+        password = user1.get(UserSessionManager.KEY_PASSWORD);
+        userId = user1.get(UserSessionManager.KEY_USER_ID);
 
          etChEmail = (EditText)rootView.findViewById(R.id.etChEmail);
          etChOldPassword = (EditText)rootView.findViewById(R.id.etChOldPassword);
@@ -133,6 +139,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
                 }
                 else {
                     Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
+                    session.createUserLoginSession(name, email, "", user_NewPassword, userId);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

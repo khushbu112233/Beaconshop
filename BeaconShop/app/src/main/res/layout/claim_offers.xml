@@ -20,6 +20,16 @@
         android:layout_marginRight="20dp"
         android:background="@android:color/transparent">
 
+        <com.amplearch.beaconshop.Utils.TrojanText
+            android:id="@+id/claim"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="You have already Claimed this Offer"
+            android:textColor="@color/white"/>
+
+
         <RelativeLayout
             android:id="@+id/llItemsOffer"
             android:layout_width="match_parent"
@@ -50,6 +60,19 @@
                 android:textColor="@color/white"
                 android:id="@+id/tvItemOfferDetails"
                 android:layout_below="@+id/tvItemOffer"/>
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textAlignment="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Flat 10%"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
+                android:id="@+id/tvItemOfferCode" />
             <View
                 android:id="@+id/crosslineFirst"
                 android:layout_width="match_parent"
