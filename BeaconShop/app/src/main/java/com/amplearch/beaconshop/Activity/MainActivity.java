@@ -154,12 +154,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         }
 
-        rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
+       // rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
 
         if (!mIsServiceStarted) {
             mIsServiceStarted = true;
            // setButtonsEnabledState();
-            OnGoingLocationNotification(this);
+           // OnGoingLocationNotification(this);
             startService(new Intent(this, LocationUpdateService.class));
         }
 
@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.content_frame, new HomeFragment());
+        tx.addToBackStack(null);
         tx.commit();
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -475,47 +476,47 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             */
             case 1:
                 fragment = new HomeFragment();
-                rlButtons.setVisibility(View.VISIBLE);
+              //  rlButtons.setVisibility(View.VISIBLE);
                 toolbarTitle.setText("Beacon Shop");
                 break;
             case 2:
                 fragment = new FavoriteFragment();
-                rlButtons.setVisibility(View.GONE);
+               // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Favourites");
                 break;
             case 3:
                 fragment = new VoucherFragment();
-                rlButtons.setVisibility(View.GONE);
+              //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Vouchers");
                 break;
             case 4:
                 fragment = new BadgesFragment();
-                rlButtons.setVisibility(View.GONE);
+              //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Badges");
                 break;
             case 5:
                 fragment = new ProfileFragment();
-                rlButtons.setVisibility(View.GONE);
+               // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
                 break;
             case 6:
                 fragment = new SettingsFragment();
-                rlButtons.setVisibility(View.GONE);
+              //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Settings");
                 break;
             case 7:
                 fragment = new ChangePasswordFragment();
-                rlButtons.setVisibility(View.GONE);
+              //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Change Password");
                 break;
             case 8:
                 fragment = new HelpFragment();
-                rlButtons.setVisibility(View.GONE);
+             //   rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Help");
                 break;
             case 9:
                 fragment = new AboutUsFragment();
-                rlButtons.setVisibility(View.GONE);
+              //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("About Us");
         }
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -529,6 +530,11 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
     }
+
+    /*public void selectFragment(int position){
+        mViewPager.setCurrentItem(position, true);
+// true is to animate the transaction
+    }*/
 
     public void exportDatabaseToSdCard(View view) {
         Const.ExportDatabase(this);
@@ -572,12 +578,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         }
     }
 
-    /**
-     * Method to generate OnGoingLocationNotification
-     *
-     * @param mcontext
-     */
-    public static void OnGoingLocationNotification(Context mcontext) {
+  /*  public static void OnGoingLocationNotification(Context mcontext) {
         int mNotificationId;
 
         mNotificationId = (int) System.currentTimeMillis();
@@ -618,12 +619,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         mNotificationManager.notify(mNotificationId, mNotification);
 
-    }
+    }*/
 
-    private void cancelNotification(Context mContext, int mnotinotifId) {
+    /*private void cancelNotification(Context mContext, int mnotinotifId) {
         NotificationManager manager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(mnotinotifId);
-    }
+    }*/
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -661,10 +662,10 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+   /* @Override
     public void onBackPressed()
     {
-       /* Fragment frag = new Fragment();
+       *//* Fragment frag = new Fragment();
         Fragment frag0 = new HomeFragment();
         Fragment frag1 = new FavoriteFragment();
         Fragment frag2 = new VoucherFragment();
@@ -688,31 +689,68 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         {
 
         }
-*/
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Exit Application?");
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                moveTaskToBack(true);
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(1);
-                            }
-                        })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
 
-                        dialog.cancel();
-                    }
-                });
+*//*
+       *//*Fragment homeFragment = new HomeFragment();
+        if(homeFragment!=null)
+        {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Exit Application?");
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    moveTaskToBack(true);
+                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    System.exit(1);
+                                }
+                            })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }*//*
+        if(getFragmentManager().getBackStackEntryCount() == 0)
+        {
+           // super.onBackPressed();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Exit Application?");
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    moveTaskToBack(true);
+                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    System.exit(1);
+                                }
+                            })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+        else {
+            getFragmentManager().popBackStack();
+        }
+
+        // for new method
+
     }
-
+*/
     private boolean checkConnection() {
         boolean isConnected = ConnectivityReceiver.isConnected();
         showSnack(isConnected);
@@ -837,8 +875,9 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
                           //  db.createVoucher(voucher);
 
-                            StoreLocation tag1 = new StoreLocation(jsonArrayChanged.getJSONObject(i).get("store_name").toString(), jsonArrayChanged.getJSONObject(i).get("lat").toString(), jsonArrayChanged.getJSONObject(i).get("lng").toString()
-                            , jsonArrayChanged.getJSONObject(i).get("offer_title").toString(), jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
+                            StoreLocation tag1 = new StoreLocation(jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("store_name").toString(), decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(), jsonArrayChanged.getJSONObject(i).get("lng").toString()
+                            , jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(), jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
                                     jsonArrayChanged.getJSONObject(i).get("start_date").toString(), jsonArrayChanged.getJSONObject(i).get("end_date").toString() );
                            /* StoreLocation tag2 = new StoreLocation("Ghatlodia", "23.057506", "72.543392", "Cashbak", "70% Cashback, Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%.", "08/03/2017", "06/04/2017");
                             StoreLocation tag3 = new StoreLocation("Vikram Appts", "23.01210", "72.522634", "Redeem Code", "Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%", "08/02/2015", "14/02/2016");

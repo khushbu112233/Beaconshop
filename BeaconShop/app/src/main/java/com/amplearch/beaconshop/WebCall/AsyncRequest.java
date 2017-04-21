@@ -86,6 +86,8 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         pDialog = new ProgressDialog(context);
         pDialog.setMessage("Loading data.."); // typically you will define such
         // strings in a remote file.
+        //pDialog.isIndeterminate();
+        pDialog.setCancelable(false);
         pDialog.show();
     }
 

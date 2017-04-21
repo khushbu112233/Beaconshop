@@ -58,6 +58,7 @@ public class ElectOfferAdapter extends BaseAdapter
 
         ImageView imageView = (ImageView)rowView.findViewById(R.id.ivElectImage);
         TrojanText trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
+        TrojanText trojanTextdetail = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails1);
 
         if(voucherItems.get(position).getStore_image() != null) {
            /* Picasso.with(context).load(voucherItems.get(position).getStore_image())
@@ -67,7 +68,8 @@ public class ElectOfferAdapter extends BaseAdapter
 
             imageView.setImageBitmap(decodedByte);
         }
-        trojanText.setText(voucherItems.get(position).getOffer_title().toString());
+        trojanText.setText(voucherItems.get(position).getMessage().toString());
+        trojanTextdetail.setText(voucherItems.get(position).getOffer_title().toString());
 
         return rowView ;
     }

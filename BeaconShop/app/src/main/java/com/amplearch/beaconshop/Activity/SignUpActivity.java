@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterUser" ;
     ArrayList<NameValuePair> params ;
     String UserName, EmailAddress, ContactNo, Password, RePassword, tType;
+    LinearLayout lnrSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,6 +59,15 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
         etUserName = (EditText) findViewById(R.id.etUserName);
         etContactNo = (EditText)findViewById(R.id.etContactNo);
         tvSignup = (TextView) findViewById(R.id.tvSignUp);
+        lnrSignIn = (LinearLayout) findViewById(R.id.lnrSignIn);
+
+        lnrSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override

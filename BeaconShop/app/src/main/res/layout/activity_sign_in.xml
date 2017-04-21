@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F0EA"
     tools:context="com.amplearch.beaconshop.Activity.SignInActivity">
 
    <FrameLayout
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:background="@drawable/fasion_home"
-       android:alpha="0.8"/>
+       android:layout_height="match_parent" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:logo="@mipmap/ic_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:gravity="center">
+
+        <com.amplearch.beaconshop.Utils.TrojanText
+            android:layout_width="match_parent"
+            android:paddingLeft="-60dp"
+            android:layout_height="wrap_content"
+            android:text="BEACON SHOP"
+            android:textColor="@color/white"
+            android:id="@+id/toolbarTitle"
+            android:layout_marginLeft="0dp"
+            android:textAlignment="center"
+            android:textSize="18dp"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingRight="15dp"
         android:paddingLeft="15dp"
-        android:background="@drawable/login_shape"
-        android:alpha="0.85"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
@@ -34,7 +53,19 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="35dp"/>
 
+        <com.amplearch.beaconshop.Utils.TrojanText
+            android:layout_marginTop="15dp"
+            android:textSize="20dp"
+            android:id="@+id/shop"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/primary"
+            android:layout_below="@+id/id_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A Shop Of Offers"/>
+
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/llUsernameBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +75,7 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
-            android:layout_below="@+id/id_logo"
+            android:layout_below="@+id/shop"
             android:background="@drawable/rectangle_shape"
             android:layout_centerVertical="true">
             <View
@@ -61,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="User Name"
+                android:text="vvfv"
                 android:textColorHint="@android:color/white"
                 android:textColor="@android:color/white"
                 android:layout_marginRight="10dp"
@@ -73,6 +105,7 @@
         </LinearLayout>
 
         <com.amplearch.beaconshop.Utils.TrojanText
+            android:visibility="gone"
             android:id="@+id/tvOR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,12 +121,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="30dp"
             android:weightSum="1"
+            android:layout_below="@+id/tvOR"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
-            android:layout_below="@+id/tvOR"
             android:background="@drawable/rectangle_shape"
             android:layout_centerVertical="true">
             <View
@@ -110,8 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email Address"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
+                android:textColorHint="@color/primary"
+                android:textColor="@color/primary"
                 android:layout_marginRight="10dp"
                 android:paddingLeft="10dp"
                 android:layout_marginLeft="5dp"
@@ -147,8 +180,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:layout_weight="0.9"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
+                android:textColorHint="@color/primary"
+                android:textColor="@color/primary"
                 android:layout_marginRight="10dp"
                 android:paddingLeft="10dp"
                 android:layout_marginLeft="5dp"
@@ -163,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/llPasswordBox"
             android:text="Forgot Password?"
-            android:textColor="@color/white"
+            android:textColor="@color/primary"
             android:layout_marginTop="15dp"
             android:textAlignment="textEnd"
             android:textSize="15dp"/>
@@ -173,7 +206,7 @@
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:text="SIGN IN"
-            android:textColor="@color/logo_color"
+            android:textColor="@color/white"
             android:background="@drawable/button_shape"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -186,6 +219,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
+            android:id="@+id/lnrSignup"
             android:paddingLeft="0dp"
             android:paddingRight="00dp"
             android:gravity="center"
@@ -198,7 +232,7 @@
                 android:layout_weight="0"
                 android:textSize="11dp"
                 android:layout_marginRight="-0dp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/primary_dark"
                 android:text="Don't Have An Account?"/>
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="wrap_content"
@@ -209,7 +243,7 @@
                 android:textSize="16dp"
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="0dp"
-                android:textColor="@android:color/white"/>
+                android:textColor="@color/primary_dark"/>
         </LinearLayout>
 
     </RelativeLayout>

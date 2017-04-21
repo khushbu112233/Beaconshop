@@ -20,9 +20,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,6 +220,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     LinearLayout share, invite;
     String voucherURL  ;
     ArrayList<NameValuePair> params;
+    LinearLayout lnrvoucher, lnrOffer;
     public ProfileFragment() { }
 
     @Override
@@ -233,6 +237,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         btnDatePicker = (TrojanText) rootView.findViewById(R.id.btn_date);
         txtDate = (TrojanText) rootView.findViewById(R.id.in_date);
         ivImage = (CircleImageView) rootView.findViewById(R.id.profile_image);
+        lnrvoucher = (LinearLayout) rootView.findViewById(R.id.lnrvoucher);
+        lnrOffer = (LinearLayout) rootView.findViewById(R.id.lnrOffer);
 
         btnSave = (TrojanButton) rootView.findViewById(R.id.btnSave);
         share = (LinearLayout) rootView.findViewById(R.id.share);
@@ -277,6 +283,26 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .build();
 
 
+        lnrvoucher.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment fragment = new VoucherFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        lnrOffer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
         /*if(session.checkLogin()){
             getActivity().finish();
         }*/
@@ -313,7 +339,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         {
             connectWithHttpPost(userID);
             connectWithHttpPostVoucher(userID);
-          //  connectWithHttpPostOffers();
+            connectWithHttpPostOffers();
         }
 
         new AsyncTask<Void,Void,Void>(){
@@ -711,7 +737,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
                 // As you can see, doInBackground has taken an Array of Strings as the argument
                 //We need to specifically get the givenUsername and givenPassword
-                String paramUserID = params[0];
+              //  String paramUserID = params[0];
                 //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
 
                 // Create an intermediate to connect with the Internet
@@ -720,16 +746,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
 
                 //Post Data
-                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
+              //  List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
                // nameValuePair.add(new BasicNameValuePair("user_id", paramUserID));
 
-                //Encoding POST data
-                try {
-                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-                } catch (UnsupportedEncodingException e) {
-                    // log exception
-                    e.printStackTrace();
-                }
+
 
                 // Sending a GET request to the web page that we want
                 // Because of we are sending a GET request, we have to pass the values through the URL
@@ -1649,6 +1669,36 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     @Override
+    public void onResume() {
+
+        super.onResume();
+
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    // handle back button
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -1691,6 +1741,14 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         mProgressDialog.show();
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+    }
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();

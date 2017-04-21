@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
     TrojanText tvForgotPassword;
     TrojanEditText etEmailAdd, etPass, etUsername;
     TrojanButton tvSignIn ;
+    LinearLayout lnrSignup;
     public static String rslt="";
     UserSessionManager session;
     final Context context = this ;
@@ -71,9 +73,20 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
         etPass = (TrojanEditText)findViewById(R.id.etPass);
         etUsername = (TrojanEditText)findViewById(R.id.etUserName);
         tvForgotPassword = (TrojanText)findViewById(R.id.tvForgotPassword);
+        lnrSignup = (LinearLayout) findViewById(R.id.lnrSignup);
         session = new UserSessionManager(getApplicationContext());
 
         tvSignIn = (TrojanButton) findViewById(R.id.tvSignIn);
+
+
+        lnrSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)

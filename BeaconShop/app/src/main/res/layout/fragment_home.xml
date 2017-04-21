@@ -4,44 +4,86 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F0F0EA"
     android:id="@+id/frameHome">
 
-   <ImageView
-       android:scaleType="fitXY"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:src="@drawable/fasion_home"
-       android:alpha="0.8"/>
+    <GridView
+        android:layout_marginTop="40dp"
+        android:visibility="gone"
+        tools:listitem="@layout/grid_favorite"
+        android:verticalSpacing="20dp"
+        android:id="@+id/nearby_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="110dp"
+        android:gravity="center"
+        android:horizontalSpacing="20dp"
+        android:stretchMode="columnWidth"
+        android:numColumns="auto_fit"
+        android:padding="10dp" />
+
+    <com.amplearch.beaconshop.Utils.TrojanText
+        android:visibility="gone"
+        android:id="@+id/tvNoNearby"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Nearby Stores Found.."/>
 
     <LinearLayout
-        android:gravity="center"
-        android:visibility="visible"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_gravity="top"
+            android:id="@+id/rlButtons"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/btnALLOfferList"
+                android:layout_width="150dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/logo_color"
+                android:text="ALL Offer List"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnNearby"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:text="Nearby" />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:background="@color/primary"
             android:id="@+id/recyclerPaidBanner"
-            android:layout_height="130dp"
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="-20dp"/>
+            android:layout_height="120dp"
+            android:layout_marginTop="10dp" />
 
         <GridView
-            tools:listitem="@layout/category_row"
-            android:verticalSpacing="10dp"
             android:id="@+id/category_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:columnWidth="95dp"
             android:gravity="center"
-            android:stretchMode="columnWidth"
             android:numColumns="auto_fit"
-            android:padding="10dp" />
-
+            android:padding="10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"
+            tools:listitem="@layout/category_row" />
 
     </LinearLayout>
-
-
-
 </FrameLayout>

@@ -2,13 +2,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F0F0EA">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fasion_home"
-        android:alpha="0.9"/>
+        />
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -46,7 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Name: "
-                        android:textColor="@color/white"
+                        android:textColor="@color/primary_dark"
                         android:textSize="18dp" />
 
                     <com.amplearch.beaconshop.Utils.TrojanText
@@ -54,8 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="Sweta Shah"
-                        android:textColor="@color/white"
+                        android:textColor="@color/primary_dark"
                         android:textSize="16dp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -70,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
                         android:text="User Id : "
-                        android:textColor="@color/white"
+                        android:textColor="@color/primary_dark"
                         android:textSize="18dp" />
 
                     <com.amplearch.beaconshop.Utils.TrojanText
@@ -78,8 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="2377"
-                        android:textColor="@color/white"
+                        android:textColor="@color/primary_dark"
                         android:textSize="18dp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -103,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Gender"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary_dark"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
@@ -118,7 +116,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="00dp"
                 android:layout_marginRight="25dp"
-                android:background="@color/white" />
+                android:background="@color/primary_dark" />
 
             <LinearLayout
                 android:layout_width="150dp"
@@ -130,14 +128,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="BIRTH DATE"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary_dark"
                     android:textSize="18dp" />
 
                 <com.amplearch.beaconshop.Utils.TrojanText
                     android:id="@+id/in_date"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/primary_dark" />
             </LinearLayout>
         </LinearLayout>
 
@@ -148,10 +146,12 @@
             android:gravity="center">
 
             <LinearLayout
+                android:id="@+id/lnrvoucher"
+                android:alpha="0.3"
                 android:layout_width="wrap_content"
                 android:layout_height="90dp"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="@drawable/profile_count"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -159,14 +159,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/voucher"
-                    android:textColor="@color/logo_color"
+                    android:textColor="@color/white"
                     android:textSize="18dp" />
 
                 <com.amplearch.beaconshop.Utils.TrojanText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vouchers"
-                    android:textColor="@color/logo_color"
+                    android:textColor="@color/white"
                     android:textSize="18dp" />
             </LinearLayout>
 
@@ -175,10 +175,12 @@
                 android:layout_height="match_parent"></View>
 
             <LinearLayout
+                android:id="@+id/lnrOffer"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:alpha="0.3"
+                android:background="@drawable/profile_count"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -187,14 +189,14 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:id="@+id/offer"
-                    android:textColor="@color/logo_color"
+                    android:textColor="@color/white"
                     android:textSize="18dp" />
 
                 <com.amplearch.beaconshop.Utils.TrojanText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Offers"
-                    android:textColor="@color/logo_color"
+                    android:textColor="@color/white"
                     android:textSize="18dp" />
             </LinearLayout>
 
@@ -249,7 +251,7 @@
                     android:src="@drawable/ic_share" />
 
                 <View
-                    android:layout_width="30dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent" />
 
                 <com.amplearch.beaconshop.Utils.TrojanText
@@ -276,7 +278,7 @@
                     android:src="@drawable/ic_facebook" />
 
                 <View
-                    android:layout_width="30dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent" />
 
                 <com.amplearch.beaconshop.Utils.TrojanText

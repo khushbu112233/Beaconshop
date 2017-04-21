@@ -1,21 +1,24 @@
 package com.amplearch.beaconshop.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Adapter.HelpAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 
-public class HelpFragment extends Fragment {
+public class HelpFragment extends Fragment
+{
 
-    public HelpFragment() {
-    }
+    public HelpFragment() {    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,4 +46,34 @@ public class HelpFragment extends Fragment {
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
         }
     }
+
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    // handle back button
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
+
+
 }

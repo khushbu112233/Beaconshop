@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -71,9 +72,9 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     TrojanCheckBox chAgree;
     Boolean isAgreeChecked = false;
     DatabaseHelper db;
-    View crossline1, crossline2;
     TrojanText claim;
     String offerCode;
+    FrameLayout redeemid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -86,10 +87,9 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         db = new DatabaseHelper(getApplicationContext());
 
-        crossline1 = findViewById(R.id.crosslineFirst);
-        crossline2 = findViewById(R.id.crosslineSecond);
         claim = (TrojanText) findViewById(R.id.claim);
         tvItemOfferCode = (TrojanText) findViewById(R.id.tvItemOfferCode);
+        redeemid = (FrameLayout) findViewById(R.id.redeemid);
 
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
@@ -99,6 +99,8 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         quantity = intent.getStringExtra("quantity");
         offer_image = intent.getStringExtra("offer_image");
 
+
+       // Toast.makeText(getApplicationContext(), offer_image, Toast.LENGTH_LONG).show();
         session = new UserSessionManager(getApplicationContext());
         tvItemOffers = (TrojanText)findViewById(R.id.tvItemOffer);
         tvItemOfferDetails = (TrojanText) findViewById(R.id.tvItemOfferDetails);
@@ -487,8 +489,8 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                         if (res.equalsIgnoreCase("not exists")){
                            // Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                            crossline1.setVisibility(View.GONE);
-                            crossline2.setVisibility(View.GONE);
+                            redeemid.setVisibility(View.GONE);
+                            redeemid.setVisibility(View.GONE);
                             claim.setVisibility(View.GONE);
 
                             final String ALLOWED_CHARACTERS ="0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
@@ -501,8 +503,8 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                             tvItemOfferCode.setText(sb.toString());
                         }
                         else if (res.equalsIgnoreCase("exists")){
-                            crossline1.setVisibility(View.VISIBLE);
-                            crossline2.setVisibility(View.VISIBLE);
+                            redeemid.setVisibility(View.VISIBLE);
+                            redeemid.setVisibility(View.VISIBLE);
                             claim.setVisibility(View.VISIBLE);
 
                             String code = jsonObject.getString("code");

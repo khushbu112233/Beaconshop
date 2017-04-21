@@ -76,9 +76,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			+ TABLE_STORELOCATION
 			+ "("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_PRODUCTID + " TEXT,"
 			+ KEY_STORENAME + " TEXT,"
+		    + KEY_STORE_IMAGE + " BLOB,"
 			+ KEY_LAT + " TEXT,"
 			+ KEY_LNG + " TEXT,"
+            + KEY_QUANTITY + " TEXT,"
 			+ KEY_OFFERTITLE + " TEXT,"
 			+ KEY_OFFERDESC + " TEXT,"
 			+ KEY_STARTDATE + " DATETIME,"
@@ -785,9 +788,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
+        values.put(KEY_PRODUCTID, tag.getProduct_id());
 		values.put(KEY_STORENAME, tag.getStore_name());
+        values.put(KEY_STORE_IMAGE, tag.getStore_image() );
 		values.put(KEY_LAT, tag.getLat());
 		values.put(KEY_LNG, tag.getLng());
+        values.put(KEY_QUANTITY, tag.getQuantity());
 		values.put(KEY_OFFERTITLE, tag.getOffer_title());
 		values.put(KEY_OFFERDESC, tag.getOffer_desc());
 		values.put(KEY_STARTDATE, tag.getStart_date());
@@ -859,9 +865,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			do {
 				StoreLocation t = new StoreLocation();
 				t.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                t.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
 				t.setStore_name(c.getString(c.getColumnIndex(KEY_STORENAME)));
+                t.setStore_image(c.getBlob(c.getColumnIndex(KEY_STORE_IMAGE)));
 				t.setLat(c.getString(c.getColumnIndex(KEY_LAT)));
 				t.setLng(c.getString(c.getColumnIndex(KEY_LNG)));
+                t.setQuantity(c.getString(c.getColumnIndex(KEY_QUANTITY)));
 				t.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
 				t.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
 				t.setStart_date(c.getString(c.getColumnIndex(KEY_STARTDATE)));
