@@ -976,7 +976,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    private void activeGallery() { // if select choose from gallery
+    private void activeGallery()
+    { // if select choose from gallery
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, RESULT_LOAD_IMAGE);
@@ -1241,7 +1242,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }
     }
 
-    private void selectImage() {
+    private void selectImage()
+    {
         final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
