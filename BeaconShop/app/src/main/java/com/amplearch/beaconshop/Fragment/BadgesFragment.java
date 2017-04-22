@@ -2,8 +2,10 @@ package com.amplearch.beaconshop.Fragment;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Adapter.BadgeAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
@@ -104,5 +107,32 @@ public class BadgesFragment extends Fragment
 //            message = "Sorry! Not connected to internet";
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    // handle back button
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
     }
 }

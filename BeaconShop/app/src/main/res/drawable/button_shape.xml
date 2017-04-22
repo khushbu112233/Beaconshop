@@ -10,8 +10,8 @@ android:shape="rectangle">
 <corners android:radius="5dp" />
 
 <gradient
-    android:startColor="@android:color/white"
-    android:centerColor="@android:color/white"
+    android:startColor="@color/primary"
+    android:centerColor="@color/primary"
     android:endColor="@color/logo_color"
     android:angle="-90"
     android:centerX="0.7"
@@ -24,8 +24,8 @@ android:shape="rectangle">
    <!-- <corners android:radius="dp" />-->
 
     <gradient
-        android:startColor="@color/white"
-        android:centerColor="@color/white"
+        android:startColor="@color/primary"
+        android:centerColor="@color/primary_dark"
         android:endColor="@android:color/black"
         android:angle="-90"
         android:centerX="0.7"

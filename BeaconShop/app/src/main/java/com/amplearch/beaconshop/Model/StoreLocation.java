@@ -3,9 +3,12 @@ package com.amplearch.beaconshop.Model;
 public class StoreLocation {
 
 	int id;
+    String product_id;
 	String store_name;
+	byte[] store_image;
 	String lat;
 	String lng;
+    String quantity;
 	String offer_title;
 	String offer_desc;
 	String start_date;
@@ -28,6 +31,14 @@ public class StoreLocation {
         this.offer_desc = offer_desc;
         this.start_date = start_date;
         this.end_date = end_date;*/
+	}
+
+	public byte[] getStore_image() {
+		return store_image;
+	}
+
+	public void setStore_image(byte[] store_image) {
+		this.store_image = store_image;
 	}
 
 	public String getLat() {
@@ -86,10 +97,29 @@ public class StoreLocation {
 		this.end_date = end_date;
 	}
 
-	public StoreLocation(String store_name, String lat, String lng, String offer_title, String offer_desc, String start_date, String end_date ) {
-		this.store_name = store_name;
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
+    }
+
+    public StoreLocation(String product_id, String store_name, byte[] store_image, String lat, String lng, String quantity, String offer_title, String offer_desc, String start_date, String end_date ) {
+		this.product_id = product_id;
+        this.store_name = store_name;
+		this.store_image = store_image;
         this.lat = lat;
         this.lng = lng;
+        this.quantity = quantity;
         this.offer_title = offer_title;
         this.offer_desc = offer_desc;
         this.start_date = start_date;

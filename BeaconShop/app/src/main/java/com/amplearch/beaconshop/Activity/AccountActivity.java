@@ -169,9 +169,9 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             finish();
         }
 
-        Toast.makeText(getApplicationContext(),
+       /* Toast.makeText(getApplicationContext(),
                 "User Login Status: " + session.isUserLoggedIn(),
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_LONG).show();*/
 
         if (session.isUserLoggedIn()){
             Intent intent=new Intent(AccountActivity.this,MainActivity.class);
@@ -546,8 +546,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
        // updateUI();
-        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
-                Toast.LENGTH_SHORT).show();
+       /* Toast.makeText(this, getResources().getString(R.string.location_updated_message),
+                Toast.LENGTH_SHORT).show();*/
     }
 
     @Override
@@ -670,7 +670,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void asyncResponse(String response) {
 
-        Toast.makeText(getApplicationContext(), "Response "+response, Toast.LENGTH_LONG).show();
+      //  Toast.makeText(getApplicationContext(), "Response "+response, Toast.LENGTH_LONG).show();
         Log.i("SignUp Response ", response);
 
         if (response.equals(""))

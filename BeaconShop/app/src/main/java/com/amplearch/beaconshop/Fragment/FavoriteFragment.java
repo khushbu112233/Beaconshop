@@ -6,23 +6,29 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
+import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
 import com.amplearch.beaconshop.Adapter.FavoritesAdapter;
 import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
+import com.amplearch.beaconshop.ImageUpload;
 import com.amplearch.beaconshop.Model.Favourites;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.UserRedeem;
@@ -37,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +69,7 @@ public class FavoriteFragment extends Fragment
     List<Voucher> vouchers ;
     ArrayList<String>  StoreName = new ArrayList<String>();
     ArrayList<String>  OfferTitle = new ArrayList<String>();
+    ArrayList<byte[]>  OfferImage = new ArrayList<byte[]>();
     ArrayList<String>  OfferID = new ArrayList<String>();
     ArrayList<String>  OfferQuantity = new ArrayList<String>();
     ArrayList<String>  OfferDesc = new ArrayList<String>();
@@ -97,6 +105,7 @@ public class FavoriteFragment extends Fragment
         List<Voucher> voch = db.getVoucherbyID();
         if(voch == null) {
           //  Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
+            tvNoFavourites.setVisibility(View.VISIBLE);
             tvNoFavourites.setText("No Favourites are Added..");
             return view;
         }
@@ -119,6 +128,7 @@ public class FavoriteFragment extends Fragment
             OfferDesc.add(todo.getOffer_desc().toString());
             StartDate.add(todo.getStart_date().toString());
             EndDate.add(todo.getEnd_date().toString());
+            OfferImage.add(todo.getStore_image());
 
             Bitmap bitmap = BitmapFactory.decodeByteArray(todo.getStore_image(), 0, todo.getStore_image().length);
 
@@ -128,6 +138,13 @@ public class FavoriteFragment extends Fragment
         }
 
 
+        if (favImage.size() == 0 && favText.size() == 0){
+            tvNoFavourites.setVisibility(View.VISIBLE);
+            tvNoFavourites.setText("No Favourites are Added..");
+        }
+        else {
+            tvNoFavourites.setVisibility(View.GONE);
+        }
         favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
         Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
@@ -144,7 +161,21 @@ public class FavoriteFragment extends Fragment
                 i.putExtra("offer_desc", OfferDesc.get(position).toString() );
                 i.putExtra("offer_id", OfferID.get(position).toString());
                 i.putExtra("quantity", OfferQuantity.get(position).toString() );
-//                i.putExtra("offer_image", redeemList.get(position).getOffer_image() );
+
+                ImageView image = new ImageView(getContext());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(OfferImage.get(position), 0, OfferImage.get(position).length);
+
+                image.setImageBitmap(bitmap);
+                Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+
+                String imgString = Base64.encodeToString(getBytesFromBitmap(image1),
+                        Base64.NO_WRAP);
+
+               // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+
+                i.putExtra("offer_image",imgString );
                 startActivity(i);
             }
         });
@@ -197,6 +228,12 @@ public class FavoriteFragment extends Fragment
 //        }
 
         return view;
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
     }
 
     private boolean checkConnection() {
@@ -291,4 +328,31 @@ public class FavoriteFragment extends Fragment
             }
         }
     }*/
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    // handle back button
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
 }

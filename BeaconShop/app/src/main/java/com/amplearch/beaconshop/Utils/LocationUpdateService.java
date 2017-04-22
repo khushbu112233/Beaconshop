@@ -2,12 +2,16 @@ package com.amplearch.beaconshop.Utils;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,11 +19,13 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import android.util.*;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.ApplicationUtils.MyApplication;
 import com.amplearch.beaconshop.Model.StoreLocation;
@@ -39,6 +45,7 @@ import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 import org.altbeacon.beacon.utils.UrlBeaconUrlCompressor;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -92,7 +99,7 @@ public class LocationUpdateService extends Service implements
     /**
      * Represents a geographical location.
      */
-    protected Location mCurrentLocation;
+    public static Location mCurrentLocation;
     public static boolean isEnded = false;
     private ArrayList<LocationVo> mLocationData;
 
@@ -289,7 +296,7 @@ public class LocationUpdateService extends Service implements
                             if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())){
                                 NotificationCompat.Builder mBuilder =
                                         new NotificationCompat.Builder(getApplicationContext())
-                                                .setSmallIcon(R.drawable.ic_audiotrack)
+                                                .setSmallIcon(R.drawable.ic_noti)
                                                 .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
                                                 .setContentText(tag.getOffer_desc());
 // Creates an explicit intent for an Activity in your app
@@ -443,10 +450,46 @@ public class LocationUpdateService extends Service implements
                             Log.d("Voucher Details", tag.getUuid());
                             int mId = Integer.parseInt(String.valueOf(tag.getId()));
                             if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())){
+
+                                int requestID = (int) System.currentTimeMillis();
+                                Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
+
+
+                                notificationIntent.putExtra("offer_title", tag.getOffer_title().toString() );
+                                notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString() );
+                                notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
+                                notificationIntent.putExtra("quantity", tag.getQuantity() );
+
+                                ImageView image = new ImageView(getApplicationContext());
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0,tag.getStore_image().length);
+
+                                image.setImageBitmap(bitmap);
+                                Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+
+                                String imgString = android.util.Base64.encodeToString(getBytesFromBitmap(image1),
+                                        android.util.Base64.NO_WRAP);
+
+                                // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+
+                                notificationIntent.putExtra("offer_image",imgString );
+
+//**add this line**
+                                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+//**edit this line to put requestID as requestCode**
+                                PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), requestID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
                                 NotificationCompat.Builder mBuilder =
                                         new NotificationCompat.Builder(getApplicationContext())
-                                                .setSmallIcon(R.drawable.ic_audiotrack)
+                                                .setSmallIcon(R.drawable.ic_noti)
                                                 .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                .setStyle(new NotificationCompat.BigTextStyle()
+                                                        .bigText(tag.getOffer_desc()))
+                                                .setContentIntent(contentIntent)
+
                                                 .setContentText(tag.getOffer_desc());
 // Creates an explicit intent for an Activity in your app
                                 NotificationManager mNotificationManager =
@@ -625,11 +668,13 @@ public class LocationUpdateService extends Service implements
                                 ", " + cursor.getString(cursor.getColumnIndex(StoreLocations.FIELD_START_DATE)),
                         Toast.LENGTH_SHORT).show();*/
 
+try {
 
-            fix_Latitude = Double.parseDouble(tag.getLat());
-            fix_Longitude = Double.parseDouble(tag.getLng());
+    fix_Latitude = Double.parseDouble(tag.getLat());
+    fix_Longitude = Double.parseDouble(tag.getLng());
 
-            theta = fix_Longitude - cur_Longitude;
+    theta = fix_Longitude - cur_Longitude;
+}catch (NumberFormatException e){}
             dist = (Math.sin(deg2rad(fix_Latitude)) * Math.sin(deg2rad(cur_Latitude)))
                     + (Math.cos(deg2rad(fix_Latitude)) * Math.cos(deg2rad(cur_Latitude)))
                     * Math.cos(deg2rad(theta));
@@ -664,10 +709,45 @@ public class LocationUpdateService extends Service implements
                     mBluetoothAdapter.enable();
 
                 }
+                int requestID = (int) System.currentTimeMillis();
+                Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
+
+
+                notificationIntent.putExtra("offer_title", tag.getOffer_title().toString() );
+                notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString() );
+                notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
+                notificationIntent.putExtra("quantity", tag.getQuantity() );
+
+                ImageView image = new ImageView(getApplicationContext());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0,tag.getStore_image().length);
+
+                image.setImageBitmap(bitmap);
+                Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+
+                String imgString = android.util.Base64.encodeToString(getBytesFromBitmap(image1),
+                        android.util.Base64.NO_WRAP);
+
+                // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+
+                notificationIntent.putExtra("offer_image",imgString );
+
+//**add this line**
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+//**edit this line to put requestID as requestCode**
+                PendingIntent contentIntent = PendingIntent.getActivity(this, requestID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(this)
-                                .setSmallIcon(R.drawable.ic_bluetooth_black_24dp)
+                                .setSmallIcon(R.drawable.ic_noti)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText(tag.getOffer_desc()))
                                 .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
+                                .setContentIntent(contentIntent)
                                 .setContentText(tag.getOffer_desc());
 // Creates an explicit intent for an Activity in your app
                 NotificationManager mNotificationManager =
@@ -808,6 +888,12 @@ public class LocationUpdateService extends Service implements
 
 //        get_Distance();
 
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
+    }
 
     private double deg2rad(double deg)
     {

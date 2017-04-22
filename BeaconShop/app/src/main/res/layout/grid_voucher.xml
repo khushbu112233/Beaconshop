@@ -26,12 +26,11 @@
         <!--android:src="@drawable/ic_sale" />-->
 
     <LinearLayout
-        android:layout_width="120dp"
-        android:layout_height="30dp"
+        android:padding="10dp"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/favorite_rectangle"
         android:gravity="center"
-        android:rotation="10"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="10dp">
 
