@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         if (checkConnection() == true)
         {
             connectWithHttpPost(userID);
+            connectWithHttpPostUserRedeem(userID);
         }
 
         // adding values in left drawer
@@ -266,6 +267,160 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             }
         });
 
+
+    }
+
+    private void connectWithHttpPostUserRedeem(final String user_id)
+    {
+        // Connect with a server is a time consuming process.
+        //Therefore we use AsyncTask to handle it
+        // From the three generic types;
+        //First type relate with the argument send in execute()
+        //Second type relate with onProgressUpdate method which I haven't use in this code
+        //Third type relate with the return type of the doInBackground method, which also the input type of the onPostExecute method
+        class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                // As you can see, doInBackground has taken an Array of Strings as the argument
+                //We need to specifically get the givenUsername and givenPassword
+                String paramUserID = params[0];
+                //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
+
+                // Create an intermediate to connect with the Internet
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
+                nameValuePair.add(new BasicNameValuePair("user_id", paramUserID));
+
+                //Encoding POST data
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                } catch (UnsupportedEncodingException e) {
+                    // log exception
+                    e.printStackTrace();
+                }
+
+                // Sending a GET request to the web page that we want
+                // Because of we are sending a GET request, we have to pass the values through the URL
+                try {
+                    // execute(); executes a request using the default context.
+                    // Then we assign the execution result to HttpResponse
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+                    System.out.println("httpResponse");
+
+                    // getEntity() ; obtains the message entity of this response
+                    // getContent() ; creates a new InputStream object of the entity.
+                    // Now we need a readable source to read the byte stream that comes as the httpResponse
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+
+                    // We have a byte stream. Next step is to convert it to a Character stream
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                    // Then we have to wraps the existing reader (InputStreamReader) and buffer the input
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    // InputStreamReader contains a buffer of bytes read from the source stream and converts these into characters as needed.
+                    //The buffer size is 8K
+                    //Therefore we need a mechanism to append the separately coming chunks in to one String element
+                    // We have to use a class that can handle modifiable sequence of characters for use in creating String
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    String bufferedStrChunk = null;
+
+                    // There may be so many buffered chunks. We have to go through each and every chunk of characters
+                    //and assign a each chunk to bufferedStrChunk String variable
+                    //and append that value one by one to the stringBuilder
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+
+                    // Now we have the whole response as a String value.
+                    //We return that value then the onPostExecute() can handle the content
+                    System.out.println("Returning value of doInBackground :" + stringBuilder.toString());
+
+                    // If the Username and Password match, it will return "working" as response
+                    // If the Username or Password wrong, it will return "invalid" as response
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("Exception generates caz of httpResponse :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second exception generates caz of httpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+
+                return null;
+            }
+
+            // Argument comes for this method according to the return type of the doInBackground() and
+            //it is the third generic type of the AsyncTask
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+
+                if (result.equals("")){
+                    Toast.makeText(getApplicationContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                }else {
+                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String res = jsonObject.getString("redeem");
+                        // String message = jsonObject.getString("User");
+                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                        if (res.equals("")){
+                            // Toast.makeText(getApplicationContext(), "User does not exists..", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+
+                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
+                            for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                                try {
+                                    //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                                    userID = jsonArrayChanged.getJSONObject(i).get("id").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("user_id").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_id").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_code").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_image").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("quantity").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("redeem").toString();
+
+                                    byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("offer_image").toString(), Base64.DEFAULT);
+
+                                    db.addRedeemUser(jsonArrayChanged.getJSONObject(i).get("user_id").toString(), jsonArrayChanged.getJSONObject(i).get("offer_id").toString(),
+                                            jsonArrayChanged.getJSONObject(i).get("offer_code").toString(), decodedString, jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                            jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(), jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                            jsonArrayChanged.getJSONObject(i).get("redeem").toString());
+
+                                    //  txtUserID.setText(userID);
+                                    //   txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
+                                    //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+        // We are passing the connectWithHttpGet() method arguments to that
+        httpGetAsyncTask.execute(user_id);
 
     }
 

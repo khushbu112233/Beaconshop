@@ -31,7 +31,7 @@
     <com.amplearch.beaconshop.Utils.TrojanText
         android:id="@+id/claim"
         android:layout_below="@+id/toolbar"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"

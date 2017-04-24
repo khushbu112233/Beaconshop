@@ -31,6 +31,7 @@ import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
 import com.amplearch.beaconshop.Adapter.PaidBannerHorizontal;
+import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
@@ -192,14 +193,15 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerPaidBanner.setLayoutManager(layoutManager);
 
-        params = getParams();
-        AsyncRequest getPosts = new AsyncRequest(HomeFragment.this,getActivity(), "GET", params, "");
-        getPosts.execute(apiURL);
+        if (checkConnection()) {
+            params = getParams();
+            AsyncRequest getPosts = new AsyncRequest(HomeFragment.this, getActivity(), "GET", params, "");
+            getPosts.execute(apiURL);
 
-        paramsPaid = getParamPaid();
-        AsyncRequest getPostBanner = new AsyncRequest(HomeFragment.this,getActivity(), "GET", paramsPaid, "");
-        getPostBanner.execute(apiURLPaidBanner);
-
+            paramsPaid = getParamPaid();
+            AsyncRequest getPostBanner = new AsyncRequest(HomeFragment.this, getActivity(), "GET", paramsPaid, "");
+            getPostBanner.execute(apiURLPaidBanner);
+        }
         gps = new GPSTracker(getContext());
 
         // check if GPS enabled
@@ -253,7 +255,7 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
             numberFormat.setMinimumFractionDigits(2);
             numberFormat.setMaximumFractionDigits(3);
             String distt_km = numberFormat.format(dist);
-            float disttt_km = Float.parseFloat(numberFormat.format(dist));
+            float disttt_km = Float.parseFloat(String.valueOf((dist)));
 
             //distance units
             dist_double = dist; // double
@@ -382,6 +384,22 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         return stream.toByteArray();
+    }
+
+    private boolean checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+        return  isConnected;
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message = "Check For Data Connection..";
+        if (isConnected) {
+//            message = "Good! Connected to Internet";
+        } else {
+//            message = "Sorry! Not connected to internet";
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

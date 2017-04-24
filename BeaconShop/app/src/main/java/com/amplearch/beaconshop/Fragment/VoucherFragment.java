@@ -1,6 +1,8 @@
 package com.amplearch.beaconshop.Fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,14 +19,18 @@ import android.widget.Toast;
 import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
+import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.UserRedeem;
+import com.amplearch.beaconshop.Model.UserRedeemSql;
+import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.helper.DatabaseHelper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -57,6 +63,18 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
     TrojanText tvNoVoucher;
 
     String voucherURL  ;
+    FavoriteAdapter favoriteAdapter ;
+    ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
+    ArrayList<String>  favText = new ArrayList<String>();
+    DatabaseHelper db;
+    ArrayList<String>  UserID = new ArrayList<String>();
+    ArrayList<String>  OfferID = new ArrayList<String>();
+    ArrayList<byte[]>  OfferImage = new ArrayList<byte[]>();
+    ArrayList<String>  OfferCode = new ArrayList<String>();
+    ArrayList<String>  OfferQuantity = new ArrayList<String>();
+    ArrayList<String>  OfferDesc = new ArrayList<String>();
+    ArrayList<String>  OfferTitle = new ArrayList<String>();
+    ArrayList<String>  Redeem = new ArrayList<String>();
 
     public VoucherFragment() { }
 
@@ -71,7 +89,7 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
         tvNoVoucher = (TrojanText) view.findViewById(R.id.tvNoVoucher);
         redeemList = new ArrayList<UserRedeem>();
         final HashMap<String, String> user1 = session.getUserDetails();
-
+        db = new DatabaseHelper(getContext());
         // get name
         userID = user1.get(UserSessionManager.KEY_USER_ID);
         voucherURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID?user_id="+userID;
@@ -80,23 +98,89 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
         {
             AsyncRequest getPosts = new AsyncRequest(VoucherFragment.this,getActivity(), "GET", null, "");
             getPosts.execute(voucherURL);
+
+            gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
+                    i.putExtra("offer_title", redeemList.get(position).getOffer_title() );
+                    i.putExtra("offer_desc", redeemList.get(position).getOffer_desc() );
+                    i.putExtra("offer_id", redeemList.get(position).getId() );
+                    i.putExtra("quantity", redeemList.get(position).getQuantity() );
+                    i.putExtra("offer_image", redeemList.get(position).getOffer_image() );
+                    startActivity(i);
+                }
+            });
+        }
+        else {
+
+            List<UserRedeemSql> voch = db.getAllRedeemUser();
+            if(voch == null) {
+                //  Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
+                tvNoVoucher.setVisibility(View.VISIBLE);
+                tvNoVoucher.setText("No Vouchers are Added..");
+                return view;
+            }
+
+            for (UserRedeemSql todo : voch)
+            {
+//            Log.d("ToDo Product_Id ", todo.getProduct_id());
+              /*  Log.d("ToDo Store Name ", todo.getStore_name());
+                Log.d("ToDo Offer Title ", todo.getOffer_title());
+                Log.d("ToDo Offer Desc ", todo.getOffer_desc());
+                Log.d("ToDo Start Date ", todo.getStart_date());
+                Log.d("ToDo End Date ", todo.getEnd_date());*/
+
+                // Toast.makeText(getContext(),"Product_ID "+todo.getProduct_id(),Toast.LENGTH_LONG).show();
+
+                UserID.add(todo.getUser_id().toString());
+                OfferTitle.add(todo.getOffer_title().toString());
+                OfferQuantity.add(todo.getQuantity().toString());
+                OfferID.add(todo.getOffer_id().toString());
+                OfferDesc.add(todo.getOffer_desc().toString());
+                OfferCode.add(todo.getOffer_code().toString());
+                Redeem.add(todo.getRedeem().toString());
+                OfferImage.add(todo.getStore_image());
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(todo.getStore_image(), 0, todo.getStore_image().length);
+
+                favImage.add(bitmap);
+                favText.add(todo.getOffer_title());
+            }
+
+            if (favImage.size() == 0 && favText.size() == 0){
+                tvNoVoucher.setVisibility(View.VISIBLE);
+                tvNoVoucher.setText("No Vouchers are Added..");
+            }
+            else {
+                tvNoVoucher.setVisibility(View.GONE);
+            }
+            favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
+//        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
+          //  gridView_Vouch = (GridView) view.findViewById(R.id.Fav_gridView);
+            gridView_Vouch.setAdapter(favoriteAdapter);
+            gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
+                    i.putExtra("offer_title", OfferTitle.get(position).toString() );
+                    i.putExtra("offer_desc", OfferDesc.get(position).toString() );
+                    i.putExtra("offer_id", OfferID.get(position).toString() );
+                    i.putExtra("quantity", OfferQuantity.get(position).toString() );
+                    i.putExtra("offer_image", OfferImage.get(position).toString() );
+                    startActivity(i);
+                }
+            });
+
+
         }
 
 
-        gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
-    {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-        {
-            Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
-            i.putExtra("offer_title", redeemList.get(position).getOffer_title() );
-            i.putExtra("offer_desc", redeemList.get(position).getOffer_desc() );
-            i.putExtra("offer_id", redeemList.get(position).getId() );
-            i.putExtra("quantity", redeemList.get(position).getQuantity() );
-            i.putExtra("offer_image", redeemList.get(position).getOffer_image() );
-            startActivity(i);
-        }
-    });
+
 
         return view ;
     }
