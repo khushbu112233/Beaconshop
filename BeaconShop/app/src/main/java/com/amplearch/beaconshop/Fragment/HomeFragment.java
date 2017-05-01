@@ -100,8 +100,8 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
     ArrayList<String>  OfferDesc = new ArrayList<String>();
     ArrayList<String>  StartDate = new ArrayList<String>();
     ArrayList<String>  EndDate = new ArrayList<String>();
-    public HomeFragment() {
-    }
+
+    public HomeFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -151,8 +151,7 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
 
-                String imgString = Base64.encodeToString(getBytesFromBitmap(image1),
-                        Base64.NO_WRAP);
+                String imgString = Base64.encodeToString(getBytesFromBitmap(image1), Base64.NO_WRAP);
 
                // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
 
@@ -233,8 +232,6 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
                                 ", " + cursor.getString(cursor.getColumnIndex(StoreLocations.FIELD_STORE_NAME)) +
                                 ", " + cursor.getString(cursor.getColumnIndex(StoreLocations.FIELD_START_DATE)),
                         Toast.LENGTH_SHORT).show();*/
-
-
             try {
 
                 fix_Latitude = Double.parseDouble(tag.getLat());
@@ -269,7 +266,8 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
             //tvFloat_Dist.setText(dist_F+" Km");
             // tvInteger_Dist.setText(dist_I+" M");
 
-            if (dist_int > 0 && dist_int < 500) {
+            if (dist_int > 0 && dist_int < 500)
+            {
                 int mId = Integer.parseInt(String.valueOf(tag.getId()));
                 // Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

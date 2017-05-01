@@ -14,10 +14,14 @@ import android.widget.Toast;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.NearbyMessagePref;
+
+import java.util.HashMap;
 
 public class SettingsFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
     CheckBox chboxNotification, chboxPopup, chboxWelcome, cbHQimages;
+    NearbyMessagePref pref;
 
     public SettingsFragment() {
     }
@@ -27,11 +31,20 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
 
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         checkConnection();
+        pref = new NearbyMessagePref(getContext());
         cbHQimages = (CheckBox)rootView.findViewById(R.id.cbHQimages);
         chboxNotification = (CheckBox) rootView.findViewById(R.id.cbOfferNotification);
         chboxPopup = (CheckBox) rootView.findViewById(R.id.cbOfferPopup);
         chboxWelcome = (CheckBox) rootView.findViewById(R.id.cbWelcomeMessage);
+        final HashMap<String, String> nearpref = pref.getUserDetails();
 
+        String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
+        if (near.equals("true")){
+            chboxNotification.setChecked(true);
+        }
+        else {
+            chboxNotification.setChecked(false);
+        }
         chboxNotification.setOnCheckedChangeListener(this);
         chboxPopup.setOnCheckedChangeListener(this);
         chboxWelcome.setOnCheckedChangeListener(this);
@@ -45,6 +58,7 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
         switch (buttonView.getId()) {
             case R.id.cbHQimages:
                 if (isChecked) {
+
                 }
                 // Put some meat on the sandwich
                 else {
@@ -54,10 +68,12 @@ public class SettingsFragment extends Fragment implements CompoundButton.OnCheck
             case R.id.cbOfferNotification:
                 if (isChecked) {
 
+                    pref.createUserLoginSession("true");
+
                 }
                 // Cheese me
                 else {
-
+                    pref.createUserLoginSession("false");
                 }
                 // I'm lactose intolerant
                 break;

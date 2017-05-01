@@ -57,6 +57,7 @@ import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.Const;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
+import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.NotificationHandler;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     private Toolbar topToolBar;
     private TrojanText toolbarTitle ;
     private static final int RC_SIGN_IN = 007;
-    UserSessionManager session;
 
     private boolean mIsServiceStarted = false;
     public static final String EXTRA_NOTIFICATION_ID = "notification_id";
@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     CallbackManager callbackManager;
     String userID, name;
     CircleImageView circleImageView;
+    UserSessionManager session;
+    NearbyMessagePref pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -144,6 +146,20 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         setContentView(R.layout.activity_main);
         session = new UserSessionManager(getApplicationContext());
         isConnected = checkConnection();
+
+
+        pref = new NearbyMessagePref(getApplicationContext());
+        final HashMap<String, String> nearpref = pref.getUserDetails();
+
+        String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
+        try {
+            if (near.isEmpty()){
+                pref.createUserLoginSession("false");
+            }
+        }catch (Exception e){
+            pref.createUserLoginSession("false");
+        }
+
         offers = new ArrayList<VoucherClass>();
         db = new DatabaseHelper(getApplicationContext());
         if (isConnected){
@@ -217,15 +233,16 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        mDrawerList.setAdapter(drawerAdapter);
 
         List<ItemObject> listViewItems = new ArrayList<ItemObject>();
-        listViewItems.add(new ItemObject("Home", R.drawable.ic_home_black_24dp));
-        listViewItems.add(new ItemObject("Favourites", R.drawable.ic_favorite_black_24dp));
-        listViewItems.add(new ItemObject("My Vouchers", R.drawable.ic_email_black_24dp));
-        listViewItems.add(new ItemObject("Badges", R.drawable.ic_help_outline_black_24dp));
-        listViewItems.add(new ItemObject("My Account", R.drawable.ic_person_black_24dp));
+        listViewItems.add(new ItemObject("Home", R.drawable.home));
+        listViewItems.add(new ItemObject("Favourites", R.drawable.my_favorites));
+        listViewItems.add(new ItemObject("My Vouchers", R.drawable.my_vouchers));
+        listViewItems.add(new ItemObject("Badges", R.drawable.my_badges));
+        listViewItems.add(new ItemObject("My Account", R.drawable.my_account));
         listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
-        listViewItems.add(new ItemObject("Change Password", R.drawable.ic_swap_horiz_black_24dp));
-        listViewItems.add(new ItemObject("Help", R.drawable.ic_help_outline_black_24dp));
-        listViewItems.add(new ItemObject("About Us", R.drawable.ic_info_outline_black_24dp));
+        listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
+        listViewItems.add(new ItemObject("Log Out", R.drawable.logout));
+        listViewItems.add(new ItemObject("Help", R.drawable.help));
+        listViewItems.add(new ItemObject("About Us", R.drawable.information));
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
@@ -624,57 +641,75 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(position)
         {
-            /*default:
+            default:
             case 0:
-                fragment = new HomeFragment();
+                fragment = new ProfileFragment();
+                // rlButtons.setVisibility(View.GONE);
+                toolbarTitle.setText("Profile");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            */
+
             case 1:
                 fragment = new HomeFragment();
               //  rlButtons.setVisibility(View.VISIBLE);
                 toolbarTitle.setText("Beacon Shop");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 2:
                 fragment = new FavoriteFragment();
                // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Favourites");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 3:
                 fragment = new VoucherFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Vouchers");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 4:
                 fragment = new BadgesFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Badges");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 5:
                 fragment = new ProfileFragment();
                // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 6:
                 fragment = new SettingsFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Settings");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 7:
                 fragment = new ChangePasswordFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Change Password");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 8:
+               // fragment = new ChangePasswordFragment();
+                //  rlButtons.setVisibility(View.GONE);
+               // toolbarTitle.setText("Change Password");
+                session.logoutUser();
+                break;
+            case 9:
                 fragment = new HelpFragment();
              //   rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Help");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 9:
+            case 10:
                 fragment = new AboutUsFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("About Us");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                break;
         }
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         mDrawerList.setItemChecked(position, true);
 //        setTitle(titles[position]);
@@ -931,11 +966,9 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         AppEventsLogger.deactivateApp(this);
     }
     @Override
-    public void asyncResponse(String response) {
-
-
+    public void asyncResponse(String response)
+    {
        // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-
         if (response.equals("")) {
             Toast.makeText(getApplicationContext(), "No Offers..", Toast.LENGTH_LONG).show();
         } else {
@@ -980,7 +1013,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                             voucherClass.setLat(jsonArrayChanged.getJSONObject(i).get("lat").toString());
                             voucherClass.setLng(jsonArrayChanged.getJSONObject(i).get("lng").toString());
 
-
                             //myAsync.execute(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
                             /*byte[] array = null;
 
@@ -1004,8 +1036,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                 array = baf.toByteArray();
                             }
 
-
-
                             URL url = new URL(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setDoInput(true);
@@ -1014,26 +1044,43 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                             Bitmap myBitmap = BitmapFactory.decodeStream(input);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                            array = stream.toByteArray();
-*/
+                            array = stream.toByteArray();*/
+
                             byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("store_image").toString(), Base64.DEFAULT);
 
-                            db.addRecord(jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("category_id").toString(), jsonArrayChanged.getJSONObject(i).get("store_name").toString()
-                                    , decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(), jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(), jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString(), jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("paid_banner").toString(), jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString(),
+                            db.addRecord(
+                                    jsonArrayChanged.getJSONObject(i).get("id").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("category_id").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("store_name").toString(), decodedString,
+                                    jsonArrayChanged.getJSONObject(i).get("lat").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("paid_banner").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString(),
                                     jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("message").toString(), jsonArrayChanged.getJSONObject(i).get("uuid").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("major").toString(), jsonArrayChanged.getJSONObject(i).get("minor").toString());
+                                    jsonArrayChanged.getJSONObject(i).get("message").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("uuid").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("major").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("minor").toString()
+                            );
 
                           //  db.createVoucher(voucher);
 
-                            StoreLocation tag1 = new StoreLocation(jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("store_name").toString(), decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(), jsonArrayChanged.getJSONObject(i).get("lng").toString()
-                            , jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(), jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(), jsonArrayChanged.getJSONObject(i).get("end_date").toString() );
+                            StoreLocation tag1 = new StoreLocation(
+                                    jsonArrayChanged.getJSONObject(i).get("id").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("store_name").toString(),
+                                    decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString()
+                            );
                            /* StoreLocation tag2 = new StoreLocation("Ghatlodia", "23.057506", "72.543392", "Cashbak", "70% Cashback, Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%.", "08/03/2017", "06/04/2017");
                             StoreLocation tag3 = new StoreLocation("Vikram Appts", "23.01210", "72.522634", "Redeem Code", "Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%", "08/02/2015", "14/02/2016");
                             StoreLocation tag4 = new StoreLocation("Titanium City Center", "23.012102", "72.522634", "Whole Sale", "70% Cashback", "08/02/2015", "14/02/2016");

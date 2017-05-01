@@ -568,7 +568,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	}
 
 	/**
-	 * getting all todos
+	 * getting all todos  for getting only favorite id
 	 * */
 	public String[] getAllFavourites() {
 		List<String> todos = new ArrayList<String>();
@@ -608,11 +608,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         initialValues.put(KEY_QUANTITY, quantity);
         initialValues.put(KEY_REDDEM, redeem);
 
-
-
         long rowId = db.insert(TABLE_USERREDEEM , null, initialValues);
-
-
     }
 
 
@@ -634,7 +630,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
         initialValues.put(KEY_DATE_TIME, goalDateTime);
         initialValues.put(KEY_STATUS, status);*/
 
-
         initialValues.put(KEY_PRODUCTID, product_id);
         initialValues.put(KEY_CATEGORYID, category_id);
         initialValues.put(KEY_STORENAME, store_name);
@@ -654,11 +649,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         initialValues.put(KEY_MAJOR, major);
         initialValues.put(KEY_MINOR, minor);
 
-
-
         long rowId = db.insert(TABLE_VOUCHER , null, initialValues);
-
-
     }
 
     public void addFavourites(String product_id,String user_id){
@@ -887,7 +878,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
         values.put(KEY_MAJOR, tag.getMajor());
         values.put(KEY_MINOR, tag.getMinor());
 
-
         // insert row
         long tag_id = db.insert(TABLE_VOUCHER, null, values);
 
@@ -897,7 +887,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	/**
 	 * getting all tags
 	 * */
-	public List<StoreLocation> getAllLocations() {
+	public List<StoreLocation> getAllLocations()
+	{
 		List<StoreLocation> tags = new ArrayList<StoreLocation>();
 		String selectQuery = "SELECT  * FROM " + TABLE_STORELOCATION;
 

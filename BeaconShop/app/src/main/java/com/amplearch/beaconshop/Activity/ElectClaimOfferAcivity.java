@@ -130,10 +130,10 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         if (exists) {
 
-            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
+            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
         }
         else {
-            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
+            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
         }
 
         chAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -192,20 +192,20 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
             Boolean exists = db.verification(offer_id);
 
             if (exists) {
-                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
 
                 Boolean del = db.deleteFavourites(offer_id);
                 if (del) {
                     Toast.makeText(getApplicationContext(), "Removed from Favourites", Toast.LENGTH_LONG).show();
-                    ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
+                    ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
                 }
             }
             else {
-                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
                 db.addFavourites(offer_id, userID);
 
                 Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
-                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
 
             }
 

@@ -287,6 +287,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             @Override
             public void onClick(View v) {
 
+                mGoogleApiClient.stopAutoManage(getActivity());
+                mGoogleApiClient.disconnect();
                 Fragment fragment = new VoucherFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -942,10 +944,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
                 File sourceFile = new File(imagepath);
 
-
-
-
-
                 String image = getStringImage(photo);
 
                 //Getting Image Name
@@ -1037,8 +1035,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             String personPhotoUrl = acct.getPhotoUrl().toString();
             String email = acct.getEmail();
 
-            Log.e(TAG, "Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);
+            Log.e(TAG, "Name: " + personName + ", email: " + email + ", Image: " + personPhotoUrl);
 
             txtName.setText(personName + System.lineSeparator() + email );
             // txtEmail.setText(email);
@@ -1250,7 +1247,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
                     if (userChoosenTask.equals("Take Photo"))
                         activeTakePhoto();
                     else if (userChoosenTask.equals("Choose from Library"))
@@ -1674,9 +1672,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     public void onResume() {
 
         super.onResume();
-
-        mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();

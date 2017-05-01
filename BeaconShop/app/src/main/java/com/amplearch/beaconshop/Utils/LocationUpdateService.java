@@ -95,6 +95,7 @@ public class LocationUpdateService extends Service implements
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
     protected LocationRequest mLocationRequest;
+    NearbyMessagePref pref;
 
     /**
      * Represents a geographical location.
@@ -167,6 +168,7 @@ public class LocationUpdateService extends Service implements
         beaconManager.bind(this);
         // locationClient = new LocationClient(this, this, this);
         fileHelper = app.getFileHelper();
+        pref = new NearbyMessagePref(getApplicationContext());
 
         editText = new EditText(getApplicationContext());
         // Initialise scan button.
@@ -652,7 +654,7 @@ public class LocationUpdateService extends Service implements
         cur_Latitude = mCurrentLocation.getLatitude();
         cur_Longitude = mCurrentLocation.getLongitude();
 
-
+        int count = 0;
         String res = null;
         //String[] proj = { MediaStore.Images.Media.DATA };
         // Cursor cursor = getContentResolver().query(Uri.parse(URL), null, null, null, null);
@@ -709,52 +711,63 @@ try {
                     mBluetoothAdapter.enable();
 
                 }
+
+                final HashMap<String, String> nearpref = pref.getUserDetails();
+
+                String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
+
                 int requestID = (int) System.currentTimeMillis();
-                Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
 
 
-                notificationIntent.putExtra("offer_title", tag.getOffer_title().toString() );
-                notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString() );
-                notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
-                notificationIntent.putExtra("quantity", tag.getQuantity() );
+                if (near.equals("true")) {
+                    Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
 
-                ImageView image = new ImageView(getApplicationContext());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0,tag.getStore_image().length);
 
-                image.setImageBitmap(bitmap);
-                Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    notificationIntent.putExtra("offer_title", tag.getOffer_title().toString());
+                    notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString());
+                    notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
+                    notificationIntent.putExtra("quantity", tag.getQuantity());
 
-                String imgString = android.util.Base64.encodeToString(getBytesFromBitmap(image1),
-                        android.util.Base64.NO_WRAP);
+                    ImageView image = new ImageView(getApplicationContext());
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0, tag.getStore_image().length);
 
-                // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+                    image.setImageBitmap(bitmap);
+                    Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
 
-                notificationIntent.putExtra("offer_image",imgString );
+                    String imgString = android.util.Base64.encodeToString(getBytesFromBitmap(image1),
+                            android.util.Base64.NO_WRAP);
+
+                    // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+
+                    notificationIntent.putExtra("offer_image", imgString);
 
 //**add this line**
-                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 //**edit this line to put requestID as requestCode**
-                PendingIntent contentIntent = PendingIntent.getActivity(this, requestID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(this)
-                                .setSmallIcon(R.drawable.ic_noti)
-                                .setStyle(new NotificationCompat.BigTextStyle()
-                                        .bigText(tag.getOffer_desc()))
-                                .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
-                                .setContentIntent(contentIntent)
-                                .setContentText(tag.getOffer_desc());
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(this)
+                                    .setSmallIcon(R.drawable.ic_noti)
+                                    .setStyle(new NotificationCompat.BigTextStyle()
+                                            .bigText(tag.getOffer_desc()))
+                                    .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
+                                    .setContentIntent(contentIntent)
+                                    .setContentText(tag.getOffer_desc());
 // Creates an explicit intent for an Activity in your app
-                NotificationManager mNotificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
-                mNotificationManager.notify(mId, mBuilder.build());
+                    mNotificationManager.notify(mId, mBuilder.build());
+                }else if (near.equals("false")){
 
+                    count++;
+
+                }
 
                 //     tvStatus.setText("Status: "+"Please! Enable Bluetooth Mode.");
             } else if (dist_int > 500 && dist_int < 1000) {
@@ -777,6 +790,34 @@ try {
             String cm = String.valueOf(dist_cm);
 
         }
+
+        if (count > 0){
+            int mId = 111;
+            int requestID = (int) System.currentTimeMillis();
+            Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+
+//**add this line**
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+//**edit this line to put requestID as requestCode**
+            PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_noti)
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("To get Offers detail, switch on Near by Message from the Settings."))
+                            .setContentTitle("BeaconShop has "+ count +" Offers. Check it out!")
+                            .setContentIntent(contentIntent)
+                            .setContentText("To get Offers detail, switch on Near by Message from the Settings.");
+// Creates an explicit intent for an Activity in your app
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+            mNotificationManager.notify(mId, mBuilder.build());
+        }
+
     }
     //     cursor.close();
 
