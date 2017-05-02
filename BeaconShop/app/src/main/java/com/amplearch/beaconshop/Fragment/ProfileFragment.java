@@ -282,7 +282,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
         lnrvoucher.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
