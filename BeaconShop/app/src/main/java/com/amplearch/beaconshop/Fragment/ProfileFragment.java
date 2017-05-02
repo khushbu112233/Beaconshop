@@ -282,11 +282,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
         lnrvoucher.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                mGoogleApiClient.stopAutoManage(getActivity());
+                mGoogleApiClient.disconnect();
                 Fragment fragment = new VoucherFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -1674,9 +1675,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     public void onResume() {
 
         super.onResume();
-
-        mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();

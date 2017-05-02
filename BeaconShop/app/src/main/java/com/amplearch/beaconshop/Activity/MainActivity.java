@@ -469,11 +469,11 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(position)
         {
-            /*default:
+            default:
             case 0:
                 fragment = new HomeFragment();
                 break;
-            */
+
             case 1:
                 fragment = new HomeFragment();
               //  rlButtons.setVisibility(View.VISIBLE);
