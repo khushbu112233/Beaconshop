@@ -12,7 +12,6 @@
         android:id="@+id/imgOffer"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/user"
         app:siRadius="15dp"
         app:siBorderWidth="0dp"
         app:siBorderColor="@color/accent"
