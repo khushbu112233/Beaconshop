@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
+
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:textColor="@color/primary_dark"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/gender_spinner"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="00dp"
+            android:layout_marginRight="25dp"
+            android:background="@color/primary_dark" />
+
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.amplearch.beaconshop.Utils.TrojanText
+                android:id="@+id/btn_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BIRTH DATE"
+                android:textColor="@color/primary_dark"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp">
+                <com.amplearch.beaconshop.Utils.TrojanText
+                    android:id="@+id/tvDay"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:text="23"
+                    android:background="@drawable/login_shape"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+                <com.amplearch.beaconshop.Utils.TrojanText
+                    android:id="@+id/tvMonth"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:text="01"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:background="@drawable/login_shape"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"/>
+                <com.amplearch.beaconshop.Utils.TrojanText
+                    android:id="@+id/tvYear"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:text="1993"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:background="@drawable/login_shape"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+           <!-- <com.amplearch.beaconshop.Utils.TrojanText
+                android:id="@+id/in_date"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_dark" />-->
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

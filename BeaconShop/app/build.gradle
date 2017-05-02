@@ -54,6 +54,8 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:preference-v7:25.3.0'
+    compile 'com.android.support:preference-v14:25.3.0'
     testCompile 'junit:junit:4.12'
 }
 

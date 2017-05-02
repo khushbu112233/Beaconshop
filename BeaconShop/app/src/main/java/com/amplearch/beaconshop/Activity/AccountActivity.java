@@ -23,6 +23,7 @@ import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;
+import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
@@ -57,6 +58,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,
@@ -71,6 +73,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
     private SignInButton btnSignIn;
     UserSessionManager session;
+    NearbyMessagePref pref;
 
     private CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -133,6 +136,17 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         isConnected = checkConnection();
 
         session = new UserSessionManager(getApplicationContext());
+        pref = new NearbyMessagePref(getApplicationContext());
+        final HashMap<String, String> nearpref = pref.getUserDetails();
+
+        String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
+        try {
+            if (near.isEmpty()){
+                pref.createUserLoginSession("false");
+            }
+        }catch (Exception e){
+            pref.createUserLoginSession("false");
+        }
 
         txtSignIn = (TextView)findViewById(R.id.btnSignIn);
         txtSignUp = (TextView)findViewById(R.id.btnSignUp);

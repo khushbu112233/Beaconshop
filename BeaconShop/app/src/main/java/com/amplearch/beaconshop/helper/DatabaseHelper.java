@@ -11,6 +11,8 @@ import android.util.Log;
 import com.amplearch.beaconshop.Model.Favourites;
 import com.amplearch.beaconshop.Model.Images;
 import com.amplearch.beaconshop.Model.StoreLocation;
+import com.amplearch.beaconshop.Model.UserRedeem;
+import com.amplearch.beaconshop.Model.UserRedeemSql;
 import com.amplearch.beaconshop.Model.Voucher;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String TABLE_FAVOURITES = "favourites";
 	//	private static final String TABLE_TODO_TAG = "todo_tags";
 	private static final String TABLE_VOUCHER = "voucher";
+	private static final String TABLE_USERREDEEM = "user_redeem";
 	// Common column names
 	private static final String KEY_ID = "id";
 	//private static final String KEY_CREATED_AT = "store_name";
@@ -45,9 +48,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String KEY_OFFERDESC = "offer_desc";
 	private static final String KEY_STARTDATE = "start_date";
 	private static final String KEY_ENDDATE = "end_date";
+	private static final String KEY_OFFERCODE = "offer_code";
 	// FAVOURITES Table - column names
 	private static final String KEY_PRODUCTID = "product_id";
 	private static final String KEY_USERID = "user_id";
+	private static final String KEY_OFFERID = "offer_id";
 	// VOCHERS Table - column names
 	private static final String KEY_CATEGORYID = "category_id";
     private static final String KEY_STORE_IMAGE = "store_image";
@@ -60,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String KEY_MAJOR = "major";
 	private static final String KEY_MINOR = "minor";
     private static final String KEY_BEACON_MESSAGE = "message";
+	private static final String KEY_REDDEM = "redeem";
 
 	// Home fragment table name
 	private static final String TABLE_HOMEFRAG = "homefragment";
@@ -112,6 +118,22 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			+ KEY_MAJOR + " TEXT,"
 			+ KEY_MINOR + " TEXT "
 			+ ")";
+
+
+	private static final String CREATE_TABLE_USERREDEEM = "CREATE TABLE "
+			+ TABLE_USERREDEEM
+			+ "("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_USERID + " TEXT,"
+			+ KEY_OFFERID + " TEXT,"
+			+ KEY_OFFERCODE + " TEXT,"
+			+ KEY_STORE_IMAGE + " BLOB,"
+			+ KEY_OFFERTITLE + " TEXT,"
+			+ KEY_OFFERDESC + " TEXT,"
+			+ KEY_QUANTITY + " TEXT,"
+			+ KEY_REDDEM + " TEXT "
+			+ ")";
+
 
 	// Favourites table create statement
 	private static final String CREATE_TABLE_FAVOURITES = "CREATE TABLE "
@@ -186,6 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		db.execSQL(CREATE_TABLE_STORELOCATION);
 		db.execSQL(CREATE_TABLE_VOUCHER);
 		db.execSQL(CREATE_TABLE_HOMEFRAG);
+        db.execSQL(CREATE_TABLE_USERREDEEM);
 
 		/*ContentValues insertFavValues = new ContentValues();
 		insertFavValues.put("product_id", "5");
@@ -271,6 +294,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_STORELOCATION);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VOUCHER);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOMEFRAG);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERREDEEM);
 		//db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_TAG);
 
 		// create new tables
@@ -544,7 +568,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	}
 
 	/**
-	 * getting all todos
+	 * getting all todos  for getting only favorite id
 	 * */
 	public String[] getAllFavourites() {
 		List<String> todos = new ArrayList<String>();
@@ -569,6 +593,24 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		return FavId;
 	}
 
+    public void addRedeemUser(String user_id,String offer_id, String offer_code, byte[] store_image,
+                              String offer_title, String offer_desc,
+                              String quantity, String redeem){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(KEY_USERID, user_id);
+        initialValues.put(KEY_OFFERID, offer_id);
+        initialValues.put(KEY_OFFERCODE, offer_code);
+        initialValues.put(KEY_STORE_IMAGE, store_image);
+        initialValues.put(KEY_OFFERTITLE, offer_title);
+        initialValues.put(KEY_OFFERDESC, offer_desc);
+        initialValues.put(KEY_QUANTITY, quantity);
+        initialValues.put(KEY_REDDEM, redeem);
+
+        long rowId = db.insert(TABLE_USERREDEEM , null, initialValues);
+    }
+
 
     public void addRecord(String product_id,String category_id, String store_name, byte[] store_image,
                           String lat, String lng, String offer_title, String offer_desc,String start_date,
@@ -587,7 +629,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
         initialValues.put(KEY_CATEGORY, category);
         initialValues.put(KEY_DATE_TIME, goalDateTime);
         initialValues.put(KEY_STATUS, status);*/
-
 
         initialValues.put(KEY_PRODUCTID, product_id);
         initialValues.put(KEY_CATEGORYID, category_id);
@@ -608,11 +649,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         initialValues.put(KEY_MAJOR, major);
         initialValues.put(KEY_MINOR, minor);
 
-
-
         long rowId = db.insert(TABLE_VOUCHER , null, initialValues);
-
-
     }
 
     public void addFavourites(String product_id,String user_id){
@@ -841,7 +878,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
         values.put(KEY_MAJOR, tag.getMajor());
         values.put(KEY_MINOR, tag.getMinor());
 
-
         // insert row
         long tag_id = db.insert(TABLE_VOUCHER, null, values);
 
@@ -851,7 +887,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	/**
 	 * getting all tags
 	 * */
-	public List<StoreLocation> getAllLocations() {
+	public List<StoreLocation> getAllLocations()
+	{
 		List<StoreLocation> tags = new ArrayList<StoreLocation>();
 		String selectQuery = "SELECT  * FROM " + TABLE_STORELOCATION;
 
@@ -900,6 +937,37 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 t.setId(c.getInt((c.getColumnIndex(KEY_ID))));
                 t.setProduct_id(c.getString(c.getColumnIndex(KEY_PRODUCTID)));
                 t.setUser_id(c.getString(c.getColumnIndex(KEY_USERID)));
+                // adding to tags list
+                tags.add(t);
+            } while (c.moveToNext());
+        }
+        return tags;
+    }
+
+    public List<UserRedeemSql> getAllRedeemUser() {
+        List<UserRedeemSql> tags = new ArrayList<UserRedeemSql>();
+        String selectQuery = "SELECT  * FROM " + TABLE_USERREDEEM;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                UserRedeemSql t = new UserRedeemSql();
+                t.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                t.setUser_id(c.getString(c.getColumnIndex(KEY_USERID)));
+                t.setOffer_id(c.getString(c.getColumnIndex(KEY_OFFERID)));
+                t.setOffer_code(c.getString(c.getColumnIndex(KEY_OFFERCODE)));
+                t.setStore_image(c.getBlob(c.getColumnIndex(KEY_STORE_IMAGE)));
+                t.setOffer_title(c.getString(c.getColumnIndex(KEY_OFFERTITLE)));
+                t.setOffer_desc(c.getString(c.getColumnIndex(KEY_OFFERDESC)));
+                t.setQuantity(c.getString(c.getColumnIndex(KEY_QUANTITY)));
+                t.setRedeem(c.getString(c.getColumnIndex(KEY_REDDEM)));
+
+
                 // adding to tags list
                 tags.add(t);
             } while (c.moveToNext());

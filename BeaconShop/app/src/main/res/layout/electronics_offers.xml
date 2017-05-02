@@ -36,19 +36,21 @@
             android:orientation="vertical"
             android:layout_marginTop="10dp">
             <com.amplearch.beaconshop.Utils.TrojanText
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:textAlignment="center"
                 android:id="@+id/tvElectOfferDetails"
                 android:textColor="@color/primary_dark"
-                android:textAlignment="center"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:text="Discount"
                 android:textSize="15dp"/>
             <com.amplearch.beaconshop.Utils.TrojanText
+                android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_marginTop="2dp"
+                android:visibility="visible"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:id="@+id/tvElectOfferDetails1"
@@ -56,7 +58,8 @@
                 android:textAlignment="center"
                 android:gravity="center"
                 android:text="Discount"
-                android:textSize="15dp"/>
+                android:ellipsize="end"
+                android:textSize="12dp"/>
         </LinearLayout>
     </LinearLayout>
 

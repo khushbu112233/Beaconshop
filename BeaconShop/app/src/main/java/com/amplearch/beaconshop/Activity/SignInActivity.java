@@ -106,7 +106,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                 }
 
                 else if (!isValidPassword( login_Password)) {
-                    etPass.setError("Minimum 5 characters.");
+                    etPass.setError("Minimum 4 characters.");
                 }
 
                 else {
@@ -177,7 +177,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
 
     // validating password with retype password
     private boolean isValidPassword(String pass) {
-        if (pass != null && pass.length() > 4) {
+        if (pass != null && pass.length() > 3) {
             return true;
         }
         return false;

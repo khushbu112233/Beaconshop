@@ -57,6 +57,7 @@ import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.Const;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
+import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.NotificationHandler;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     private Toolbar topToolBar;
     private TrojanText toolbarTitle ;
     private static final int RC_SIGN_IN = 007;
-    UserSessionManager session;
 
     private boolean mIsServiceStarted = false;
     public static final String EXTRA_NOTIFICATION_ID = "notification_id";
@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     CallbackManager callbackManager;
     String userID, name;
     CircleImageView circleImageView;
+    UserSessionManager session;
+    NearbyMessagePref pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -144,6 +146,20 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         setContentView(R.layout.activity_main);
         session = new UserSessionManager(getApplicationContext());
         isConnected = checkConnection();
+
+
+        pref = new NearbyMessagePref(getApplicationContext());
+        final HashMap<String, String> nearpref = pref.getUserDetails();
+
+        String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
+        try {
+            if (near.isEmpty()){
+                pref.createUserLoginSession("false");
+            }
+        }catch (Exception e){
+            pref.createUserLoginSession("false");
+        }
+
         offers = new ArrayList<VoucherClass>();
         db = new DatabaseHelper(getApplicationContext());
         if (isConnected){
@@ -191,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         if (checkConnection() == true)
         {
             connectWithHttpPost(userID);
+            connectWithHttpPostUserRedeem(userID);
         }
 
         // adding values in left drawer
@@ -216,15 +233,16 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        mDrawerList.setAdapter(drawerAdapter);
 
         List<ItemObject> listViewItems = new ArrayList<ItemObject>();
-        listViewItems.add(new ItemObject("Home", R.drawable.ic_home_black_24dp));
-        listViewItems.add(new ItemObject("Favourites", R.drawable.ic_favorite_black_24dp));
-        listViewItems.add(new ItemObject("My Vouchers", R.drawable.ic_email_black_24dp));
-        listViewItems.add(new ItemObject("Badges", R.drawable.ic_help_outline_black_24dp));
-        listViewItems.add(new ItemObject("My Account", R.drawable.ic_person_black_24dp));
+        listViewItems.add(new ItemObject("Home", R.drawable.home));
+        listViewItems.add(new ItemObject("Favourites", R.drawable.my_favorites));
+        listViewItems.add(new ItemObject("My Vouchers", R.drawable.my_vouchers));
+        listViewItems.add(new ItemObject("Badges", R.drawable.my_badges));
+        listViewItems.add(new ItemObject("My Account", R.drawable.my_account));
         listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
-        listViewItems.add(new ItemObject("Change Password", R.drawable.ic_swap_horiz_black_24dp));
-        listViewItems.add(new ItemObject("Help", R.drawable.ic_help_outline_black_24dp));
-        listViewItems.add(new ItemObject("About Us", R.drawable.ic_info_outline_black_24dp));
+        listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
+        listViewItems.add(new ItemObject("Log Out", R.drawable.logout));
+        listViewItems.add(new ItemObject("Help", R.drawable.help));
+        listViewItems.add(new ItemObject("About Us", R.drawable.information));
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
@@ -266,6 +284,160 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             }
         });
 
+
+    }
+
+    private void connectWithHttpPostUserRedeem(final String user_id)
+    {
+        // Connect with a server is a time consuming process.
+        //Therefore we use AsyncTask to handle it
+        // From the three generic types;
+        //First type relate with the argument send in execute()
+        //Second type relate with onProgressUpdate method which I haven't use in this code
+        //Third type relate with the return type of the doInBackground method, which also the input type of the onPostExecute method
+        class HttpGetAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                // As you can see, doInBackground has taken an Array of Strings as the argument
+                //We need to specifically get the givenUsername and givenPassword
+                String paramUserID = params[0];
+                //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
+
+                // Create an intermediate to connect with the Internet
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID");
+                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=UTF-8");
+
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
+                nameValuePair.add(new BasicNameValuePair("user_id", paramUserID));
+
+                //Encoding POST data
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                } catch (UnsupportedEncodingException e) {
+                    // log exception
+                    e.printStackTrace();
+                }
+
+                // Sending a GET request to the web page that we want
+                // Because of we are sending a GET request, we have to pass the values through the URL
+                try {
+                    // execute(); executes a request using the default context.
+                    // Then we assign the execution result to HttpResponse
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+                    System.out.println("httpResponse");
+
+                    // getEntity() ; obtains the message entity of this response
+                    // getContent() ; creates a new InputStream object of the entity.
+                    // Now we need a readable source to read the byte stream that comes as the httpResponse
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+
+                    // We have a byte stream. Next step is to convert it to a Character stream
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                    // Then we have to wraps the existing reader (InputStreamReader) and buffer the input
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    // InputStreamReader contains a buffer of bytes read from the source stream and converts these into characters as needed.
+                    //The buffer size is 8K
+                    //Therefore we need a mechanism to append the separately coming chunks in to one String element
+                    // We have to use a class that can handle modifiable sequence of characters for use in creating String
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    String bufferedStrChunk = null;
+
+                    // There may be so many buffered chunks. We have to go through each and every chunk of characters
+                    //and assign a each chunk to bufferedStrChunk String variable
+                    //and append that value one by one to the stringBuilder
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+
+                    // Now we have the whole response as a String value.
+                    //We return that value then the onPostExecute() can handle the content
+                    System.out.println("Returning value of doInBackground :" + stringBuilder.toString());
+
+                    // If the Username and Password match, it will return "working" as response
+                    // If the Username or Password wrong, it will return "invalid" as response
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("Exception generates caz of httpResponse :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second exception generates caz of httpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+
+                return null;
+            }
+
+            // Argument comes for this method according to the return type of the doInBackground() and
+            //it is the third generic type of the AsyncTask
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+
+                if (result.equals("")){
+                    Toast.makeText(getApplicationContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                }else {
+                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String res = jsonObject.getString("redeem");
+                        // String message = jsonObject.getString("User");
+                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                        if (res.equals("")){
+                            // Toast.makeText(getApplicationContext(), "User does not exists..", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+
+                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
+                            for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                                try {
+                                    //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                                    userID = jsonArrayChanged.getJSONObject(i).get("id").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("user_id").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_id").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_code").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_image").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("quantity").toString();
+                                    jsonArrayChanged.getJSONObject(i).get("redeem").toString();
+
+                                    byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("offer_image").toString(), Base64.DEFAULT);
+
+                                    db.addRedeemUser(jsonArrayChanged.getJSONObject(i).get("user_id").toString(), jsonArrayChanged.getJSONObject(i).get("offer_id").toString(),
+                                            jsonArrayChanged.getJSONObject(i).get("offer_code").toString(), decodedString, jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                            jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(), jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                            jsonArrayChanged.getJSONObject(i).get("redeem").toString());
+
+                                    //  txtUserID.setText(userID);
+                                    //   txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
+                                    //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+        // We are passing the connectWithHttpGet() method arguments to that
+        httpGetAsyncTask.execute(user_id);
 
     }
 
@@ -471,55 +643,73 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         {
             default:
             case 0:
-                fragment = new HomeFragment();
+                fragment = new ProfileFragment();
+                // rlButtons.setVisibility(View.GONE);
+                toolbarTitle.setText("Profile");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
 
             case 1:
                 fragment = new HomeFragment();
               //  rlButtons.setVisibility(View.VISIBLE);
                 toolbarTitle.setText("Beacon Shop");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 2:
                 fragment = new FavoriteFragment();
                // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Favourites");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 3:
                 fragment = new VoucherFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Vouchers");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 4:
                 fragment = new BadgesFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Badges");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 5:
                 fragment = new ProfileFragment();
                // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 6:
                 fragment = new SettingsFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Settings");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 7:
                 fragment = new ChangePasswordFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Change Password");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 8:
+               // fragment = new ChangePasswordFragment();
+                //  rlButtons.setVisibility(View.GONE);
+               // toolbarTitle.setText("Change Password");
+                session.logoutUser();
+                break;
+            case 9:
                 fragment = new HelpFragment();
              //   rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Help");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 9:
+            case 10:
                 fragment = new AboutUsFragment();
               //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("About Us");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                break;
         }
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         mDrawerList.setItemChecked(position, true);
 //        setTitle(titles[position]);
@@ -776,11 +966,9 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         AppEventsLogger.deactivateApp(this);
     }
     @Override
-    public void asyncResponse(String response) {
-
-
+    public void asyncResponse(String response)
+    {
        // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-
         if (response.equals("")) {
             Toast.makeText(getApplicationContext(), "No Offers..", Toast.LENGTH_LONG).show();
         } else {
@@ -825,7 +1013,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                             voucherClass.setLat(jsonArrayChanged.getJSONObject(i).get("lat").toString());
                             voucherClass.setLng(jsonArrayChanged.getJSONObject(i).get("lng").toString());
 
-
                             //myAsync.execute(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
                             /*byte[] array = null;
 
@@ -849,8 +1036,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                 array = baf.toByteArray();
                             }
 
-
-
                             URL url = new URL(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setDoInput(true);
@@ -859,26 +1044,43 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                             Bitmap myBitmap = BitmapFactory.decodeStream(input);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                            array = stream.toByteArray();
-*/
+                            array = stream.toByteArray();*/
+
                             byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("store_image").toString(), Base64.DEFAULT);
 
-                            db.addRecord(jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("category_id").toString(), jsonArrayChanged.getJSONObject(i).get("store_name").toString()
-                                    , decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(), jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(), jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString(), jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("paid_banner").toString(), jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString(),
+                            db.addRecord(
+                                    jsonArrayChanged.getJSONObject(i).get("id").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("category_id").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("store_name").toString(), decodedString,
+                                    jsonArrayChanged.getJSONObject(i).get("lat").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("paid_banner").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString(),
                                     jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("message").toString(), jsonArrayChanged.getJSONObject(i).get("uuid").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("major").toString(), jsonArrayChanged.getJSONObject(i).get("minor").toString());
+                                    jsonArrayChanged.getJSONObject(i).get("message").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("uuid").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("major").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("minor").toString()
+                            );
 
                           //  db.createVoucher(voucher);
 
-                            StoreLocation tag1 = new StoreLocation(jsonArrayChanged.getJSONObject(i).get("id").toString(), jsonArrayChanged.getJSONObject(i).get("store_name").toString(), decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(), jsonArrayChanged.getJSONObject(i).get("lng").toString()
-                            , jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(), jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(), jsonArrayChanged.getJSONObject(i).get("end_date").toString() );
+                            StoreLocation tag1 = new StoreLocation(
+                                    jsonArrayChanged.getJSONObject(i).get("id").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("store_name").toString(),
+                                    decodedString, jsonArrayChanged.getJSONObject(i).get("lat").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("lng").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
+                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString()
+                            );
                            /* StoreLocation tag2 = new StoreLocation("Ghatlodia", "23.057506", "72.543392", "Cashbak", "70% Cashback, Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%.", "08/03/2017", "06/04/2017");
                             StoreLocation tag3 = new StoreLocation("Vikram Appts", "23.01210", "72.522634", "Redeem Code", "Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%", "08/02/2015", "14/02/2016");
                             StoreLocation tag4 = new StoreLocation("Titanium City Center", "23.012102", "72.522634", "Whole Sale", "70% Cashback", "08/02/2015", "14/02/2016");

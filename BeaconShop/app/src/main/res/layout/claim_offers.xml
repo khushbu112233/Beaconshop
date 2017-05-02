@@ -31,14 +31,14 @@
     <com.amplearch.beaconshop.Utils.TrojanText
         android:id="@+id/claim"
         android:layout_below="@+id/toolbar"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:text="You have already Claimed this Offer"
-        android:textColor="@color/primary_dark"/>
+        android:textColor="@color/red"/>
 
 
     <FrameLayout
@@ -112,8 +112,8 @@
                 android:visibility="gone"
                 android:layout_centerInParent="true"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/redeem">
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_redeem">
 
             </FrameLayout>
 
@@ -149,7 +149,7 @@
                 android:id="@+id/ivFavorite"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_heart_blue"
+                android:src="@drawable/heart_grey"
                 android:layout_weight="0.2"/>
             <ImageView
                 android:id="@+id/ivShare"

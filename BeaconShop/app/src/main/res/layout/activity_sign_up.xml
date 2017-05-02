@@ -52,13 +52,22 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <View
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:padding="5dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/view_shape"
                 android:layout_marginLeft="0dp"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_user" />
+            </FrameLayout>
             <com.amplearch.beaconshop.Utils.TrojanEditText
                 android:id="@+id/etUserName"
                 android:inputType="textPersonName|text"
@@ -88,13 +97,22 @@
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llUsernameBox">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <View
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:padding="5dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/view_shape"
                 android:layout_marginLeft="0dp"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/email" />
+            </FrameLayout>
             <com.amplearch.beaconshop.Utils.TrojanEditText
                 android:id="@+id/etEmailAddress"
                 android:inputType="text|textEmailAddress"
@@ -123,13 +141,22 @@
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llEmailBox">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <View
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:padding="5dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/view_shape"
                 android:layout_marginLeft="0dp"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/contact" />
+            </FrameLayout>
             <com.amplearch.beaconshop.Utils.TrojanEditText
                 android:id="@+id/etContactNo"
                 android:inputType="number"
@@ -159,13 +186,22 @@
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llContactBox">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <View
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:padding="5dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/view_shape"
                 android:layout_marginLeft="0dp"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/password" />
+            </FrameLayout>
             <com.amplearch.beaconshop.Utils.TrojanEditText
                 android:id="@+id/etPassword"
                 android:inputType="text|textPassword"
@@ -194,13 +230,22 @@
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llPasswordBox">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
             <View
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:padding="5dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/view_shape"
                 android:layout_marginLeft="0dp"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/password" />
+        </FrameLayout>
             <com.amplearch.beaconshop.Utils.TrojanEditText
                 android:id="@+id/etRePassword"
                 android:inputType="text|textPassword"
