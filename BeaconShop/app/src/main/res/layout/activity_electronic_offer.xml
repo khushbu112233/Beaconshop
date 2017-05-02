@@ -18,6 +18,7 @@
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:id="@+id/tvCategoryTitle"
                 android:text="ELECTRONIC OFFERS"
                 android:textColor="@color/logo_color"
                 android:gravity="center"/>

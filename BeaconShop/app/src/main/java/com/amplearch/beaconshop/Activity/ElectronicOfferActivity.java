@@ -49,9 +49,10 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
     ArrayList<String> elect_Text = new ArrayList<String>();
     String category_id;
     List<VoucherClass> offers;
-    TrojanText tvNoOffer;
+    TrojanText tvNoOffer, tvCategoryTitle;
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getOfferbyCategoryID";
     ArrayList<NameValuePair> params;
+    String category_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +62,7 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
         checkConnection();
         final Intent intent = getIntent();
         category_id = intent.getStringExtra("category_id");
+        category_name = intent.getStringExtra("category_name");
        // getIntent();
       //  Toast.makeText(getApplicationContext(), category_id, Toast.LENGTH_LONG).show();
         elect_Image.add(R.drawable.ic_sale);
@@ -76,9 +78,10 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
 
         offers = new ArrayList<VoucherClass>();
 
-
         listView_Elect = (ListView)findViewById(R.id.listView_Elect);
         tvNoOffer = (TrojanText) findViewById(R.id.tvNoOffer);
+        tvCategoryTitle = (TrojanText) findViewById(R.id.tvCategoryTitle);
+        tvCategoryTitle.setText(category_name);
        // listView_Elect.setAdapter(electOfferAdapter);
 
         listView_Elect.setOnItemClickListener(new AdapterView.OnItemClickListener() {

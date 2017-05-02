@@ -50,7 +50,8 @@ import java.util.regex.Pattern;
 public class SignInActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
 {
     TrojanText tvForgotPassword;
-    TrojanEditText etEmailAdd, etPass, etUsername;
+    TrojanEditText etUsername;
+    EditText etEmailAdd, etPass;
     TrojanButton tvSignIn ;
     LinearLayout lnrSignup;
     public static String rslt="";
@@ -69,8 +70,8 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
         setContentView(R.layout.activity_sign_in);
         checkConnection();
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
-        etEmailAdd = (TrojanEditText)findViewById(R.id.etEmailAdd);
-        etPass = (TrojanEditText)findViewById(R.id.etPass);
+        etEmailAdd = (EditText)findViewById(R.id.etEmailAdd);
+        etPass = (EditText)findViewById(R.id.etPass);
         etUsername = (TrojanEditText)findViewById(R.id.etUserName);
         tvForgotPassword = (TrojanText)findViewById(R.id.tvForgotPassword);
         lnrSignup = (LinearLayout) findViewById(R.id.lnrSignup);

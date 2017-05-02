@@ -35,17 +35,21 @@
             android:background="@drawable/offers_shape"
             android:orientation="vertical"
             android:layout_marginTop="10dp">
+
             <com.amplearch.beaconshop.Utils.TrojanText
-                android:layout_marginTop="10dp"
+                android:id="@+id/tvElectOfferDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:id="@+id/tvElectOfferDetails"
-                android:textColor="@color/primary_dark"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Discount"
-                android:textSize="15dp"/>
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:maxLines="1"
                 android:layout_width="match_parent"
@@ -54,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:id="@+id/tvElectOfferDetails1"
-                android:textColor="@color/primary_dark"
+                android:textColor="@color/drawer"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:text="Discount"

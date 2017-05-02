@@ -126,6 +126,7 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
                 Intent intent = new Intent(getContext(), ElectronicOfferActivity.class);
                 category_id = id_array.get(i).toString();
                 intent.putExtra("category_id", category_id);
+                intent.putExtra("category_name", title_array.get(i).toString());
                 // Toast.makeText(getContext(), id_array.get(i).toString(), Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
@@ -351,6 +352,7 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
                             i.putExtra("offer_id", offers.get(position).getId() );
                             i.putExtra("quantity", offers.get(position).getQuantity() );
                             i.putExtra("offer_image", offers.get(position).getStore_image() );
+                            i.putExtra("category_id", offers.get(position).getCategory_id() );
 
                             startActivity(i);
 

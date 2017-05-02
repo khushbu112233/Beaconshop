@@ -112,7 +112,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
     @Override
     public void asyncResponse(String response)
     {
-        Toast.makeText(getApplicationContext(), "Response "+response, Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(), "Response "+response, Toast.LENGTH_LONG).show();
         Log.i("SignUp Response ", response);
 
         if (response.equals(""))

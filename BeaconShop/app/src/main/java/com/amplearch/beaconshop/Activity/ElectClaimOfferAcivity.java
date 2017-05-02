@@ -75,6 +75,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     TrojanText claim;
     String offerCode;
     FrameLayout redeemid;
+    String category_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -98,7 +99,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         offer_id = intent.getStringExtra("offer_id");
         quantity = intent.getStringExtra("quantity");
         offer_image = intent.getStringExtra("offer_image");
-
+        category_id = intent.getStringExtra("category_id");
 
        // Toast.makeText(getApplicationContext(), offer_image, Toast.LENGTH_LONG).show();
         session = new UserSessionManager(getApplicationContext());

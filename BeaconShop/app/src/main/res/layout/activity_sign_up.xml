@@ -68,7 +68,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_user" />
             </FrameLayout>
-            <com.amplearch.beaconshop.Utils.TrojanEditText
+            <EditText
                 android:id="@+id/etUserName"
                 android:inputType="textPersonName|text"
                 android:layout_width="match_parent"
@@ -80,8 +80,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
-                android:capitalize="sentences"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
@@ -113,7 +111,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/email" />
             </FrameLayout>
-            <com.amplearch.beaconshop.Utils.TrojanEditText
+            <EditText
                 android:id="@+id/etEmailAddress"
                 android:inputType="text|textEmailAddress"
                 android:layout_width="match_parent"
@@ -125,7 +123,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
@@ -157,7 +154,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/contact" />
             </FrameLayout>
-            <com.amplearch.beaconshop.Utils.TrojanEditText
+            <EditText
                 android:id="@+id/etContactNo"
                 android:inputType="number"
                 android:layout_width="match_parent"
@@ -170,7 +167,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
@@ -202,7 +198,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/password" />
             </FrameLayout>
-            <com.amplearch.beaconshop.Utils.TrojanEditText
+            <EditText
                 android:id="@+id/etPassword"
                 android:inputType="text|textPassword"
                 android:layout_width="match_parent"
@@ -214,7 +210,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
@@ -246,7 +241,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/password" />
         </FrameLayout>
-            <com.amplearch.beaconshop.Utils.TrojanEditText
+            <EditText
                 android:id="@+id/etRePassword"
                 android:inputType="text|textPassword"
                 android:layout_width="match_parent"
@@ -258,7 +253,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
