@@ -9,15 +9,23 @@
     android:paddingLeft="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ProgressBar
+        android:id="@+id/progressBar4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="50dp"/>
+
     <com.github.siyamed.shapeimageview.RoundedImageView
         android:id="@+id/imgVoucher"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:src="@drawable/ic_sale"
         app:siRadius="5dp"
         app:siBorderWidth="3dp"
         app:siBorderColor="@color/black"
-        app:siSquare="true"/>
+        app:siSquare="true"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout" />
 
     <!--<ImageView-->
         <!--android:id="@+id/ivVouchImage"-->
@@ -32,7 +40,8 @@
         android:background="@drawable/favorite_rectangle"
         android:gravity="center"
         android:layout_marginTop="100dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:id="@+id/tvVouchText"

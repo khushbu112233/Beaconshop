@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@drawable/login_shape"
@@ -26,9 +26,14 @@
                 android:id="@+id/ivElectImage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_sale"/>
-        </LinearLayout>
+                android:scaleType="fitXY" />
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"/>
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"

@@ -9,11 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.Model.PbAndImage;
 import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.task.DownloadImageTask;
+import com.amplearch.beaconshop.task.DownloadImageTask1;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -33,16 +37,17 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
 //        public RoundedImageView imageView;
         public ImageView imageView ;
         public TextView bannerTitle, bannerDesc ;
+        private ProgressBar pb;
 
         public MyViewHolder(View view)
         {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.custom_sticker_image);
             bannerTitle = (TextView)view.findViewById(R.id.tvCustomTitle);
+            pb = (ProgressBar)view.findViewById(R.id.progressBar3);
 //            bannerDesc = (TextView)view.findViewById(R.id.tvCustomDesc);
 
             view.setClickable(true);
-
         }
     }
     public PaidBannerHorizontal(Activity activity, List<VoucherClass> movieItems)
@@ -59,21 +64,30 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position)
+    {
         //holder.imageView.setBackgroundResource(imageId[position]);
 
-        if(movieItems.get(position).getStore_image() != null)
+       /* if(movieItems.get(position).getStore_image() != null)
         {
             //Picasso.with(activity).load(movieItems.get(position).getStore_image()).into(holder.imageView);
             byte[] decodedString = Base64.decode(movieItems.get(position).getStore_image(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-            holder.imageView.setImageBitmap(decodedByte);
-        }
+//            holder.imageView.setImageBitmap(decodedByte);
 
-        holder.imageView.setSelected(movieItems.contains(position));
+//            holder.imageView.setTag(movieItems.get(position).getStore_image().toString());
+        }*/
+        //        holder.imageView.setSelected(movieItems.contains(position));
 
+
+        holder.imageView.setTag(movieItems.get(position).getStore_image().toString());
         holder.bannerTitle.setText(movieItems.get(position).getOffer_title());
+
+        PbAndImage pb_and_image = new PbAndImage();
+        pb_and_image.setImge(holder.imageView);
+        pb_and_image.setPb(holder.pb);
+        new DownloadImageTask1().execute(pb_and_image);
 //        holder.bannerDesc.setText(movieItems.get(position).getOffer_desc());
 
         //holder.getp.setSelected(mSelectedRows.contains(i));

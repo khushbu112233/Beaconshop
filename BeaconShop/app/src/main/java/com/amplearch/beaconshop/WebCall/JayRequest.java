@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -19,24 +18,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by admin on 04/17/2017.
+ * Created by ample-arch on 5/3/2017.
  */
 
-public class AsyncRequest extends AsyncTask<String, Integer, String>
+public class JayRequest extends AsyncTask<String, Integer, String>
 {
 
     String label;
-    OnAsyncRequestComplete caller;
+    AsyncRequest.OnAsyncRequestComplete caller;
     Context context;
     String method = "GET";
     List<NameValuePair> parameters = null;
     ProgressDialog pDialog = null;
 
-    public AsyncRequest(OnAsyncRequestComplete c, Activity a, String m, List p, String l) {
+    public JayRequest(AsyncRequest.OnAsyncRequestComplete c, Activity a, String m, List p, String l) {
         caller = c;
         context = a;
         method = m;
@@ -45,21 +43,21 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
     }
 
     // Three Constructors
-    public AsyncRequest(Activity a, String m, List<NameValuePair> p) {
-        caller = (OnAsyncRequestComplete) a;
+    public JayRequest(Activity a, String m, List<NameValuePair> p) {
+        caller = (AsyncRequest.OnAsyncRequestComplete) a;
         context = a;
         method = m;
         parameters = p;
     }
 
-    public AsyncRequest(Activity a, String m) {
-        caller = (OnAsyncRequestComplete) a;
+    public JayRequest(Activity a, String m) {
+        caller = (AsyncRequest.OnAsyncRequestComplete) a;
         context = a;
         method = m;
     }
 
-    public AsyncRequest(Activity a) {
-        caller = (OnAsyncRequestComplete) a;
+    public JayRequest(Activity a) {
+        caller = (AsyncRequest.OnAsyncRequestComplete) a;
         context = a;
     }
 
@@ -83,12 +81,12 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
     }
 
     public void onPreExecute() {
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Loading data.."); // typically you will define such
+//        pDialog = new ProgressDialog(context);
+      /*  pDialog.setMessage("Loading data.."); // typically you will define such
         // strings in a remote file.
         //pDialog.isIndeterminate();
         pDialog.setCancelable(false);
-        pDialog.show();
+        pDialog.show();*/
     }
 
     public void onProgressUpdate(Integer... progress) {
@@ -98,16 +96,16 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
 
     public void onPostExecute(String response)
     {
-        if (pDialog != null && pDialog.isShowing()) {
+        /*if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismiss();
-        }
+        }*/
         caller.asyncResponse(response);
     }
 
     protected void onCancelled(String response) {
-        if (pDialog != null && pDialog.isShowing()) {
+       /* if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismiss();
-        }
+        }*/
         caller.asyncResponse(response);
     }
 

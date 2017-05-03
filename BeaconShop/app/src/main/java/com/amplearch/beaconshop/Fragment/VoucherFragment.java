@@ -30,6 +30,7 @@ import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.WebCall.JayRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 
 import org.apache.http.HttpResponse;
@@ -53,7 +54,7 @@ import java.util.List;
  * Created by ample-arch on 3/31/2017.
  */
 
-public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncRequestComplete
+public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncRequestComplete, JayRequest.OnAsyncRequestComplete
 {
     GridView gridView_Vouch;
     VoucherAdapter voucherAdapter;
@@ -96,7 +97,7 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
         if (checkConnection()== true)
         {
-            AsyncRequest getPosts = new AsyncRequest(VoucherFragment.this,getActivity(), "GET", null, "");
+            JayRequest getPosts = new JayRequest(VoucherFragment.this,getActivity(), "GET", null, "");
             getPosts.execute(voucherURL);
 
             gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -175,19 +176,13 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     startActivity(i);
                 }
             });
-
-
         }
-
-
-
-
         return view ;
     }
 
     @Override
-    public void onResume() {
-
+    public void onResume()
+    {
         super.onResume();
 
         getView().setFocusableInTouchMode(true);
@@ -196,17 +191,13 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK)
+                {
                     // handle back button
-
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
-
                     return true;
-
                 }
-
                 return false;
             }
         });
@@ -217,7 +208,6 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
     {
 //        Toast.makeText(getContext(), "Response: "+response, Toast.LENGTH_LONG).show();
         Log.i("Voch res: ", response);
-
         if (response.equals(""))
         {
             Toast.makeText(getContext(), "Vouchers not Loaded..", Toast.LENGTH_LONG).show();
@@ -262,7 +252,6 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
                             voucherClass.setOffer_id(jsonArrayChanged.getJSONObject(i).get("offer_id").toString());
                             voucherClass.setOffer_image(jsonArrayChanged.getJSONObject(i).get("offer_image").toString());
                             voucherClass.setRedeem(jsonArrayChanged.getJSONObject(i).get("redeem").toString());
-
                             //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                             redeemList.add(voucherClass);
                         }
@@ -280,7 +269,6 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
                             Intent intent=new Intent(SignInActivity.this,MainActivity.class);
                             startActivity(intent);
                             finish();*/
-
                 }
             }
             catch (JSONException e) {

@@ -7,9 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.Model.PbAndImage;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.task.DownloadImageTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,13 +23,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by admin on 03/30/2017.
  */
 
-public class CategoryAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseAdapter
+{
     private static ArrayList name, notice, count;
     private Context mContext;
- //   private final String[] gridViewString;
-   // private final int[] gridViewImageId;
+    private ProgressBar pb;
 
-    public CategoryAdapter(Context context, ArrayList name, ArrayList image, ArrayList count) {
+    public CategoryAdapter(Context context, ArrayList name, ArrayList image, ArrayList count)
+    {
         mContext = context;
         notice = image;
         this.name = name;
@@ -62,10 +66,12 @@ public class CategoryAdapter extends BaseAdapter {
             TextView txtCategory = (TextView) gridViewAndroid.findViewById(R.id.txtCategory);
             TextView badgeCategory = (TextView) gridViewAndroid.findViewById(R.id.badgeCategory);
 
+            pb = (ProgressBar)gridViewAndroid.findViewById(R.id.progressBar1);
+
 //            txtCategory.setText(name.get(i).toString());
             txtCategory.setText(name.get(i).toString());
-
             badgeCategory.setText(count.get(i).toString());
+
             if (count.get(i).toString().equals("0")){
                 badgeCategory.setVisibility(View.INVISIBLE);
             }
@@ -74,11 +80,19 @@ public class CategoryAdapter extends BaseAdapter {
             }
 
 
-            if (notice.get(i).toString()!=null)
+           /* if (notice.get(i).toString()!=null)
             {
            // imageViewAndroid.setImageResource(gridViewImageId[i]);
                 Picasso.with(mContext).load(notice.get(i).toString()).into(imageViewAndroid);
-            }
+            }*/
+
+            imageViewAndroid.setTag(notice.get(i).toString());
+
+            PbAndImage pb_and_image = new PbAndImage();
+            pb_and_image.setImg(imageViewAndroid);
+            pb_and_image.setPb(pb);
+            new DownloadImageTask().execute(pb_and_image);
+
         }
         else {
             gridViewAndroid = (View) convertView;

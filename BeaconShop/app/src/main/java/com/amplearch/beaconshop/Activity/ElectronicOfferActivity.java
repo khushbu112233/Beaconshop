@@ -17,6 +17,7 @@ import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.WebCall.JayRequest;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -41,7 +42,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
+public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete, JayRequest.OnAsyncRequestComplete
 {
     ListView listView_Elect ;
     ElectOfferAdapter  electOfferAdapter ;
@@ -94,7 +95,6 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
                 i.putExtra("offer_id", offers.get(position).getId() );
                 i.putExtra("quantity", offers.get(position).getQuantity() );
                 i.putExtra("offer_image", offers.get(position).getStore_image() );
-
                 startActivity(i);
             }
         });
@@ -102,11 +102,9 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
         if (checkConnection() == true)
         {
             params = getParams();
-            AsyncRequest getPosts = new AsyncRequest(this, "GET", params);
+            JayRequest getPosts = new JayRequest(this, "GET", params);
             getPosts.execute(apiURL);
         }
-
-
        // connectWithHttpPost();
     }
 
@@ -119,10 +117,9 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
     }
 
     @Override
-    public void asyncResponse(String response) {
-
+    public void asyncResponse(String response)
+    {
      //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-
         if (response.equals("")){
             Toast.makeText(getApplicationContext(), "Offers not Loaded..", Toast.LENGTH_LONG).show();
         }else {
@@ -175,10 +172,10 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
 
                     }
 
-                    Collections.sort(offers, new Comparator<VoucherClass>() {
+                    Collections.sort(offers, new Comparator<VoucherClass>()
+                    {
                         @Override
                         public int compare(VoucherClass o1, VoucherClass o2) {
-
                             String s1 = o1.getPaid_banner();
                             String s2 = o2.getPaid_banner();
                             return s2.compareToIgnoreCase(s1);
