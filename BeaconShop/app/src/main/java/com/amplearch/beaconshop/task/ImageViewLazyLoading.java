@@ -9,42 +9,35 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.amplearch.beaconshop.Model.PbAndImage;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.URL;
+import com.amplearch.beaconshop.Model.PbWithImage;
 
 /**
- * Created by ample-arch on 5/3/2017.
+ * Created by ample-arch on 5/4/2017.
  */
 
-public class DownloadImageTask1 extends AsyncTask<PbAndImage, Void, Bitmap>
+public class ImageViewLazyLoading extends AsyncTask<PbWithImage,Void,Bitmap>
 {
-    private ImageView imageView = null;
-    private ProgressBar pb = null;
+    private ImageView imageView = null ;
+    private ProgressBar progressBar = null ;
 
-    protected Bitmap doInBackground(PbAndImage... pb_and_images)
-    {
-        this.imageView = (ImageView)pb_and_images[0].getImge();
-        this.pb = (ProgressBar)pb_and_images[0].getPb();
-        return getBitmapDownloaded((String) imageView.getTag());
-    }
 
-   /* protected void onPreExecute()
+    @Override
+    protected Bitmap doInBackground(PbWithImage... params)
     {
-        pb.setVisibility(View.VISIBLE);
+
+        this.imageView = (ImageView)params[0].getImageView();
+        this.progressBar = (ProgressBar)params[0].getProgressBar();
+        return getBitmapImage((String) imageView.getTag());
     }
-*/
 
     protected void onPostExecute(Bitmap result) {
-        System.out.println("Downloaded " + imageView.getId());
+        System.out.println("ImageView Downloaded: " + imageView.getId());
         imageView.setVisibility(View.VISIBLE);
-        pb.setVisibility(View.GONE);  // hide the progressbar after downloading the image.
+        progressBar.setVisibility(View.GONE);  // hide the progressbar after downloading the image.
         imageView.setImageBitmap(result); //set the bitmap to the imageview.
     }
 
-    private Bitmap getBitmapDownloaded(String string)
+    private Bitmap getBitmapImage(String string)
     {
         Bitmap bitmap = null ;
         try
@@ -73,4 +66,6 @@ public class DownloadImageTask1 extends AsyncTask<PbAndImage, Void, Bitmap>
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
         return resizedBitmap;
     }
+
+
 }

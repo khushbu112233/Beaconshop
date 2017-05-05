@@ -10,19 +10,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.amplearch.beaconshop.Model.ImageVoucherPb;
-import com.amplearch.beaconshop.Model.PbAndImage;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
-import com.amplearch.beaconshop.task.DownloadImageTask1;
 import com.amplearch.beaconshop.task.DownloadImageTask2;
-import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,31 +62,26 @@ public class ElectOfferAdapter extends BaseAdapter
          imageView = (ImageView)rowView.findViewById(R.id.ivElectImage);
          trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
          trojanTextdetail = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails1);
-         pb = (ProgressBar)rowView.findViewById(R.id.progressBar2);
+//         pb = (ProgressBar)rowView.findViewById(R.id.progressBar2);
 
-        /*if(voucherItems.get(position).getStore_image() != null)
+        if(voucherItems.get(position).getStore_image() != null)
         {
-           *//* Picasso.with(context).load(voucherItems.get(position).getStore_image()).into(imageView);*//*
+//            Picasso.with(context).load(voucherItems.get(position).getStore_image()).into(imageView);
             byte[] decodedString = Base64.decode(voucherItems.get(position).getStore_image(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             imageView.setImageBitmap(decodedByte);
-        }*/
+        }
 
         trojanText.setText(voucherItems.get(position).getMessage().toString());
         trojanTextdetail.setText(voucherItems.get(position).getOffer_title().toString());
 
-        imageView.setTag(voucherItems.get(position).getStore_image().toString());
-
-       /* PbAndImage pb_and_image = new PbAndImage();
-        pb_and_image.setImge(imageView);
-        pb_and_image.setPb(pb);
-        new DownloadImageTask1().execute(pb_and_image);*/
+       /* imageView.setTag(voucherItems.get(position).getStore_image().toString());
 
         ImageVoucherPb ivp = new ImageVoucherPb();
         ivp.setImage(imageView);
         ivp.setProgressBar(pb);
-        new DownloadImageTask2().execute(ivp);
+        new DownloadImageTask2().execute(ivp);*/
 
         return rowView ;
     }

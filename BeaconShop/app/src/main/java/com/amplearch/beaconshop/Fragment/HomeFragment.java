@@ -56,9 +56,10 @@ import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.WebCall.JayRequest;
+import com.amplearch.beaconshop.WebCall.JoyRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 
-public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestComplete, AsyncRequest.OnAsyncRequestComplete
+public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestComplete, AsyncRequest.OnAsyncRequestComplete, JoyRequest.OnJoyRequestComplete
 {
 
     GridView listCategory;
@@ -201,7 +202,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
             getPosts.execute(apiURL);
 
             paramsPaid = getParamPaid();
-            JayRequest getPostBanner = new JayRequest(HomeFragment.this, getActivity(), "GET", paramsPaid, "");
+            JoyRequest getPostBanner = new JoyRequest(HomeFragment.this, getActivity(), "GET", paramsPaid, "");
             getPostBanner.execute(apiURLPaidBanner);
         }
         gps = new GPSTracker(getContext());
@@ -411,7 +412,9 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
 
         if (response.equals("")) {
             Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else
+            {
             // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             try {
                 JSONObject jsonObject = new JSONObject(response);
@@ -445,7 +448,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
             }
 
 
-            try {
+            /*try {
                 JSONObject jsonObject = new JSONObject(response);
                 String res = jsonObject.getString("offers");
                 // String message = jsonObject.getString("User");
@@ -500,11 +503,76 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
     }
 
+    @Override
+    public void joyResponse(String response)
+    {
+        if (response.equals("")) {
+            Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
+        }
+        else {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("offers");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res == null) {
+
+                    Toast.makeText(getContext(), "No Paid Offers are Available..", Toast.LENGTH_LONG).show();
+                } else {
+
+                    JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
+                    if (jsonArrayChanged.length() == 0) {
+                        recyclerPaidBanner.setVisibility(View.GONE);
+                        //  tvNoOffer.setText("No Offers are Available..");
+                        //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                    } else {
+                        recyclerPaidBanner.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                        try {
+                            //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                            VoucherClass voucherClass = new VoucherClass();
+                            voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());
+                            voucherClass.setCategory_id(jsonArrayChanged.getJSONObject(i).get("category_id").toString());
+                            voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("store_name").toString());
+                            voucherClass.setStore_image(jsonArrayChanged.getJSONObject(i).get("store_image").toString());
+                            voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("offer_title").toString());
+                            voucherClass.setOffer_desc(jsonArrayChanged.getJSONObject(i).get("offer_desc").toString());
+                            voucherClass.setStart_date(jsonArrayChanged.getJSONObject(i).get("start_date").toString());
+                            voucherClass.setEnd_date(jsonArrayChanged.getJSONObject(i).get("end_date").toString());
+                            voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("message").toString());
+                            voucherClass.setUuid(jsonArrayChanged.getJSONObject(i).get("uuid").toString());
+                            voucherClass.setMajor(jsonArrayChanged.getJSONObject(i).get("major").toString());
+                            voucherClass.setMinor(jsonArrayChanged.getJSONObject(i).get("minor").toString());
+                            voucherClass.setQuantity(jsonArrayChanged.getJSONObject(i).get("quantity").toString());
+                            voucherClass.setPaid_banner(jsonArrayChanged.getJSONObject(i).get("paid_banner").toString());
+                            voucherClass.setPaid_start_date(jsonArrayChanged.getJSONObject(i).get("paid_start_date").toString());
+                            voucherClass.setPaid_end_date(jsonArrayChanged.getJSONObject(i).get("paid_end_date").toString());
+                            voucherClass.setLat(jsonArrayChanged.getJSONObject(i).get("lat").toString());
+                            voucherClass.setLng(jsonArrayChanged.getJSONObject(i).get("lng").toString());
+
+                            //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                            offers.add(voucherClass);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    paidBannerHorizontal = new PaidBannerHorizontal(getActivity(), offers);
+                    // adapter = new CustomFrameList(FestivalListPage.this, friends);
+                    recyclerPaidBanner.setAdapter(paidBannerHorizontal);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
     private ArrayList<NameValuePair> getParams() {
         // define and ArrayList whose elements are of type NameValuePair
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -712,5 +780,6 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
             }
         });
     }
+
 
 }

@@ -1,10 +1,7 @@
 package com.amplearch.beaconshop.Adapter;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +9,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.amplearch.beaconshop.Model.PbAndImage;
-import com.amplearch.beaconshop.Model.Voucher;
+import com.amplearch.beaconshop.Model.PbWithImage;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.task.DownloadImageTask;
-import com.amplearch.beaconshop.task.DownloadImageTask1;
-import com.github.siyamed.shapeimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
+import com.amplearch.beaconshop.task.ImageViewLazyLoading;
 
 import java.util.List;
 
@@ -31,13 +24,14 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
 {
     private Activity activity;
     private List<VoucherClass> movieItems;
+    private ImageView imageView ;
+    private TextView bannerTitle, bannerDesc ;
+    private ProgressBar pb;
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
 //        public RoundedImageView imageView;
-        public ImageView imageView ;
-        public TextView bannerTitle, bannerDesc ;
-        private ProgressBar pb;
 
         public MyViewHolder(View view)
         {
@@ -81,13 +75,9 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
         //        holder.imageView.setSelected(movieItems.contains(position));
 
 
-        holder.imageView.setTag(movieItems.get(position).getStore_image().toString());
-        holder.bannerTitle.setText(movieItems.get(position).getOffer_title());
+        imageView.setTag(movieItems.get(position).getStore_image().toString());
+        bannerTitle.setText(movieItems.get(position).getOffer_title());
 
-        PbAndImage pb_and_image = new PbAndImage();
-        pb_and_image.setImge(holder.imageView);
-        pb_and_image.setPb(holder.pb);
-        new DownloadImageTask1().execute(pb_and_image);
 //        holder.bannerDesc.setText(movieItems.get(position).getOffer_desc());
 
         //holder.getp.setSelected(mSelectedRows.contains(i));
@@ -97,6 +87,12 @@ public class PaidBannerHorizontal extends RecyclerView.Adapter<PaidBannerHorizon
                 Toast.makeText(MainActivity.this,holder.txtView.getText().toString(),Toast.LENGTH_SHORT).show();
             }
         });*/
+
+        PbWithImage pwi = new PbWithImage();
+        pwi.setImageView(imageView);
+        pwi.setProgressBar(pb);
+        new ImageViewLazyLoading().execute(pwi);
+
     }
 
     @Override

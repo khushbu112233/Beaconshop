@@ -1,52 +1,47 @@
 package com.amplearch.beaconshop.task;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-
-import com.amplearch.beaconshop.Model.PbAndImage;
-
+import com.amplearch.beaconshop.Model.PbWithCircle;
 import java.io.InputStream;
 import java.net.URL;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by ample-arch on 5/3/2017.
+ * Created by ample-arch on 5/4/2017.
  */
 
-public class DownloadImageTask extends AsyncTask<PbAndImage, Void, Bitmap>
+public class CircleImageLazyLoading extends AsyncTask<PbWithCircle,Void,Bitmap>
 {
-
     private CircleImageView circleImageView = null;
     private ProgressBar pb = null;
 
-    protected Bitmap doInBackground(PbAndImage... pb_and_images)
+    @Override
+    protected Bitmap doInBackground(PbWithCircle... params)
     {
-        this.circleImageView = (CircleImageView)pb_and_images[0].getImg();
-        this.pb = (ProgressBar)pb_and_images[0].getPb();
-        return getBitmapDownloaded((String) circleImageView.getTag());
+        this.circleImageView = (CircleImageView)params[0].getCircleImageView();
+        this.pb = (ProgressBar)params[0].getProgressBar();
+        return getCircleBitmapImage((String) circleImageView.getTag());
     }
 
-   protected void onPostExecute(Bitmap result) {
-        System.out.println("Downloaded " + circleImageView.getId());
+    protected void onPostExecute(Bitmap result)
+    {
+        System.out.println("CircleImage Downloaded: " + circleImageView.getId());
         circleImageView.setVisibility(View.VISIBLE);
         pb.setVisibility(View.GONE);  // hide the progressbar after downloading the image.
         circleImageView.setImageBitmap(result); //set the bitmap to the imageview.
     }
 
     /** This function downloads the image and returns the Bitmap **/
-    private Bitmap getBitmapDownloaded(String url) {
+    private Bitmap getCircleBitmapImage(String url) {
         System.out.println("String URL " + url);
         Bitmap bitmap = null;
         try {
-            bitmap = BitmapFactory.decodeStream((InputStream) new URL(url)
-                    .getContent());
+            bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
             bitmap = getResizedBitmap(bitmap, 100, 100);
             return bitmap;
         } catch (Exception e) {

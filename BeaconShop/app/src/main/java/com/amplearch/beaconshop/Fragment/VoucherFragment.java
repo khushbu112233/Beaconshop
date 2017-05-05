@@ -31,6 +31,7 @@ import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.WebCall.JayRequest;
+import com.amplearch.beaconshop.WebCall.JoyRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 
 import org.apache.http.HttpResponse;
@@ -54,7 +55,7 @@ import java.util.List;
  * Created by ample-arch on 3/31/2017.
  */
 
-public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncRequestComplete, JayRequest.OnAsyncRequestComplete
+public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRequestComplete
 {
     GridView gridView_Vouch;
     VoucherAdapter voucherAdapter;
@@ -95,9 +96,11 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
         userID = user1.get(UserSessionManager.KEY_USER_ID);
         voucherURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID?user_id="+userID;
 
+        Log.i("UserID: ", userID);
+
         if (checkConnection()== true)
         {
-            JayRequest getPosts = new JayRequest(VoucherFragment.this,getActivity(), "GET", null, "");
+            AsyncRequest getPosts = new AsyncRequest(VoucherFragment.this,getActivity(), "GET", null, "");
             getPosts.execute(voucherURL);
 
             gridView_Vouch.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -184,13 +187,12 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
     public void onResume()
     {
         super.onResume();
-
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK)
                 {
                     // handle back button
@@ -240,8 +242,8 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     }
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++)
                     {
-                      try
-                      {
+                        try
+                        {
                             //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
                             UserRedeem voucherClass = new UserRedeem();
                             voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());
@@ -263,7 +265,7 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     // adapter = new CustomFrameList(FestivalListPage.this, friends);
                     gridView_Vouch.setAdapter(voucherAdapter);
                     // Toast.makeText(getContext(), res, Toast.LENGTH_LONG).show();
-                           /* Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
+                          /*  Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
                             session.createUserLoginSession(username, email_id, image, password, user_id);
 
                             Intent intent=new Intent(SignInActivity.this,MainActivity.class);
@@ -276,6 +278,79 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
             }
         }
     }
+
+   /* @Override
+    public void joyResponse(String response)
+    {
+        Log.i("Voch res: ", response);
+        if (response.equals(""))
+        {
+            Toast.makeText(getContext(), "Vouchers not Loaded..", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            try
+            {
+                JSONObject jsonObject = new JSONObject(response);
+                String res = jsonObject.getString("redeem");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res==null)
+                {
+                    Toast.makeText(getContext(), "No Vouchers are Added..", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
+                    if (jsonArrayChanged.length() == 0)
+                    {
+                        tvNoVoucher.setVisibility(View.VISIBLE);
+                        tvNoVoucher.setText("No Vouchers are Added..");
+                        //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        tvNoVoucher.setVisibility(View.GONE);
+                    }
+                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++)
+                    {
+                        try
+                        {
+                            //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                            UserRedeem voucherClass = new UserRedeem();
+                            voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());
+                            voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("offer_title").toString());
+                            voucherClass.setOffer_desc(jsonArrayChanged.getJSONObject(i).get("offer_desc").toString());
+                            voucherClass.setQuantity(jsonArrayChanged.getJSONObject(i).get("quantity").toString());
+                            voucherClass.setUser_id(jsonArrayChanged.getJSONObject(i).get("user_id").toString());
+                            voucherClass.setOffer_id(jsonArrayChanged.getJSONObject(i).get("offer_id").toString());
+                            voucherClass.setOffer_image(jsonArrayChanged.getJSONObject(i).get("offer_image").toString());
+                            voucherClass.setRedeem(jsonArrayChanged.getJSONObject(i).get("redeem").toString());
+                            //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                            redeemList.add(voucherClass);
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    voucherAdapter = new VoucherAdapter(getActivity(), redeemList);
+                    // adapter = new CustomFrameList(FestivalListPage.this, friends);
+                    gridView_Vouch.setAdapter(voucherAdapter);
+                    // Toast.makeText(getContext(), res, Toast.LENGTH_LONG).show();
+                           *//* Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
+                            session.createUserLoginSession(username, email_id, image, password, user_id);
+
+                            Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+                            startActivity(intent);
+                            finish();*//*
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
 
     private boolean checkConnection()
     {
@@ -293,4 +368,6 @@ public class VoucherFragment extends Fragment implements AsyncRequest.OnAsyncReq
             Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

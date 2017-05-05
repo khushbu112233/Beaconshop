@@ -6,42 +6,38 @@ import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.amplearch.beaconshop.Model.ImageVoucherPb;
+import com.amplearch.beaconshop.Model.PbWithRoundImage;
+import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 
 /**
- * Created by ample-arch on 5/3/2017.
+ * Created by ample-arch on 5/4/2017.
  */
-public class DownloadImageTask3 extends AsyncTask<ImageVoucherPb, Void, Bitmap>
+
+public class RoundImageLazyLoading extends AsyncTask<PbWithRoundImage, Void, Bitmap>
 {
-    private ProgressBar pb1 = null;
-    private RoundedImageView roundedImageView1 = null ;
+    private RoundedImageView roundedImageView = null ;
+    private ProgressBar progressBar = null ;
 
-    protected Bitmap doInBackground(ImageVoucherPb... ivp)
+    @Override
+    protected Bitmap doInBackground(PbWithRoundImage... params)
     {
-        this.roundedImageView1 = (RoundedImageView)ivp[0].getRoundedImageView();
-        this.pb1 = (ProgressBar)ivp[0].getProgressBar();
-        return getBitmapDownloaded((String) roundedImageView1.getTag());
+        this.roundedImageView = (RoundedImageView)params[0].getRoundedImageView();
+        this.progressBar = (ProgressBar)params[0].getProgressBar();
+        return getRoundBitmapImage((String) roundedImageView.getTag());
     }
 
-
-    protected void onPostExecute(Bitmap result) {
-        System.out.println("Downloaded " + roundedImageView1.getId());
-        roundedImageView1.setVisibility(View.VISIBLE);
-        pb1.setVisibility(View.GONE);  // hide the progressbar after downloading the image.
-        roundedImageView1.setImageBitmap(result); //set the bitmap to the imageview.
+    protected void onPostExecute(Bitmap result)
+    {
+        System.out.println("Downloaded " + roundedImageView.getId());
+        roundedImageView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);  // hide the progressbar after downloading the image.
+        roundedImageView.setImageBitmap(result); //set the bitmap to the imageview.
     }
 
-   /* protected void onPreExecute()
-    {
-        pb1.setVisibility(View.VISIBLE);
-    }*/
-
-
-    private Bitmap getBitmapDownloaded(String string)
+    private Bitmap getRoundBitmapImage(String string)
     {
         Bitmap bitmap = null ;
         try
@@ -71,4 +67,5 @@ public class DownloadImageTask3 extends AsyncTask<ImageVoucherPb, Void, Bitmap>
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
         return resizedBitmap;
     }
+
 }

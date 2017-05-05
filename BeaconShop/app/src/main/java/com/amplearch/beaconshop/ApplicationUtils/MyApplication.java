@@ -1,9 +1,11 @@
 package com.amplearch.beaconshop.ApplicationUtils;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
@@ -28,6 +30,12 @@ public class MyApplication extends Application {
     private Region region;
 
     private static MyApplication mInstance ;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate()

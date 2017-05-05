@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
@@ -17,8 +16,6 @@ import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
-import com.amplearch.beaconshop.WebCall.JayRequest;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -29,7 +26,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +38,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete, JayRequest.OnAsyncRequestComplete
+public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
 {
     ListView listView_Elect ;
     ElectOfferAdapter  electOfferAdapter ;
@@ -102,7 +98,7 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
         if (checkConnection() == true)
         {
             params = getParams();
-            JayRequest getPosts = new JayRequest(this, "GET", params);
+            AsyncRequest getPosts = new AsyncRequest(this, "GET", params);
             getPosts.execute(apiURL);
         }
        // connectWithHttpPost();
@@ -141,8 +137,10 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
                    // Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
 
                         tvNoOffer.setVisibility(View.GONE);
-                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
-                        try {
+                    for (int i = 0, count = jsonArrayChanged.length(); i < count; i++)
+                    {
+                        try
+                        {
                             //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
                             VoucherClass voucherClass = new VoucherClass();
                             voucherClass.setId(jsonArrayChanged.getJSONObject(i).get("id").toString());

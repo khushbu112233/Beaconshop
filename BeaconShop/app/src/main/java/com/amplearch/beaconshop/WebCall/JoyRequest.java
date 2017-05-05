@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -19,23 +18,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by admin on 04/17/2017.
+ * Created by ample-arch on 5/4/2017.
  */
 
-public class AsyncRequest extends AsyncTask<String, Integer, String>
+public class JoyRequest extends AsyncTask<String, Integer, String>
 {
-    String label;
-    OnAsyncRequestComplete caller;
-    Context context;
-    String method = "GET";
-    List<NameValuePair> parameters = null;
-    ProgressDialog pDialog = null;
+    private String label;
+    private OnJoyRequestComplete caller;
+    private Context context;
+    private String method = "GET";
+    private List<NameValuePair> parameters = null;
+    private ProgressDialog pDialog = null;
 
-    public AsyncRequest(OnAsyncRequestComplete c, Activity a, String m, List p, String l) {
+
+    public JoyRequest(OnJoyRequestComplete c, Activity a, String m, List p, String l) {
         caller = c;
         context = a;
         method = m;
@@ -44,30 +43,32 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
     }
 
     // Three Constructors
-    public AsyncRequest(Activity a, String m, List<NameValuePair> p) {
-        caller = (OnAsyncRequestComplete) a;
+    public JoyRequest(Activity a, String m, List<NameValuePair> p) {
+        caller = (OnJoyRequestComplete) a;
         context = a;
         method = m;
         parameters = p;
     }
 
-    public AsyncRequest(Activity a, String m) {
-        caller = (OnAsyncRequestComplete) a;
+    public JoyRequest(Activity a, String m) {
+        caller = (OnJoyRequestComplete) a;
         context = a;
         method = m;
     }
 
-    public AsyncRequest(Activity a) {
-        caller = (OnAsyncRequestComplete) a;
+    public JoyRequest(Activity a) {
+        caller = (OnJoyRequestComplete) a;
         context = a;
     }
 
     // Interface to be implemented by calling activity
-    public interface OnAsyncRequestComplete {
-        public void asyncResponse(String response);
+    public interface OnJoyRequestComplete
+    {
+        public void joyResponse(String response);
     }
 
-    public String doInBackground(String... urls) {
+
+    protected String doInBackground(String... urls) {
         // get url pointing to entry point of API
         String address = urls[0].toString();
         if (method == "POST") {
@@ -81,37 +82,38 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         return null;
     }
 
-    public void onPreExecute() {
-        pDialog = new ProgressDialog(context);
+    protected void onPreExecute()
+    {
+        /*pDialog = new ProgressDialog(context);
         pDialog.setMessage("Loading data.."); // typically you will define such
         // strings in a remote file.
         //pDialog.isIndeterminate();
         pDialog.setCancelable(false);
-        pDialog.show();
+        pDialog.show();*/
     }
 
-    public void onProgressUpdate(Integer... progress) {
+    protected void onProgressUpdate(Integer... progress) {
         // you can implement some progressBar and update it in this record
         // setProgressPercent(progress[0]);
     }
 
-    public void onPostExecute(String response)
+    protected void onPostExecute(String response)
     {
         if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismiss();
         }
-        caller.asyncResponse(response);
+        caller.joyResponse(response);
     }
 
     protected void onCancelled(String response) {
         if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismiss();
         }
-        caller.asyncResponse(response);
+        caller.joyResponse(response);
     }
 
     @SuppressWarnings("deprecation")
-    private String get(String address)
+    protected String get(String address)
     {
         try
         {
@@ -137,10 +139,11 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
+
         return null;
     }
 
-    private String post(String address) {
+    protected String post(String address) {
         try {
 
             HttpClient client = new DefaultHttpClient();
@@ -162,11 +165,9 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         return null;
     }
 
-    private String stringifyResponse(HttpResponse response)
-    {
+    protected String stringifyResponse(HttpResponse response) {
         BufferedReader in;
-        try
-        {
+        try {
             in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
             StringBuffer sb = new StringBuffer("");
@@ -184,7 +185,7 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
         return null;
     }
+
 }
