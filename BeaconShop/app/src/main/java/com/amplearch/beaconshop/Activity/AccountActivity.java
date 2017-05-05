@@ -7,8 +7,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
+import com.amplearch.beaconshop.Fragment.ProfileFragment;
+import com.amplearch.beaconshop.Model.Images;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;
@@ -27,6 +32,7 @@ import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.helper.DatabaseHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -53,12 +59,22 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AccountActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,
@@ -80,6 +96,12 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private TextView btnLogin;
     private ProgressDialog progressDialog;
     User user;
+
+    public String SERVER = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterGoogleUser",
+            timestamp;
+
+    public String SERVER2 = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterFacebookUser",
+            timestamp1;
 
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterGoogleUser" ;
     ArrayList<NameValuePair> params ;
@@ -314,7 +336,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
         loginButton= (LoginButton)findViewById(R.id.login_button);
 
-        loginButton.setReadPermissions("public_profile", "email","user_friends");
+        loginButton.setReadPermissions("public_profile", "email","user_friends", "user_location");
 
         btnLogin= (TextView) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -362,28 +384,46 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
             googleID = acct.getId().toString();
-           personName = acct.getDisplayName();
-             personPhotoUrl = acct.getPhotoUrl().toString();
+            personName = acct.getDisplayName();
+            personPhotoUrl = acct.getPhotoUrl().toString();
             email = acct.getEmail();
 
             Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
+            new Upload("IMG_" + timestamp).execute();
+           /* try {
+                URL url = new URL(personPhotoUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] array = stream.toByteArray();
+
+                String imgString = Base64.encodeToString(getBytesFromBitmap(myBitmap),
+                        Base64.NO_WRAP);
 
 
-            ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-            nameValuePair.add(new BasicNameValuePair("name", acct.getDisplayName().toString()));
-            nameValuePair.add(new BasicNameValuePair("email", acct.getEmail().toString()));
-            nameValuePair.add(new BasicNameValuePair("contact", ""));
-            nameValuePair.add(new BasicNameValuePair("pass", "gmailpass"));
-            nameValuePair.add(new BasicNameValuePair("type", "gmail"));
-            nameValuePair.add(new BasicNameValuePair("google_id", acct.getId().toString()));
-            nameValuePair.add(new BasicNameValuePair("image", personPhotoUrl));
+                ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+                nameValuePair.add(new BasicNameValuePair("name", acct.getDisplayName().toString()));
+                nameValuePair.add(new BasicNameValuePair("email", acct.getEmail().toString()));
+                nameValuePair.add(new BasicNameValuePair("contact", ""));
+                nameValuePair.add(new BasicNameValuePair("pass", "gmailpass"));
+                nameValuePair.add(new BasicNameValuePair("type", "gmail"));
+                nameValuePair.add(new BasicNameValuePair("google_id", acct.getId().toString()));
+                nameValuePair.add(new BasicNameValuePair("image", imgString));
 
-            params = nameValuePair;
-            AsyncRequest getPosts = new AsyncRequest(AccountActivity.this, "GET", params);
-            getPosts.execute(apiURL);
-
-        //    session.createUserLoginSession(personName, email, personPhotoUrl, "gpass", "2977");
+                params = nameValuePair;
+                AsyncRequest getPosts = new AsyncRequest(AccountActivity.this, "GET", params);
+                getPosts.execute(apiURL);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+            //    session.createUserLoginSession(personName, email, personPhotoUrl, "gpass", "2977");
 
 
             // txtName.setText(personName);
@@ -399,6 +439,320 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             updateUI(false);
         }
     }
+
+    private String hashMapToUrl(HashMap<String, String> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for(Map.Entry<String, String> entry : params.entrySet()){
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+        }
+
+        return result.toString();
+    }
+
+
+    private class UploadFacebook extends AsyncTask<Void,Void,String>{
+        private Bitmap image;
+        private String name1;
+
+        public UploadFacebook(String name1){
+            this.name1 = name1;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            //compress the image to jpg format
+            //  image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            /*
+            * encode image to base64 so that it can be picked by saveImage.php file
+            * */
+
+
+            personPhotoUrl = "https://graph.facebook.com/" + user.facebookID + "/picture?type=large";
+
+            try {
+                URL url = new URL("https://graph.facebook.com/" + user.facebookID + "/picture?type=large");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                image = BitmapFactory.decodeStream(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.DEFAULT);
+
+            // Bitmap bm = BitmapFactory.decodeFile("/path/to/image.jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+
+            String imgString = Base64.encodeToString(getBytesFromBitmap(image),
+                    Base64.NO_WRAP);
+
+            byte[] b = baos.toByteArray();
+            //generate hashMap to store encodedImage and the name
+            HashMap<String,String> detail = new HashMap<>();
+            detail.put("name", user.name.toString());
+            detail.put("email", user.email.toString());
+            detail.put("contact", "");
+            detail.put("pass", "fbpass");
+            detail.put("type", "facebook");
+            detail.put("facebook_id", user.facebookID);
+            detail.put("image", imgString);
+            Long tsLong = System.currentTimeMillis() / 1000;
+            timestamp1 = tsLong.toString();
+            try{
+                //convert this HashMap to encodedUrl to send to php file
+                String dataToSend = hashMapToUrl(detail);
+                //make a Http request and send data to saveImage.php file
+                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER2,dataToSend);
+
+                //return the response
+                return response;
+
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e(TAG,"ERROR  "+e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //show image uploaded
+
+
+            try
+            {
+                JSONObject jsonObject = new JSONObject(s);
+                String res = jsonObject.getString("message");
+                String userId = jsonObject.getString("userId");
+                // String message = jsonObject.getString("User");
+                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                if (res.equals("Success Facebook") || res.equalsIgnoreCase("Already Exists"))
+                {
+                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId);
+                    Intent intent=new Intent(AccountActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+//                            session.createUserLoginSession(username, email_id, image, password, user_id);
+                    //etEmailAddress.setError("Email Address, Already Exist!");
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+
+           /* JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
+                String res = jsonObject.getString("message");
+                if (res.equalsIgnoreCase("Success")){
+                    Toast.makeText(getApplicationContext(),"Data Uploaded Successfully..",Toast.LENGTH_SHORT).show();
+                    // session.createUserLoginSession(name, email, "", password, userID);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Data not Uploaded..",Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+
+        }
+    }
+
+
+    private class Upload extends AsyncTask<Void,Void,String>{
+        private Bitmap image;
+        private String name1;
+
+        public Upload(String name1){
+            this.name1 = name1;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            //compress the image to jpg format
+            //  image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            /*
+            * encode image to base64 so that it can be picked by saveImage.php file
+            * */
+
+
+            try {
+                URL url = new URL(personPhotoUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                image = BitmapFactory.decodeStream(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.DEFAULT);
+
+            // Bitmap bm = BitmapFactory.decodeFile("/path/to/image.jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+
+            String imgString = Base64.encodeToString(getBytesFromBitmap(image),
+                    Base64.NO_WRAP);
+
+            byte[] b = baos.toByteArray();
+            //generate hashMap to store encodedImage and the name
+            HashMap<String,String> detail = new HashMap<>();
+            detail.put("name", personName);
+            detail.put("email", email);
+            detail.put("contact", "");
+            detail.put("pass", "gmailpass");
+            detail.put("type", "gmail");
+            detail.put("google_id", googleID);
+            detail.put("image", imgString);
+            Long tsLong = System.currentTimeMillis() / 1000;
+            timestamp = tsLong.toString();
+            try{
+                //convert this HashMap to encodedUrl to send to php file
+                String dataToSend = hashMapToUrl(detail);
+                //make a Http request and send data to saveImage.php file
+                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER,dataToSend);
+
+                //return the response
+                return response;
+
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e(TAG,"ERROR  "+e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //show image uploaded
+
+
+            if (s.equals(""))
+            {
+                Toast.makeText(getApplicationContext(), "Server Connection Failed..", Toast.LENGTH_LONG).show();
+            }
+            else {
+                // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    String res = jsonObject.getString("message");
+                    String userId = jsonObject.getString("userId");
+                    // String message = jsonObject.getString("User");
+                    //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                    if (res.equals("Success Google") || res.equalsIgnoreCase("Already Exists")) {
+                        session.createUserLoginSession(personName, email, personPhotoUrl, "gmailpass", userId);
+                        updateUI(true);
+                    } else {
+                        updateUI(false);
+                        Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+//                            session.createUserLoginSession(username, email_id, image, password, user_id);
+                        //etEmailAddress.setError("Email Address, Already Exist!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+           /* JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
+                String res = jsonObject.getString("message");
+                if (res.equalsIgnoreCase("Success")){
+                    Toast.makeText(getApplicationContext(),"Data Uploaded Successfully..",Toast.LENGTH_SHORT).show();
+                    // session.createUserLoginSession(name, email, "", password, userID);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Data not Uploaded..",Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+
+        }
+    }
+
+    public class MyAsync extends AsyncTask<Void, Void, Bitmap>
+    {
+        @Override
+        protected Bitmap doInBackground(Void... params)
+        {
+            // for converting url to bitmap
+            try {
+                URL url = new URL(personPhotoUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap)
+        {
+            super.onPostExecute(bitmap);
+
+//            ivBitmapImage.setImageBitmap(bitmap);
+
+            // for convert bitmap to byte array
+//            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            String imgString = Base64.encodeToString(getBytesFromBitmap(bitmap),
+                    Base64.NO_WRAP);
+
+
+            ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+            nameValuePair.add(new BasicNameValuePair("name", personName));
+            nameValuePair.add(new BasicNameValuePair("email", email));
+            nameValuePair.add(new BasicNameValuePair("contact", ""));
+            nameValuePair.add(new BasicNameValuePair("pass", "gmailpass"));
+            nameValuePair.add(new BasicNameValuePair("type", "gmail"));
+            nameValuePair.add(new BasicNameValuePair("google_id", googleID));
+            nameValuePair.add(new BasicNameValuePair("image", imgString));
+
+            params = nameValuePair;
+            AsyncRequest getPosts = new AsyncRequest(AccountActivity.this, "GET", params);
+            getPosts.execute(apiURL);
+
+        }
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -455,23 +809,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                                 user.name = object.getString("name").toString();
                                 user.gender = object.getString("gender").toString();
                                 PrefUtils.setCurrentUser(user,AccountActivity.this);
-
-                                personPhotoUrl = "https://graph.facebook.com/" + user.facebookID + "/picture?type=large";
-
-                                ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
-                                nameValuePair.add(new BasicNameValuePair("name", user.name.toString()));
-                                nameValuePair.add(new BasicNameValuePair("email", user.email.toString()));
-                                nameValuePair.add(new BasicNameValuePair("contact", ""));
-                                nameValuePair.add(new BasicNameValuePair("pass", "fbpass"));
-                                nameValuePair.add(new BasicNameValuePair("type", "facebook"));
-                                nameValuePair.add(new BasicNameValuePair("facebook_id", user.facebookID));
-                                nameValuePair.add(new BasicNameValuePair("image", personPhotoUrl));
-
-                                paramsFacebook = nameValuePair;
-                                AsyncRequest getPosts = new AsyncRequest(AccountActivity.this, "GET", paramsFacebook);
-                                getPosts.execute(apiURLFacebook);
-
-
+                                new UploadFacebook("IMG_" + timestamp1).execute();
+                               /* JSONObject object1 = object.getJSONObject("location");
+                                Toast.makeText(getApplicationContext(), object1.toString(), Toast.LENGTH_LONG).show();
+*/
                               //  session.createUserLoginSession(user.name, user.email, "", "", "");
 
                             }catch (Exception e){
@@ -599,7 +940,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
     private void showProgressDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog = new ProgressDialog(AccountActivity.this);
             mProgressDialog.setMessage("Loading...");
             mProgressDialog.setIndeterminate(true);
         }
@@ -693,7 +1034,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         }
         else
         {
-            // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+           /* // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             try
             {
                 JSONObject jsonObject = new JSONObject(response);
@@ -716,34 +1057,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             }
             catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
 
-
-
-            try
-            {
-                JSONObject jsonObject = new JSONObject(response);
-                String res = jsonObject.getString("message");
-                String userId = jsonObject.getString("userId");
-                // String message = jsonObject.getString("User");
-                //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                if (res.equals("Success Facebook") || res.equalsIgnoreCase("Already Exists"))
-                {
-                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId);
-                    Intent intent=new Intent(AccountActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-//                            session.createUserLoginSession(username, email_id, image, password, user_id);
-                    //etEmailAddress.setError("Email Address, Already Exist!");
-                }
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
 
 

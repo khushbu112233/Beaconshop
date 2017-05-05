@@ -273,15 +273,13 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                 {
                     Toast.makeText(getApplicationContext(), "This email address does not EXISTS..", Toast.LENGTH_LONG).show();
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "Password Has been sent to email id.", Toast.LENGTH_LONG).show();
+                else if (res.equalsIgnoreCase("Password has been sent to your email address.")){
+                    Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
     }
-
 }
