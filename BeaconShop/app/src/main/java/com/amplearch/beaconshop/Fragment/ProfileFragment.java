@@ -159,6 +159,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import static com.amplearch.beaconshop.Activity.MainActivity.mGoogleApiClient;
+
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, AsyncRequest.OnAsyncRequestComplete{
 
@@ -180,7 +182,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 007;
 
-    private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
 
     TrojanText txtName, txtUserID;
@@ -277,10 +278,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+       /* mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                 .enableAutoManage(getActivity(), this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+                .build();*/
 
         lnrvoucher.setOnClickListener(new OnClickListener() {
             @Override
@@ -536,7 +537,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                                     name = jsonArrayChanged.getJSONObject(i).get("username").toString();
                                     //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
                                     byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
-                                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                   // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
                                     byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString(), Base64.DEFAULT);
                                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -1392,9 +1393,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                         + fileName + "\"" + lineEnd);
 
                 dos.writeBytes(lineEnd);
-
-
-
 
                 // create a buffer of  maximum size
                 bytesAvailable = fileInputStream.available();

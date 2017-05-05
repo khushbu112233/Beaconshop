@@ -15,6 +15,30 @@
         <item>About Us</item>
     </string-array>
 
+    <string-array name="country_array">
+        <item>Select Country</item>
+        <item>Singapore</item>
+        <item>Canada</item>
+    </string-array>
+
+    <string-array name="canada_state_array">
+        <item>Select Province</item>
+        <item>Alberta</item>
+        <item>British Columbia</item>
+        <item>Labrador</item>
+        <item>Manitoba</item>
+        <item>New Brunswick</item>
+        <item>Newfoundland</item>
+        <item>Nova Scotia</item>
+        <item>Nunavut</item>
+        <item>North West Territories</item>
+        <item>Ontario</item>
+        <item>Prince Edward Island</item>
+        <item>Quebec</item>
+        <item>Saskatchewen</item>
+        <item>Yukon</item>
+    </string-array>
+
     <string-array name="gender_array">
         <item>Select</item>
         <item>Male</item>

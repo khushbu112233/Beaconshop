@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,9 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
     ArrayList<NameValuePair> params ;
     String UserName, EmailAddress, ContactNo, Password, RePassword, tType;
     LinearLayout lnrSignIn;
+    Spinner spnCountry, spnState;
+    LinearLayout llStateBox;
+    String final_country, final_state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,6 +59,8 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         checkConnection();
+        spnCountry = (Spinner) findViewById(R.id.spnCountry);
+        spnState = (Spinner) findViewById(R.id.spnState);
         etEmailAddress = (EditText) findViewById(R.id.etEmailAddress);
         etPassword = (EditText) findViewById(R.id.etPassword);
         etRePassword = (EditText) findViewById(R.id.etRePassword);
@@ -60,6 +68,45 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
         etContactNo = (EditText)findViewById(R.id.etContactNo);
         tvSignup = (TextView) findViewById(R.id.tvSignUp);
         lnrSignIn = (LinearLayout) findViewById(R.id.lnrSignIn);
+        llStateBox = (LinearLayout) findViewById(R.id.llStateBox);
+
+        ArrayAdapter<CharSequence> adapterCountry = ArrayAdapter.createFromResource(this,
+                R.array.country_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapterCountry.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spnCountry.setAdapter(adapterCountry);
+
+
+        ArrayAdapter<CharSequence> adapterState = ArrayAdapter.createFromResource(SignUpActivity.this,
+                R.array.canada_state_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spnState.setAdapter(adapterState);
+
+        spnCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String country = parent.getItemAtPosition(position).toString();
+                if (country.equalsIgnoreCase("Canada")){
+
+                    llStateBox.setVisibility(View.VISIBLE);
+                }
+                else if (country.equalsIgnoreCase("Singapore")){
+
+                    llStateBox.setVisibility(View.GONE);
+                }
+                else if (country.equalsIgnoreCase("Select Country")){
+                    llStateBox.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         lnrSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,14 +127,28 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
                 RePassword = etRePassword.getText().toString();
                 tType = "simple";
 
+                final_country = spnCountry.getSelectedItem().toString();
+                final_state = spnState.getSelectedItem().toString();
                 if (!validate(UserName,EmailAddress,ContactNo,Password,RePassword))
                 {
                     Toast.makeText(getApplicationContext(), "Form Fill Invalid!", Toast.LENGTH_SHORT).show();
+                } else if (final_country.equalsIgnoreCase("Select Country")){
+                    Toast.makeText(getApplicationContext(), "Please Select Country..", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     if (checkConnection() == true)
                     {
+
+                        if (final_country.equalsIgnoreCase("Canada")) {
+                            if (final_state.equalsIgnoreCase("Select Province")) {
+                                Toast.makeText(getApplicationContext(), "Please Select Province for Canada..", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                        if (final_country.equalsIgnoreCase("Singapore")){
+                            final_state = "Singapore";
+                        }
                         params = getParams();
                         AsyncRequest getPosts = new AsyncRequest(SignUpActivity.this, "GET", params);
                         getPosts.execute(apiURL);
@@ -106,6 +167,8 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
         nameValuePair.add(new BasicNameValuePair("contact", ContactNo));
         nameValuePair.add(new BasicNameValuePair("pass", Password));
         nameValuePair.add(new BasicNameValuePair("type", "simple"));
+        nameValuePair.add(new BasicNameValuePair("country", final_country));
+        nameValuePair.add(new BasicNameValuePair("state", final_state));
         return nameValuePair;
     }
 
@@ -163,5 +226,4 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
     }
-
 }

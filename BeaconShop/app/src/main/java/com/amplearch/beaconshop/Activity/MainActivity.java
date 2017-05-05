@@ -3,6 +3,7 @@ package com.amplearch.beaconshop.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -59,13 +61,26 @@ import com.amplearch.beaconshop.Utils.Const;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.NotificationHandler;
+import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -101,7 +116,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
+public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete,  GoogleApiClient.OnConnectionFailedListener
 {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -138,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     UserSessionManager session;
     NearbyMessagePref pref;
 
+    public static GoogleApiClient mGoogleApiClient;
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -146,7 +164,14 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         setContentView(R.layout.activity_main);
         session = new UserSessionManager(getApplicationContext());
         isConnected = checkConnection();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
+        mGoogleApiClient = new GoogleApiClient.Builder(MainActivity.this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         pref = new NearbyMessagePref(getApplicationContext());
         final HashMap<String, String> nearpref = pref.getUserDetails();
@@ -283,8 +308,6 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 selectItemFragment(position);
             }
         });
-
-
     }
 
     private void connectWithHttpPostUserRedeem(final String user_id)
@@ -559,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                     name = jsonArrayChanged.getJSONObject(i).get("username").toString();
                                     //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
                                     byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
-                                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                   // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
                                     byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString(), Base64.DEFAULT);
                                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -695,8 +718,43 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                // fragment = new ChangePasswordFragment();
                 //  rlButtons.setVisibility(View.GONE);
                // toolbarTitle.setText("Change Password");
+
+
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                session.logoutUser();
+                            }
+                        });
+                PrefUtils.clearCurrentUser(MainActivity.this);
+
+                // We can logout from facebook by calling following method
+                LoginManager.getInstance().logOut();
                 session.logoutUser();
+                /*try {
+                    if (!mGoogleApiClient.isConnected()) {
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                                new ResultCallback<Status>() {
+                                    @Override
+                                    public void onResult(Status status) {
+                                        //updateUI(false);
+                                        session.logoutUser();
+                                    }
+                                });
+                        break;
+                    }
+                }catch (Exception e){
+                    PrefUtils.clearCurrentUser(MainActivity.this);
+
+                    // We can logout from facebook by calling following method
+                    LoginManager.getInstance().logOut();
+                    session.logoutUser();
+                    break;
+                }*/
                 break;
+                   // session.logoutUser();}
+
             case 9:
                 fragment = new HelpFragment();
              //   rlButtons.setVisibility(View.GONE);
@@ -1148,6 +1206,57 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             Log.d("ImageManager", "Error: " + e.toString());
         }
         return null;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+           // Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+          //  showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+               //     hideProgressDialog();
+                   handleSignInResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
+    public void handleSignInResult(GoogleSignInResult result) {
+     //   Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+          //  Log.e(TAG, "display name: " + acct.getDisplayName());
+
+            String personName = acct.getDisplayName();
+            String personPhotoUrl = acct.getPhotoUrl().toString();
+            String email = acct.getEmail();
+
+          //  Log.e(TAG, "Name: " + personName + ", email: " + email + ", Image: " + personPhotoUrl);
+
+            //updateUI(true);
+        } else {
+            // Signed out, show unauthenticated UI.
+          //  updateUI(false);
+        }
     }
 
     public class MyAsync extends AsyncTask<String, Void, Bitmap>
