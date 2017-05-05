@@ -9,11 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.Model.ImageVoucherPb;
+import com.amplearch.beaconshop.Model.PbAndImage;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.task.DownloadImageTask1;
+import com.amplearch.beaconshop.task.DownloadImageTask2;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +33,9 @@ public class ElectOfferAdapter extends BaseAdapter
 {
     Context context;
     private List<VoucherClass> voucherItems;
+    private ProgressBar pb ;
+    private ImageView imageView ;
+    private TrojanText trojanText, trojanTextdetail ;
 
     public ElectOfferAdapter(Context applicationContext, List<VoucherClass> voucherItems)
     {
@@ -56,20 +64,34 @@ public class ElectOfferAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView= inflater.inflate(R.layout.electronics_offers, null, true);
 
-        ImageView imageView = (ImageView)rowView.findViewById(R.id.ivElectImage);
-        TrojanText trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
-        TrojanText trojanTextdetail = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails1);
+         imageView = (ImageView)rowView.findViewById(R.id.ivElectImage);
+         trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
+         trojanTextdetail = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails1);
+         pb = (ProgressBar)rowView.findViewById(R.id.progressBar2);
 
-        if(voucherItems.get(position).getStore_image() != null) {
-           /* Picasso.with(context).load(voucherItems.get(position).getStore_image())
-                    .into(imageView);*/
+        /*if(voucherItems.get(position).getStore_image() != null)
+        {
+           *//* Picasso.with(context).load(voucherItems.get(position).getStore_image()).into(imageView);*//*
             byte[] decodedString = Base64.decode(voucherItems.get(position).getStore_image(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
             imageView.setImageBitmap(decodedByte);
-        }
+        }*/
+
         trojanText.setText(voucherItems.get(position).getMessage().toString());
         trojanTextdetail.setText(voucherItems.get(position).getOffer_title().toString());
+
+        imageView.setTag(voucherItems.get(position).getStore_image().toString());
+
+       /* PbAndImage pb_and_image = new PbAndImage();
+        pb_and_image.setImge(imageView);
+        pb_and_image.setPb(pb);
+        new DownloadImageTask1().execute(pb_and_image);*/
+
+        ImageVoucherPb ivp = new ImageVoucherPb();
+        ivp.setImage(imageView);
+        ivp.setProgressBar(pb);
+        new DownloadImageTask2().execute(ivp);
 
         return rowView ;
     }

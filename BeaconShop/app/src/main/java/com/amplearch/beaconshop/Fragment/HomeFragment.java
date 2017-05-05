@@ -55,9 +55,10 @@ import com.amplearch.beaconshop.Utils.RecyclerItemClickListener;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.WebCall.JayRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 
-public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncRequestComplete
+public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestComplete, AsyncRequest.OnAsyncRequestComplete
 {
 
     GridView listCategory;
@@ -193,13 +194,14 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerPaidBanner.setLayoutManager(layoutManager);
 
-        if (checkConnection()) {
+        if (checkConnection())
+        {
             params = getParams();
-            AsyncRequest getPosts = new AsyncRequest(HomeFragment.this, getActivity(), "GET", params, "");
+            JayRequest getPosts = new JayRequest(HomeFragment.this, getActivity(), "GET", params, "");
             getPosts.execute(apiURL);
 
             paramsPaid = getParamPaid();
-            AsyncRequest getPostBanner = new AsyncRequest(HomeFragment.this, getActivity(), "GET", paramsPaid, "");
+            JayRequest getPostBanner = new JayRequest(HomeFragment.this, getActivity(), "GET", paramsPaid, "");
             getPostBanner.execute(apiURLPaidBanner);
         }
         gps = new GPSTracker(getContext());
@@ -403,8 +405,8 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
     }
 
     @Override
-    public void asyncResponse(String response) {
-
+    public void asyncResponse(String response)
+    {
         //  Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
@@ -502,7 +504,6 @@ public class HomeFragment extends Fragment implements AsyncRequest.OnAsyncReques
 
         }
     }
-
 
     private ArrayList<NameValuePair> getParams() {
         // define and ArrayList whose elements are of type NameValuePair

@@ -9,13 +9,20 @@
     android:focusable="true"
     android:layout_marginRight="5dp">
 
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="25dp"/>
+
     <ImageView
         android:layout_gravity="center"
         android:id="@+id/custom_sticker_image"
         android:layout_width="120dp"
         android:layout_height="90dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/ic_sale"
+
         android:scaleType="fitXY" />
         <!--<ImageView-->
             <!--android:id="@+id/custom_sticker_image"-->

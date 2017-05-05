@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amplearch.beaconshop.Model.ImageVoucherPb;
 import com.amplearch.beaconshop.Model.UserRedeem;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.task.DownloadImageTask3;
 import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +32,9 @@ public class VoucherAdapter extends BaseAdapter
 {
     Context context;
     private List<UserRedeem> voucherItems;
+    private RoundedImageView roundedImage ;
+    private TextView tvVouchText;
+    private ProgressBar progressBar ;
 
     public VoucherAdapter(FragmentActivity activity, List<UserRedeem> voucherItems)
     {
@@ -58,21 +64,30 @@ public class VoucherAdapter extends BaseAdapter
         View rView = inflater.inflate(R.layout.grid_voucher,null,true);
 
 //        ImageView ivVouchImage = (ImageView)rView.findViewById(R.id.ivVouchImage);
-       RoundedImageView roundedImage = (RoundedImageView)rView.findViewById(R.id.imgVoucher);
-       TextView tvVouchText = (TextView)rView.findViewById(R.id.tvVouchText);
+        roundedImage = (RoundedImageView)rView.findViewById(R.id.imgVoucher);
+        tvVouchText = (TextView)rView.findViewById(R.id.tvVouchText);
+        progressBar = (ProgressBar)rView.findViewById(R.id.progressBar4);
 
 //        ivVouchImage.setImageResource(vouchImage.get(position));
       //  roundedImage.setImageResource(vouchImage.get(position));
         tvVouchText.setText(voucherItems.get(position).getOffer_title());
 
-        if(voucherItems.get(position).getOffer_image() != null) {
-            /*Picasso.with(context).load(voucherItems.get(position).getOffer_image())
-                    .into(roundedImage);*/
+       /* if(voucherItems.get(position).getOffer_image() != null) {
+            *//*Picasso.with(context).load(voucherItems.get(position).getOffer_image())
+                    .into(roundedImage);*//*
 
             byte[] decodedString = Base64.decode(voucherItems.get(position).getOffer_image(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             roundedImage.setImageBitmap(decodedByte);
         }
+       */
+        roundedImage.setTag(voucherItems.get(position).getOffer_image().toString());
+
+        ImageVoucherPb ivp = new ImageVoucherPb();
+        ivp.setRoundedImageView(roundedImage);
+        ivp.setProgressBar(progressBar);
+        new DownloadImageTask3().execute(ivp);
+
 
         return rView;
     }

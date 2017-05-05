@@ -18,6 +18,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -27,7 +33,6 @@
                 android:id="@+id/imgCategory"
                 android:layout_width="78dp"
                 android:layout_height="78dp"
-                android:src="@drawable/ic_sale"
                 android:padding="1dp" />
 
             </FrameLayout>
