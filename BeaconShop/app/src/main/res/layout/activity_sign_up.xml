@@ -5,11 +5,12 @@
     android:id="@+id/activity_sign_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0EA"
+    android:background="@drawable/bg1"
     tools:context="com.amplearch.beaconshop.Activity.SignUpActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:visibility="gone"
         app:logo="@mipmap/ic_launcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,13 +34,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+    <com.amplearch.beaconshop.Utils.TrojanText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textSize="31sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="BeaconShop"/>
     <RelativeLayout
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="80dp">
 
         <LinearLayout
             android:id="@+id/llUsernameBox"
@@ -47,27 +56,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="15dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            <View
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_weight="0.1"
-                android:background="@drawable/view_shape"
-                android:layout_marginLeft="0dp"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_user" />
-            </FrameLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_user" />
             <EditText
                 android:id="@+id/etUserName"
                 android:inputType="textPersonName|text"
@@ -75,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:hint="User Name"
                 android:layout_weight="0.9"
-                android:textColorHint="@color/primary_dark"
-                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
@@ -89,28 +86,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="10dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llUsernameBox">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            <View
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_weight="0.1"
-                android:background="@drawable/view_shape"
-                android:layout_marginLeft="0dp"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/email" />
-            </FrameLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_email" />
             <EditText
                 android:id="@+id/etEmailAddress"
                 android:inputType="text|textEmailAddress"
@@ -118,8 +104,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Email Address"
                 android:layout_weight="0.9"
-                android:textColorHint="@color/primary_dark"
-                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
@@ -132,28 +118,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="10dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llEmailBox">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            <View
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_weight="0.1"
-                android:background="@drawable/view_shape"
-                android:layout_marginLeft="0dp"/>
+
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/contact" />
-            </FrameLayout>
+                android:src="@drawable/ic_mobile" />
             <EditText
                 android:id="@+id/etContactNo"
                 android:inputType="number"
@@ -162,8 +137,8 @@
                 android:hint="Contact No"
                 android:layout_weight="0.9"
                 android:maxLength="10"
-                android:textColorHint="@color/primary_dark"
-                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
@@ -176,28 +151,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="10dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llContactBox">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            <View
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_weight="0.1"
-                android:background="@drawable/view_shape"
-                android:layout_marginLeft="0dp"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/password" />
-            </FrameLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_password" />
             <EditText
                 android:id="@+id/etPassword"
                 android:inputType="text|textPassword"
@@ -205,8 +169,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:layout_weight="0.9"
-                android:textColorHint="@color/primary_dark"
-                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
@@ -219,28 +183,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="10dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llPasswordBox">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            <View
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_weight="0.1"
-                android:background="@drawable/view_shape"
-                android:layout_marginLeft="0dp"/>
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/password" />
-        </FrameLayout>
+                android:src="@drawable/ic_password" />
             <EditText
                 android:id="@+id/etRePassword"
                 android:inputType="text|textPassword"
@@ -248,8 +200,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Re-Password"
                 android:layout_weight="0.9"
-                android:textColorHint="@color/primary_dark"
-                android:textColor="@color/primary_dark"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="10dp"
@@ -263,28 +215,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="10dp"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llRePaswordBox">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <View
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:padding="5dp"
-                    android:layout_weight="0.1"
-                    android:background="@drawable/view_shape"
-                    android:layout_marginLeft="0dp"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_country" />
-            </FrameLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_web" />
             <Spinner
                 android:id="@+id/spnCountry"
                 android:layout_gravity="center"
@@ -335,12 +275,12 @@
             android:layout_below="@+id/llStateBox"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_shape"
-            android:text="SIGN UP"
+            android:text="Sign Up"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:padding="0dp"
             android:layout_centerHorizontal="true"
-            android:textSize="20dp"
+            android:textSize="15sp"
             android:textStyle="bold"/>
 
         <LinearLayout
@@ -353,14 +293,14 @@
             android:paddingRight="00dp"
             android:gravity="center"
             android:layout_below="@+id/tvSignUp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="0dp">
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:textSize="11dp"
-                android:textColor="@color/primary_dark"
+                android:textSize="11sp"
+                android:textColor="@color/white"
                 android:text="ALREADY HAVE AN ACCOUNT?"/>
             <com.amplearch.beaconshop.Utils.TrojanText
                 android:layout_width="wrap_content"
@@ -368,10 +308,10 @@
                 android:layout_weight="0"
                 android:text="Sign IN"
                 android:textStyle="bold"
-                android:textSize="16dp"
+                android:textSize="13sp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="0dp"
-                android:textColor="@color/primary_dark"/>
+                android:textColor="@color/white"/>
         </LinearLayout>
 
 
