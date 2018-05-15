@@ -9,6 +9,7 @@
     tools:context="com.amplearch.beaconshop.Activity.AccountActivity">
 
     <FrameLayout
+        android:background="@drawable/bg1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

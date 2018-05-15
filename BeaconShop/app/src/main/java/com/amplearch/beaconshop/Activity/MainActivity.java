@@ -434,6 +434,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
                                     byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("offer_image").toString(), Base64.DEFAULT);
 
+                                    Log.d("imageurl", decodedString.toString());
+
                                     db.addRedeemUser(jsonArrayChanged.getJSONObject(i).get("user_id").toString(), jsonArrayChanged.getJSONObject(i).get("offer_id").toString(),
                                             jsonArrayChanged.getJSONObject(i).get("offer_code").toString(), decodedString, jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
                                             jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(), jsonArrayChanged.getJSONObject(i).get("quantity").toString(),
