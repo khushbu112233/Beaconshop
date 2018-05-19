@@ -3,56 +3,39 @@ package com.amplearch.beaconshop.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Utils.CallSoap;
-import com.amplearch.beaconshop.Utils.Caller;
-import com.amplearch.beaconshop.Utils.TrojanButton;
-import com.amplearch.beaconshop.Utils.TrojanEditText;
-import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.Utils.GillSansButton;
+import com.amplearch.beaconshop.Utils.GillSansEditText;
+import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignInActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
 {
-    TrojanText tvForgotPassword;
-    TrojanEditText etUsername;
+    GillSansTextView tvForgotPassword;
+    GillSansEditText etUsername;
     EditText etEmailAdd, etPass;
-    TrojanButton tvSignIn ;
+    GillSansButton tvSignIn ;
     LinearLayout lnrSignup;
     public static String rslt="";
     UserSessionManager session;
@@ -72,12 +55,12 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
         final  AlertDialog ad=new AlertDialog.Builder(this).create();
         etEmailAdd = (EditText)findViewById(R.id.etEmailAdd);
         etPass = (EditText)findViewById(R.id.etPass);
-        etUsername = (TrojanEditText)findViewById(R.id.etUserName);
-        tvForgotPassword = (TrojanText)findViewById(R.id.tvForgotPassword);
+        etUsername = (GillSansEditText) findViewById(R.id.etUserName);
+        tvForgotPassword = (GillSansTextView) findViewById(R.id.tvForgotPassword);
         lnrSignup = (LinearLayout) findViewById(R.id.lnrSignup);
         session = new UserSessionManager(getApplicationContext());
 
-        tvSignIn = (TrojanButton) findViewById(R.id.tvSignIn);
+       tvSignIn = (GillSansButton) findViewById(R.id.tvSignIn);
 
 
         lnrSignup.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +70,6 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                 startActivity(intent);
             }
         });
-
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)

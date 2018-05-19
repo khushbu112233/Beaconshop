@@ -10,20 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.amplearch.beaconshop.Model.ImageVoucherPb;
-import com.amplearch.beaconshop.Model.PbWithRoundImage;
 import com.amplearch.beaconshop.Model.UserRedeem;
-import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.task.RoundImageLazyLoading;
-import com.github.siyamed.shapeimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
+import com.github.siyamed.shapeimageview.CircularImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,9 +26,9 @@ public class VoucherAdapter extends BaseAdapter
 {
     Context context;
     private List<UserRedeem> voucherItems;
-    private RoundedImageView roundedImage ;
+    private CircularImageView roundedImage ;
     private TextView tvVouchText;
-    private ProgressBar progressBar ;
+    private TextView tvVouchText1;
 
     public VoucherAdapter(FragmentActivity activity, List<UserRedeem> voucherItems)
     {
@@ -66,9 +58,9 @@ public class VoucherAdapter extends BaseAdapter
         View rView = inflater.inflate(R.layout.grid_voucher,null,true);
 
 //        ImageView ivVouchImage = (ImageView)rView.findViewById(R.id.ivVouchImage);
-        roundedImage = (RoundedImageView)rView.findViewById(R.id.imgVoucher);
+        roundedImage = (CircularImageView)rView.findViewById(R.id.imgVoucher);
         tvVouchText = (TextView)rView.findViewById(R.id.tvVouchText);
-        progressBar = (ProgressBar)rView.findViewById(R.id.progressBar4);
+        tvVouchText1 = (TextView)rView.findViewById(R.id.tvVouchText1);
 
 //        ivVouchImage.setImageResource(vouchImage.get(position));
       //  roundedImage.setImageResource(vouchImage.get(position));
@@ -85,7 +77,8 @@ public class VoucherAdapter extends BaseAdapter
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             roundedImage.setImageBitmap(decodedByte);
         }
-
+        tvVouchText.setText(voucherItems.get(position).getOffer_title());
+        tvVouchText1.setText(voucherItems.get(position).getOffer_desc());
 //        roundedImage.setTag(voucherItems.get(position).getOffer_image());
        /* tvVouchText.setText(voucherItems.get(position).getOffer_title());
 

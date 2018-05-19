@@ -59,10 +59,10 @@
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/primary"
+            android:background="@color/white"
             android:choiceMode="singleChoice"
-            android:divider="@color/primary"
-            android:dividerHeight="5dp" />
+            android:divider="@color/divider"
+            android:dividerHeight="1dp" />
 
 
     <!-- our toolbar -->

@@ -19,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    /*dataBinding {
+        enabled = true
+    }*/
 }
 
 repositories {
@@ -37,6 +40,8 @@ dependencies {
     //    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     //    compile project(path: ':sqlitedatabase')
     testCompile 'junit:junit:4.12'
+
+    compile 'joda-time:joda-time:2.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:support-v4:25.3.0'

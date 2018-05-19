@@ -1,75 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    >
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/ivElectImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_border_width="1dp"
+        android:layout_marginTop="5dp"
+        app:civ_border_color="@color/divider"
+        android:src="@drawable/ic_sale" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        >
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/tvElectOfferDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
 
-        <RelativeLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/login_shape"
-            android:layout_weight="0.0"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/ivElectImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="fitXY" />
-          <!--  <ProgressBar
-                android:id="@+id/progressBar2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"/>-->
-        </RelativeLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/offers_shape"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
-
-            <com.amplearch.beaconshop.Utils.TrojanText
-                android:id="@+id/tvElectOfferDetails"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Discount"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <com.amplearch.beaconshop.Utils.TrojanText
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_marginTop="2dp"
-                android:visibility="visible"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:id="@+id/tvElectOfferDetails1"
-                android:textColor="@color/drawer"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="Discount"
-                android:ellipsize="end"
-                android:textSize="12dp"/>
-        </LinearLayout>
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/tvElectOfferDetails1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
     </LinearLayout>
 
 </LinearLayout>

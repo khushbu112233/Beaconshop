@@ -64,7 +64,8 @@
             android:layout_height="fill_parent"
             android:layout_below="@+id/llButtons"
             android:dividerHeight="2dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
+            tools:listitem="@layout/electronics_offers"
             android:layout_marginBottom="10dp" />
 
 </RelativeLayout>
