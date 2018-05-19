@@ -8,15 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.amplearch.beaconshop.Model.ImageVoucherPb;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Utils.TrojanText;
-import com.amplearch.beaconshop.task.DownloadImageTask2;
-import com.squareup.picasso.Picasso;
+import com.amplearch.beaconshop.Utils.GillSansTextView;
+import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.List;
 
@@ -29,8 +26,8 @@ public class ElectOfferAdapter extends BaseAdapter
     Context context;
     private List<VoucherClass> voucherItems;
     private ProgressBar pb ;
-    private ImageView imageView ;
-    private TrojanText trojanText, trojanTextdetail ;
+    private CircularImageView imageView ;
+    private GillSansTextView trojanText, trojanTextdetail ;
 
     public ElectOfferAdapter(Context applicationContext, List<VoucherClass> voucherItems)
     {
@@ -59,9 +56,9 @@ public class ElectOfferAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView= inflater.inflate(R.layout.electronics_offers, null, true);
 
-         imageView = (ImageView)rowView.findViewById(R.id.ivElectImage);
-         trojanText = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails);
-         trojanTextdetail = (TrojanText)rowView.findViewById(R.id.tvElectOfferDetails1);
+         imageView = (CircularImageView) rowView.findViewById(R.id.ivElectImage);
+         trojanText = (GillSansTextView) rowView.findViewById(R.id.tvElectOfferDetails);
+         trojanTextdetail = (GillSansTextView) rowView.findViewById(R.id.tvElectOfferDetails1);
 //         pb = (ProgressBar)rowView.findViewById(R.id.progressBar2);
 
         if(voucherItems.get(position).getStore_image() != null)

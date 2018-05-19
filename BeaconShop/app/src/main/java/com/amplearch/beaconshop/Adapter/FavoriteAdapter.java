@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.amplearch.beaconshop.R;
-import com.github.siyamed.shapeimageview.RoundedImageView;
+import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
 
@@ -23,12 +23,14 @@ public class FavoriteAdapter extends BaseAdapter
     Context context;
     ArrayList<Bitmap> favImage;
     ArrayList<String> favText;
+    ArrayList<String> favText1;
 
-    public FavoriteAdapter(FragmentActivity activity, ArrayList<Bitmap> favImage, ArrayList<String> favText)
+    public FavoriteAdapter(FragmentActivity activity, ArrayList<Bitmap> favImage, ArrayList<String> favText,ArrayList<String> favText1)
     {
         this.context = activity ;
         this.favImage = favImage ;
         this.favText = favText ;
+        this.favText1 = favText1;
     }
 
     @Override
@@ -52,11 +54,13 @@ public class FavoriteAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView= inflater.inflate(R.layout.grid_favorite, null, true);
 
-        RoundedImageView roundedImageView = (RoundedImageView)rowView.findViewById(R.id.imgOffer);
+        CircularImageView roundedImageView = (CircularImageView) rowView.findViewById(R.id.imgOffer);
         TextView tvFavText = (TextView)rowView.findViewById(R.id.tvFavText);
+        TextView tvFavText1 = (TextView)rowView.findViewById(R.id.tvFavText1);
 
         roundedImageView.setImageBitmap(favImage.get(position));
         tvFavText.setText(favText.get(position));
+        tvFavText1.setText(favText1.get(position));
 
         return rowView ;
     }

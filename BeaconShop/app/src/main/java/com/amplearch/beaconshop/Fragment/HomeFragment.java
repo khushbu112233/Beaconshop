@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -26,15 +25,20 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
-import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
-import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
 import com.amplearch.beaconshop.Adapter.PaidBannerHorizontal;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.GPSTracker;
+import com.amplearch.beaconshop.Utils.RecyclerItemClickListener;
+import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.WebCall.JayRequest;
+import com.amplearch.beaconshop.WebCall.JoyRequest;
+import com.amplearch.beaconshop.helper.DatabaseHelper;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -43,21 +47,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import com.amplearch.beaconshop.Utils.GPSTracker;
-import com.amplearch.beaconshop.Utils.LocationUpdateService;
-import com.amplearch.beaconshop.Utils.RecyclerItemClickListener;
-import com.amplearch.beaconshop.Utils.TrojanText;
-import com.amplearch.beaconshop.Utils.UserSessionManager;
-import com.amplearch.beaconshop.WebCall.AsyncRequest;
-import com.amplearch.beaconshop.WebCall.JayRequest;
-import com.amplearch.beaconshop.WebCall.JoyRequest;
-import com.amplearch.beaconshop.helper.DatabaseHelper;
 
 public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestComplete, AsyncRequest.OnAsyncRequestComplete, JoyRequest.OnJoyRequestComplete
 {
@@ -94,6 +86,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     FavoriteAdapter favoriteAdapter ;
     ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
     ArrayList<String>  favText = new ArrayList<String>();
+    ArrayList<String>  favText1 = new ArrayList<String>();
     ArrayList<String>  StoreName = new ArrayList<String>();
     ArrayList<String>  OfferTitle = new ArrayList<String>();
     ArrayList<byte[]>  OfferImage = new ArrayList<byte[]>();
@@ -171,10 +164,10 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 listNearby.setVisibility(View.VISIBLE);
                 listCategory.setVisibility(View.INVISIBLE);
                 recyclerPaidBanner.setVisibility(View.INVISIBLE);
-                btnNearby.setBackgroundColor(getResources().getColor(R.color.primary_dark));
+                btnNearby.setBackgroundColor(getResources().getColor(R.color.logo_color));
                 btnNearby.setTextColor(getResources().getColor(R.color.white));
-                btnALLOfferList.setBackgroundColor(getResources().getColor(R.color.trans));
-                btnALLOfferList.setTextColor(getResources().getColor(R.color.black));
+                btnALLOfferList.setBackgroundColor(getResources().getColor(R.color.white));
+                btnALLOfferList.setTextColor(getResources().getColor(R.color.logo_color));
             }
         });
 
@@ -185,10 +178,10 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 listNearby.setVisibility(View.GONE);
                 listCategory.setVisibility(View.VISIBLE);
                 recyclerPaidBanner.setVisibility(View.VISIBLE);
-                btnALLOfferList.setBackgroundColor(getResources().getColor(R.color.primary_dark));
+                btnALLOfferList.setBackgroundColor(getResources().getColor(R.color.logo_color));
                 btnALLOfferList.setTextColor(getResources().getColor(R.color.white));
-                btnNearby.setBackgroundColor(getResources().getColor(R.color.trans));
-                btnNearby.setTextColor(getResources().getColor(R.color.black));
+                btnNearby.setBackgroundColor(getResources().getColor(R.color.white));
+                btnNearby.setTextColor(getResources().getColor(R.color.logo_color));
             }
         });
         recyclerPaidBanner.setHasFixedSize(true);
@@ -295,6 +288,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
 
                 favImage.add(bitmap);
                 favText.add(tag.getStore_name());
+                favText1.add(tag.getOffer_desc());
 
                /* NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(this)
@@ -330,13 +324,13 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
 
         }
 
-        if (favImage.size() == 0 && favText.size() == 0){
+        if (favImage.size() == 0 && favText.size() == 0&&favText1.size()==0){
             tvNoNearby.setVisibility(View.VISIBLE);
         }
         else {
             tvNoNearby.setVisibility(View.GONE);
         }
-        favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
+        favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText,favText1);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
        // Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
         listNearby.setAdapter(favoriteAdapter);

@@ -2,12 +2,9 @@ package com.amplearch.beaconshop.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,30 +15,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
-import com.amplearch.beaconshop.Adapter.FavoritesAdapter;
 import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
-import com.amplearch.beaconshop.ImageUpload;
 import com.amplearch.beaconshop.Model.Favourites;
-import com.amplearch.beaconshop.Model.StoreLocation;
-import com.amplearch.beaconshop.Model.UserRedeem;
 import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
-import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -54,10 +42,11 @@ import java.util.List;
 
 public class FavoriteFragment extends Fragment
 {
-    GridView Fav_gridView;
+    ListView Fav_gridView;
     FavoriteAdapter favoriteAdapter ;
     ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
     ArrayList<String>  favText = new ArrayList<String>();
+    ArrayList<String>  favText1 = new ArrayList<String>();
     DatabaseHelper db;
     Context context ;
 
@@ -133,21 +122,22 @@ public class FavoriteFragment extends Fragment
             Bitmap bitmap = BitmapFactory.decodeByteArray(todo.getStore_image(), 0, todo.getStore_image().length);
 
             favImage.add(bitmap);
-            favText.add(todo.getStore_name());
+            favText.add(todo.getOffer_title());
+            favText1.add(todo.getOffer_desc());
 
         }
 
 
-        if (favImage.size() == 0 && favText.size() == 0){
+        if (favImage.size() == 0 && favText.size() == 0 && favText1.size()==0){
             tvNoFavourites.setVisibility(View.VISIBLE);
             tvNoFavourites.setText("No Favourites are Added..");
         }
         else {
             tvNoFavourites.setVisibility(View.GONE);
         }
-        favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
+        favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText,favText1);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
-        Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
+        Fav_gridView = (ListView) view.findViewById(R.id.Fav_gridView);
         Fav_gridView.setAdapter(favoriteAdapter);     // adapter for image and text
 //        Fav_gridView.setAdapter(favoritesAdapter);    // adapter for all text
 

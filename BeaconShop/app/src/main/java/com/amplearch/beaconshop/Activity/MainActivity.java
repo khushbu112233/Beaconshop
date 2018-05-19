@@ -1,28 +1,18 @@
 package com.amplearch.beaconshop.Activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -37,37 +27,28 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.Adapter.CustomAdapter;
 import com.amplearch.beaconshop.Adapter.DrawerAdapter;
-import com.amplearch.beaconshop.Adapter.PaidBannerHorizontal;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
+import com.amplearch.beaconshop.Fragment.AccountFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
-import com.amplearch.beaconshop.Fragment.ChangePasswordFragment;
-import com.amplearch.beaconshop.Fragment.FavoriteFragment;
-import com.amplearch.beaconshop.Fragment.HomeFragment;
-import com.amplearch.beaconshop.Fragment.ProfileFragment;
-import com.amplearch.beaconshop.Fragment.SettingsFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
-import com.amplearch.beaconshop.Fragment.VoucherFragment;
-import com.amplearch.beaconshop.Model.Images;
+import com.amplearch.beaconshop.Fragment.HomeFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.Const;
+import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.NearbyMessagePref;
-import com.amplearch.beaconshop.Utils.NotificationHandler;
 import com.amplearch.beaconshop.Utils.PrefUtils;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -195,12 +176,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         }
 
-       // rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
+        // rlButtons = (RelativeLayout)findViewById(R.id.rlButtons);
 
         if (!mIsServiceStarted) {
             mIsServiceStarted = true;
-           // setButtonsEnabledState();
-           // OnGoingLocationNotification(this);
+            // setButtonsEnabledState();
+            // OnGoingLocationNotification(this);
             startService(new Intent(this, LocationUpdateService.class));
         }
 
@@ -224,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         name = user1.get(UserSessionManager.KEY_NAME);
 
         circleImageView = (CircleImageView) listHeaderView.findViewById(R.id.circleView);
-        TrojanText profile_name = (TrojanText) listHeaderView.findViewById(R.id.profile_name);
+        GillSansTextView profile_name = (GillSansTextView) listHeaderView.findViewById(R.id.profile_name);
         profile_name.setText(name);
 
         mDrawerList.addHeaderView(listHeaderView);
@@ -258,16 +239,16 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        mDrawerList.setAdapter(drawerAdapter);
 
         List<ItemObject> listViewItems = new ArrayList<ItemObject>();
-        listViewItems.add(new ItemObject("Home", R.drawable.home));
-        listViewItems.add(new ItemObject("Favourites", R.drawable.my_favorites));
-        listViewItems.add(new ItemObject("My Vouchers", R.drawable.my_vouchers));
-        listViewItems.add(new ItemObject("Badges", R.drawable.my_badges));
+        listViewItems.add(new ItemObject("Home", R.drawable.ic_home));
+        // listViewItems.add(new ItemObject("Favourites", R.drawable.my_favorites));
+        //listViewItems.add(new ItemObject("My Vouchers", R.drawable.my_vouchers));
+        listViewItems.add(new ItemObject("Badges", R.drawable.ic_badges));
         listViewItems.add(new ItemObject("My Account", R.drawable.my_account));
-        listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
-        listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
-        listViewItems.add(new ItemObject("Log Out", R.drawable.logout));
         listViewItems.add(new ItemObject("Help", R.drawable.help));
+        // listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
+        // listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
         listViewItems.add(new ItemObject("About Us", R.drawable.information));
+        listViewItems.add(new ItemObject("Sign Out", R.drawable.logout));
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
@@ -570,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                         // String message = jsonObject.getString("User");
                         //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                         if (res.equals("")){
-                           // Toast.makeText(getApplicationContext(), "User does not exists..", Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getApplicationContext(), "User does not exists..", Toast.LENGTH_LONG).show();
                         }
                         else {
 
@@ -579,34 +560,34 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                 try {
                                     //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
                                     userID = jsonArrayChanged.getJSONObject(i).get("id").toString();
-                                   // email =  jsonArrayChanged.getJSONObject(i).get("email_id").toString();
+                                    // email =  jsonArrayChanged.getJSONObject(i).get("email_id").toString();
                                     //  voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("contact").toString());
                                     name = jsonArrayChanged.getJSONObject(i).get("username").toString();
                                     //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
                                     byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
-                                   // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                    // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
                                     byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString(), Base64.DEFAULT);
                                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                                   circleImageView.setImageBitmap(decodedByte);
+                                    circleImageView.setImageBitmap(decodedByte);
                                     // byte[] byteArray =  Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes(), Base64.DEFAULT) ;
                                     //  Bitmap bmp1 = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
                                     // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
                                     //  ivImage.setImageBitmap(bmp1);
-                                  //  txtDate.setText(jsonArrayChanged.getJSONObject(i).get("dob").toString());
+                                    //  txtDate.setText(jsonArrayChanged.getJSONObject(i).get("dob").toString());
                                     String gen = jsonArrayChanged.getJSONObject(i).get("gender").toString();
                                     // voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("type").toString());
                                     if (gen.equalsIgnoreCase("Male")){
-                                  //      spinner.setSelection (1);
+                                        //      spinner.setSelection (1);
                                     }
                                     else if (gen.equalsIgnoreCase("Female")){
-                                  //      spinner.setSelection (2);
+                                        //      spinner.setSelection (2);
                                     }
 
-                                  //  txtUserID.setText(userID);
-                                 //   txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
+                                    //  txtUserID.setText(userID);
+                                    //   txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
                                     //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -644,14 +625,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     {
         List<Fragment> fragList = new ArrayList<Fragment>();
         fragList.add(new HomeFragment());
-        fragList.add(new FavoriteFragment());
-        fragList.add(new VoucherFragment());
         fragList.add(new BadgesFragment());
-        fragList.add(new ProfileFragment());
-        fragList.add(new SettingsFragment());
-        fragList.add(new ChangePasswordFragment());
+        fragList.add(new AccountFragment());
         fragList.add(new HelpFragment());
         fragList.add(new AboutUsFragment());
+
+
 
         Fragment fragment = fragList.get(position);
         Bundle args = new Bundle();
@@ -664,11 +643,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         switch(position)
         {
             default:
             case 0:
-                fragment = new ProfileFragment();
+                fragment = new AccountFragment();
                 // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -676,50 +656,39 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
             case 1:
                 fragment = new HomeFragment();
-              //  rlButtons.setVisibility(View.VISIBLE);
+                //  rlButtons.setVisibility(View.VISIBLE);
                 toolbarTitle.setText("Beacon Shop");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 2:
-                fragment = new FavoriteFragment();
-               // rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("Favourites");
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
-            case 3:
-                fragment = new VoucherFragment();
-              //  rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("Vouchers");
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
-            case 4:
                 fragment = new BadgesFragment();
-              //  rlButtons.setVisibility(View.GONE);
+                //  rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Badges");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 5:
-                fragment = new ProfileFragment();
-               // rlButtons.setVisibility(View.GONE);
+
+            case 3:
+                fragment = new AccountFragment();
+                // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 6:
-                fragment = new SettingsFragment();
-              //  rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("Settings");
+            case 4:
+                fragment = new HelpFragment();
+                //   rlButtons.setVisibility(View.GONE);
+                toolbarTitle.setText("Help");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 7:
-                fragment = new ChangePasswordFragment();
-              //  rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("Change Password");
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
-            case 8:
-               // fragment = new ChangePasswordFragment();
+            case 5:
+                fragment = new AboutUsFragment();
                 //  rlButtons.setVisibility(View.GONE);
-               // toolbarTitle.setText("Change Password");
+                toolbarTitle.setText("About Us");
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                break;
+            case 6:
+                // fragment = new ChangePasswordFragment();
+                //  rlButtons.setVisibility(View.GONE);
+                // toolbarTitle.setText("Change Password");
 
 
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -755,20 +724,9 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                     break;
                 }*/
                 break;
-                   // session.logoutUser();}
+            // session.logoutUser();}
 
-            case 9:
-                fragment = new HelpFragment();
-             //   rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("Help");
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
-            case 10:
-                fragment = new AboutUsFragment();
-              //  rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("About Us");
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                break;
+
         }
 
         mDrawerList.setItemChecked(position, true);
@@ -912,10 +870,10 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         return super.onOptionsItemSelected(item);
     }
 
-   /* @Override
-    public void onBackPressed()
-    {
-       *//* Fragment frag = new Fragment();
+    /* @Override
+     public void onBackPressed()
+     {
+        *//* Fragment frag = new Fragment();
         Fragment frag0 = new HomeFragment();
         Fragment frag1 = new FavoriteFragment();
         Fragment frag2 = new VoucherFragment();
@@ -1028,7 +986,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     @Override
     public void asyncResponse(String response)
     {
-       // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
         if (response.equals("")) {
             Toast.makeText(getApplicationContext(), "No Offers..", Toast.LENGTH_LONG).show();
         } else {
@@ -1043,11 +1001,11 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                     Toast.makeText(getApplicationContext(), "No Vouchers are Available..", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("StoreLocation Count", "StoreLocation Count: " + db.getAllLocations().size());
-                  //  Toast.makeText(getApplicationContext(), "StoreLocation Count: " + db.getAllLocations().size(), Toast.LENGTH_LONG ).show();
+                    //  Toast.makeText(getApplicationContext(), "StoreLocation Count: " + db.getAllLocations().size(), Toast.LENGTH_LONG ).show();
                     db.deleteStoreLocaion();
                     db.deleteVoucher();
                     Log.d("StoreLocation Count", "After Delete StoreLocation Count: " + db.getAllLocations().size());
-                  //  Toast.makeText(getApplicationContext(), "After Delete StoreLocation Count: " + db.getAllLocations().size(), Toast.LENGTH_LONG ).show();
+                    //  Toast.makeText(getApplicationContext(), "After Delete StoreLocation Count: " + db.getAllLocations().size(), Toast.LENGTH_LONG ).show();
 
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("Voucher");
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
@@ -1128,7 +1086,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                     jsonArrayChanged.getJSONObject(i).get("minor").toString()
                             );
 
-                          //  db.createVoucher(voucher);
+                            //  db.createVoucher(voucher);
 
                             StoreLocation tag1 = new StoreLocation(
                                     jsonArrayChanged.getJSONObject(i).get("id").toString(),
@@ -1147,7 +1105,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 */
                             db.createStoreLocation(tag1);
                             //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
-                           offers.add(voucherClass);
+                            offers.add(voucherClass);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1157,14 +1115,14 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                     List<StoreLocation> allTags = db.getAllLocations();
                     for (StoreLocation tag : allTags) {
                         Log.d("StoreLocation Name", tag.getStore_name());
-                     //  Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getOffer_title(), Toast.LENGTH_LONG).show();
+                        //  Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getOffer_title(), Toast.LENGTH_LONG).show();
 
                     }
 
                     List<Voucher> allVoucher = db.getAllBeaconVouchers();
                     for (Voucher tag : allVoucher) {
                         Log.d("StoreLocation Name", tag.getStore_name());
-                       // Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getStore_image(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getStore_image(), Toast.LENGTH_LONG).show();
 
                     }
 
@@ -1222,42 +1180,42 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
             // and the GoogleSignInResult will be available instantly.
-           // Log.d(TAG, "Got cached sign-in");
+            // Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
-          //  showProgressDialog();
+            //  showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
-               //     hideProgressDialog();
-                   handleSignInResult(googleSignInResult);
+                    //     hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
                 }
             });
         }
     }
 
     public void handleSignInResult(GoogleSignInResult result) {
-     //   Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        //   Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-          //  Log.e(TAG, "display name: " + acct.getDisplayName());
+            //  Log.e(TAG, "display name: " + acct.getDisplayName());
 
             String personName = acct.getDisplayName();
             String personPhotoUrl = acct.getPhotoUrl().toString();
             String email = acct.getEmail();
 
-          //  Log.e(TAG, "Name: " + personName + ", email: " + email + ", Image: " + personPhotoUrl);
+            //  Log.e(TAG, "Name: " + personName + ", email: " + email + ", Image: " + personPhotoUrl);
 
             //updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
-          //  updateUI(false);
+            //  updateUI(false);
         }
     }
 
@@ -1292,23 +1250,23 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             // for convert bitmap to byte array
 //            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-      //      bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            //      bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byteStoreImage = stream.toByteArray();
 
-          //  Toast.makeText(getApplicationContext(),"Byte: "+byteStoreImage,Toast.LENGTH_LONG).show();
+            //  Toast.makeText(getApplicationContext(),"Byte: "+byteStoreImage,Toast.LENGTH_LONG).show();
 
             // for convert byte array to bitmap
             Bitmap bmp = BitmapFactory.decodeByteArray(byteStoreImage, 0, byteStoreImage.length);
 //            ivBitmapImage.setImageBitmap(Bitmap.createScaledBitmap(bmp, ivBitmapImage.getWidth(),
 //                    ivBitmapImage.getHeight(), false));
-           // ivBitmapImage.setImageBitmap(bmp);
+            // ivBitmapImage.setImageBitmap(bmp);
 
-        //    Toast.makeText(getApplicationContext(),"Bitmap: "+bmp,Toast.LENGTH_LONG).show();
+            //    Toast.makeText(getApplicationContext(),"Bitmap: "+bmp,Toast.LENGTH_LONG).show();
 
-         //   db = new DatabaseHelper(getApplicationContext());
+            //   db = new DatabaseHelper(getApplicationContext());
 
-                    db.addImageData("V-Mart",byteStoreImage);
-              //      Toast.makeText(getApplicationContext(),"Image: V-Mart "+byteStoreImage+ " has to be added.",Toast.LENGTH_LONG).show();
+            db.addImageData("V-Mart",byteStoreImage);
+            //      Toast.makeText(getApplicationContext(),"Image: V-Mart "+byteStoreImage+ " has to be added.",Toast.LENGTH_LONG).show();
 
         }
     }

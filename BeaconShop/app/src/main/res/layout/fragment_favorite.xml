@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:paddingBottom="10dp">
 
     <com.amplearch.beaconshop.Utils.TrojanText
@@ -14,13 +14,13 @@
         android:visibility="gone"
         android:layout_centerInParent="true"/>
 
-    <GridView
+    <ListView
         android:id="@+id/Fav_gridView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="30dp"
-        android:numColumns="2">
+        tools:listitem="@layout/grid_favorite"
+        >
 
-    </GridView>
+    </ListView>
 
 </RelativeLayout>

@@ -1,59 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:paddingBottom="30dp"
-    android:paddingRight="20dp"
-    android:paddingLeft="20dp"
+    android:orientation="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ProgressBar
-        android:id="@+id/progressBar4"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="50dp"/>
-
-    <com.github.siyamed.shapeimageview.RoundedImageView
+    <com.github.siyamed.shapeimageview.CircularImageView
         android:id="@+id/imgVoucher"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        app:siRadius="5dp"
-        app:siBorderWidth="3dp"
-        app:siBorderColor="@color/black"
-        app:siSquare="true"
-        android:layout_alignBottom="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout" />
-
-    <!--<ImageView-->
-        <!--android:id="@+id/ivVouchImage"-->
-        <!--android:layout_width="201dp"-->
-        <!--android:layout_height="121dp"-->
-        <!--android:src="@drawable/ic_sale" />-->
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_border_width="1dp"
+        android:layout_marginTop="5dp"
+        app:civ_border_color="@color/divider"
+        android:src="@drawable/ic_sale" />
 
     <LinearLayout
-        android:padding="10dp"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/favorite_rectangle"
-        android:gravity="center"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/linearLayout">
-
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        >
         <TextView
             android:id="@+id/tvVouchText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Redeem Offered"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/black"
-            android:textStyle="normal"
-            android:textSize="10dp"
-            android:fontFamily="serif"/>
+            android:textStyle="bold"
+            android:textAlignment="center"/>
 
+        <TextView
+            android:id="@+id/tvVouchText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
     </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

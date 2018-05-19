@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:paddingBottom="20dp"
+    android:orientation="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.github.siyamed.shapeimageview.RoundedImageView
+    <com.github.siyamed.shapeimageview.CircularImageView
         android:id="@+id/imgOffer"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:src="@drawable/ic_sale"
-        app:siRadius="15dp"
-        app:siBorderWidth="2dp"
-        app:siBorderColor="@color/black"
-        app:siSquare="true"
-        />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/divider"
+        android:src="@drawable/ic_sale" />
 
     <LinearLayout
-        android:padding="10dp"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/favorite_rectangle"
-        android:gravity="center"
-        android:layout_marginTop="109dp"
-        android:layout_marginLeft="-5dp">
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        >
         <TextView
             android:id="@+id/tvFavText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/tvFavText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/black"
             android:textAlignment="center"/>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -3,9 +3,6 @@ package com.amplearch.beaconshop.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
-import com.amplearch.beaconshop.Fragment.ProfileFragment;
-import com.amplearch.beaconshop.Model.Images;
 import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.StoreLocations;

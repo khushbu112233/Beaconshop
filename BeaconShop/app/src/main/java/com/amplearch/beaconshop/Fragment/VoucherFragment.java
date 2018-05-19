@@ -3,7 +3,6 @@ package com.amplearch.beaconshop.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,40 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.MainActivity;
-import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
+import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.UserRedeem;
 import com.amplearch.beaconshop.Model.UserRedeemSql;
-import com.amplearch.beaconshop.Model.Voucher;
-import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Adapter.VoucherAdapter;
 import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
-import com.amplearch.beaconshop.WebCall.JayRequest;
-import com.amplearch.beaconshop.WebCall.JoyRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +42,7 @@ import java.util.List;
 
 public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRequestComplete
 {
-    GridView gridView_Vouch;
+    ListView gridView_Vouch;
     VoucherAdapter voucherAdapter;
     List<UserRedeem> redeemList;
     UserSessionManager session;
@@ -68,6 +53,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
     FavoriteAdapter favoriteAdapter ;
     ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
     ArrayList<String>  favText = new ArrayList<String>();
+    ArrayList<String>  favText1 = new ArrayList<String>();
     DatabaseHelper db;
     ArrayList<String>  UserID = new ArrayList<String>();
     ArrayList<String>  OfferID = new ArrayList<String>();
@@ -87,7 +73,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
         View view = inflater.inflate(R.layout.fragment_voucher, container, false);
         checkConnection();
         session = new UserSessionManager(getContext());
-        gridView_Vouch = (GridView)view.findViewById(R.id.gridView_Vouch);
+        gridView_Vouch = (ListView)view.findViewById(R.id.gridView_Vouch);
         tvNoVoucher = (TrojanText) view.findViewById(R.id.tvNoVoucher);
         redeemList = new ArrayList<UserRedeem>();
         final HashMap<String, String> user1 = session.getUserDetails();
@@ -152,16 +138,17 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
 
                 favImage.add(bitmap);
                 favText.add(todo.getOffer_title());
+                favText1.add(todo.getOffer_desc());
             }
 
-            if (favImage.size() == 0 && favText.size() == 0){
+            if (favImage.size() == 0 && favText.size() == 0&&favText1.size()==0){
                 tvNoVoucher.setVisibility(View.VISIBLE);
                 tvNoVoucher.setText("No Vouchers are Added..");
             }
             else {
                 tvNoVoucher.setVisibility(View.GONE);
             }
-            favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText);
+            favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText,favText1);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
           //  gridView_Vouch = (GridView) view.findViewById(R.id.Fav_gridView);
             gridView_Vouch.setAdapter(favoriteAdapter);

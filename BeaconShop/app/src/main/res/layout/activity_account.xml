@@ -5,7 +5,7 @@
     android:id="@+id/activity_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0EA"
+    android:background="@drawable/bg1"
     tools:context="com.amplearch.beaconshop.Activity.AccountActivity">
 
     <FrameLayout
@@ -18,53 +18,60 @@
         app:logo="@mipmap/ic_launcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/primary"
         android:gravity="center">
 
-        <com.amplearch.beaconshop.Utils.TrojanText
-            android:layout_width="match_parent"
-            android:paddingLeft="-60dp"
-            android:layout_height="wrap_content"
-            android:text="BEACON SHOP"
-            android:textColor="@color/white"
-            android:id="@+id/toolbarTitle"
-            android:layout_marginLeft="0dp"
-            android:textAlignment="center"
-            android:textSize="18dp"/>
 
     </android.support.v7.widget.Toolbar>
 
-   <ImageView
-       android:layout_below="@+id/toolbar"
-       android:id="@+id/ivLogo"
-       android:layout_width="150dp"
-       android:layout_height="150dp"
-       android:src="@drawable/ic_shop_logo"
-       android:layout_centerHorizontal="true"
-       android:layout_marginTop="40dp"/>
-
-    <com.amplearch.beaconshop.Utils.TrojanText
-        android:layout_below="@+id/ivLogo"
+    <com.amplearch.beaconshop.Utils.cgTextView
+        android:id="@+id/txttitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A SHOP OF OFFERS."
-        android:textAlignment="center"
-        android:fontFamily="monospace"
-        android:textSize="15dp"
-        android:layout_marginTop="25dp"
-        android:textColor="@color/primary"/>
-
+        android:layout_marginTop="100dp"
+        android:textSize="31sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="BeaconShop"/>
+    <com.amplearch.beaconshop.Utils.GillSansTextView
+        android:layout_below="@+id/txttitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:id="@+id/txtdes"
+        android:layout_marginTop="150dp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="BeaconShop gives you the latest generation Shopping. Enter the world of on-the-spot, personalized offers by Categories."/>
     <LinearLayout
         android:id="@+id/llSignBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:layout_above="@+id/llIntegrationBox" >
-        <com.amplearch.beaconshop.Utils.TrojanButton
+        android:orientation="vertical"
+        android:layout_below="@+id/txtdes"
+        android:paddingRight="30dp"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="30dp"
+        android:weightSum="2" >
+        <com.amplearch.beaconshop.Utils.GillSansButton
+
+            android:id="@+id/btnSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Sign In"
+            android:textSize="16dp"
+            android:layout_marginBottom="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_light"
+            android:background="@drawable/button_shape1"
+            android:textAlignment="center"
+            android:padding="10dp" />
+        <com.amplearch.beaconshop.Utils.GillSansButton
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -73,23 +80,10 @@
             android:textSize="16dp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_marginRight="10dp"
             android:background="@drawable/button_shape"
             android:textAlignment="center"
             android:padding="10dp" />
-        <com.amplearch.beaconshop.Utils.TrojanButton
-            android:layout_marginLeft="10dp"
-            android:id="@+id/btnSignIn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="Sign In"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/button_shape"
-            android:textAlignment="center"
-            android:padding="10dp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -97,6 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         android:weightSum="1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -110,6 +105,7 @@
             android:layout_centerInParent="true"
             android:background="@color/com_facebook_blue"
             android:padding="16dp"
+            android:visibility="gone"
             android:text="SignIn With Facebook"
             android:textAlignment="center"
             android:textColor="#fff" />
@@ -127,19 +123,10 @@
             android:layout_marginTop="10dp"
             android:id="@+id/btn_sign_in"
             android:layout_width="fill_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"/>
 
     </LinearLayout>
-    <com.amplearch.beaconshop.Utils.TrojanText
-        android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:gravity="center"
-        android:background="@color/drawer"
-        android:textColor="@color/white"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:text="We will not post without Permission"/>
 
 </RelativeLayout>

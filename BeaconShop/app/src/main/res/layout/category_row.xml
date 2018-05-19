@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,7 +33,9 @@
                 android:id="@+id/imgCategory"
                 android:layout_width="78dp"
                 android:layout_height="78dp"
-                android:padding="1dp" />
+                app:civ_border_color="@color/primary_light"
+                app:civ_border_width="2dp"
+                android:padding="5dp" />
 
             </FrameLayout>
         </RelativeLayout>
@@ -53,7 +55,6 @@
 
     <TextView
         android:layout_marginTop="-19dp"
-        android:background="@drawable/badge_item_count"
         android:visibility="visible"
         android:layout_gravity="center"
         android:id="@+id/txtCategory"
