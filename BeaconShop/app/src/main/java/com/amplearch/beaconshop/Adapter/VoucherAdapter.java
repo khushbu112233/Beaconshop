@@ -1,3 +1,4 @@
+
 package com.amplearch.beaconshop.Adapter;
 
 import android.content.Context;
@@ -77,7 +78,10 @@ public class VoucherAdapter extends BaseAdapter
         {
 //            Picasso.with(context).load(voucherItems.get(position).getOffer_image()).into(roundedImage);
 
-            byte[] decodedString = Base64.decode(voucherItems.get(position).getOffer_image(), Base64.DEFAULT);
+            byte[] decodedString = new byte[0];
+            try {
+                decodedString = Base64.decode(voucherItems.get(position).getOffer_image(), Base64.DEFAULT);
+            }catch (Exception e){}
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             roundedImage.setImageBitmap(decodedByte);
         }

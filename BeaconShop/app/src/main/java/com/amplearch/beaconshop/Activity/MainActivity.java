@@ -432,8 +432,10 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                     jsonArrayChanged.getJSONObject(i).get("quantity").toString();
                                     jsonArrayChanged.getJSONObject(i).get("redeem").toString();
 
-                                    byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("offer_image").toString(), Base64.DEFAULT);
-
+                                    byte[] decodedString = new byte[0];
+                                    try {
+                                        decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("offer_image").toString(), Base64.DEFAULT);
+                                    }catch (Exception e){}
                                     Log.d("imageurl", decodedString.toString());
 
                                     db.addRedeemUser(jsonArrayChanged.getJSONObject(i).get("user_id").toString(), jsonArrayChanged.getJSONObject(i).get("offer_id").toString(),
