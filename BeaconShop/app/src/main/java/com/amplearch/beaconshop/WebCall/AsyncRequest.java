@@ -2,9 +2,7 @@ package com.amplearch.beaconshop.WebCall;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -19,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +27,7 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
 {
     String label;
     OnAsyncRequestComplete caller;
-    Context context;
+    Activity context;
     String method = "GET";
     List<NameValuePair> parameters = null;
     ProgressDialog pDialog = null;
@@ -87,7 +84,7 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         // strings in a remote file.
         //pDialog.isIndeterminate();
         pDialog.setCancelable(false);
-        pDialog.show();
+       // pDialog.show();
     }
 
     public void onProgressUpdate(Integer... progress) {
@@ -98,7 +95,7 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
     public void onPostExecute(String response)
     {
         if (pDialog != null && pDialog.isShowing()) {
-            pDialog.dismiss();
+           // pDialog.dismiss();
         }
         caller.asyncResponse(response);
     }

@@ -1,5 +1,6 @@
 package com.amplearch.beaconshop.Fragment;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -130,7 +131,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         // get user data from session
         final HashMap<String, String> user1 = session.getUserDetails();
         final String login_email = user1.get(UserSessionManager.KEY_EMAIL);
-        user= PrefUtils.getCurrentUser(getContext());
+        user= PrefUtils.getCurrentUser(getActivity());
         email = user1.get(UserSessionManager.KEY_EMAIL);
         name = user1.get(UserSessionManager.KEY_NAME);
         password = user1.get(UserSessionManager.KEY_PASSWORD);
@@ -180,7 +181,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         if (checkConnection()== true)
         {
             params = getParams();
-            AsyncRequest getPosts = new AsyncRequest(AccountFragment.this.getActivity(), "GET", params);
+            AsyncRequest getPosts = new AsyncRequest((Activity)getContext(), "GET", params);
             getPosts.execute(voucherURL);
         }
 
