@@ -8,19 +8,17 @@
     android:id="@+id/frameHome">
 
     <GridView
-        android:layout_marginTop="40dp"
         android:visibility="gone"
-        tools:listitem="@layout/grid_favorite"
-        android:verticalSpacing="20dp"
         android:id="@+id/nearby_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="110dp"
+        android:columnWidth="95dp"
         android:gravity="center"
-        android:horizontalSpacing="20dp"
-        android:stretchMode="columnWidth"
         android:numColumns="auto_fit"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        tools:listitem="@layout/category_row"  />
 
     <com.amplearch.beaconshop.Utils.TrojanText
         android:visibility="gone"

@@ -15,7 +15,12 @@ import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.cgTextView;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
-import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -28,7 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
+public class ElectronicOfferActivity extends AppCompatActivity  implements AsyncRequest.OnAsyncRequestComplete ,OnMapReadyCallback
 {
     ListView listView_Elect ;
     ElectOfferAdapter  electOfferAdapter ;
@@ -41,8 +46,8 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
     ArrayList<NameValuePair> params;
     String category_name;
     ImageView imgMap;
-    MapView mapView;
-
+    private GoogleMap map;
+    SupportMapFragment mapFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -52,8 +57,13 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
         final Intent intent = getIntent();
         category_id = intent.getStringExtra("category_id");
         category_name = intent.getStringExtra("category_name");
-       // getIntent();
-      //  Toast.makeText(getApplicationContext(), category_id, Toast.LENGTH_LONG).show();
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
+        // getIntent();
+        //  Toast.makeText(getApplicationContext(), category_id, Toast.LENGTH_LONG).show();
         elect_Image.add(R.drawable.ic_sale);
         elect_Text.add("20% Discount on Samsung Mobile.");
         elect_Image.add(R.drawable.ic_sale);
@@ -72,8 +82,17 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
         tvCategoryTitle = (cgTextView) findViewById(R.id.tvCategoryTitle);
         imgMap = (ImageView)findViewById(R.id.imgMap);
         tvCategoryTitle.setText(category_name);
-       // listView_Elect.setAdapter(electOfferAdapter);
+        // listView_Elect.setAdapter(electOfferAdapter);
+        listView_Elect.setVisibility(View.VISIBLE);
+        mapFragment.getView().setVisibility(View.GONE);
 
+        imgMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listView_Elect.setVisibility(View.GONE);
+                mapFragment.getView().setVisibility(View.VISIBLE);
+            }
+        });
         listView_Elect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -94,7 +113,7 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
             AsyncRequest getPosts = new AsyncRequest(this, "GET", params);
             getPosts.execute(apiURL);
         }
-       // connectWithHttpPost();
+        // connectWithHttpPost();
     }
 
     private ArrayList<NameValuePair> getParams()
@@ -108,7 +127,7 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
     @Override
     public void asyncResponse(String response)
     {
-     //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+        //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
         if (response.equals("")){
             Toast.makeText(getApplicationContext(), "Offers not Loaded..", Toast.LENGTH_LONG).show();
         }else {
@@ -121,15 +140,15 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
                 if (res.equals("")){
                     tvNoOffer.setVisibility(View.VISIBLE);
                     tvNoOffer.setText("No Offers are Available..");
-                   // Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                 }
                 else {
 
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
                     String strCount = jsonObject.getString("count");
-                   // Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getApplicationContext(), strCount, Toast.LENGTH_LONG).show();
 
-                        tvNoOffer.setVisibility(View.GONE);
+                    tvNoOffer.setVisibility(View.GONE);
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++)
                     {
                         try
@@ -177,6 +196,8 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
                     electOfferAdapter = new ElectOfferAdapter(getApplicationContext(), offers);
                     // adapter = new CustomFrameList(FestivalListPage.this, friends);
                     listView_Elect.setAdapter(electOfferAdapter);
+                    mapFragment.getMapAsync(this);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -198,6 +219,21 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
 //            message = "Sorry! Not connected to internet";
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        for(int i=0;i<offers.size();i++)
+        {
+            LatLng sydney = new LatLng(Double.parseDouble(offers.get(i).getLat()), Double.parseDouble(offers.get(i).getLng()));
+            googleMap.addMarker(new MarkerOptions().position(sydney)
+                    .title(offers.get(i).getOffer_title()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+        }
+
     }
 
 
