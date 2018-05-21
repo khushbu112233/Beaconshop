@@ -1,41 +1,31 @@
 package com.amplearch.beaconshop.Activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.amplearch.beaconshop.Adapter.CategoryAdapter;
+
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
-import com.amplearch.beaconshop.Model.Voucher;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.Utils.cgTextView;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
-import org.apache.http.HttpResponse;
+import com.google.android.gms.maps.MapView;
+
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class ElectronicOfferActivity extends AppCompatActivity implements AsyncRequest.OnAsyncRequestComplete
@@ -46,10 +36,12 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
     ArrayList<String> elect_Text = new ArrayList<String>();
     String category_id;
     List<VoucherClass> offers;
-    TrojanText tvNoOffer, tvCategoryTitle;
+    cgTextView tvNoOffer, tvCategoryTitle;
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getOfferbyCategoryID";
     ArrayList<NameValuePair> params;
     String category_name;
+    ImageView imgMap;
+    MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,8 +68,9 @@ public class ElectronicOfferActivity extends AppCompatActivity implements AsyncR
         offers = new ArrayList<VoucherClass>();
 
         listView_Elect = (ListView)findViewById(R.id.listView_Elect);
-        tvNoOffer = (TrojanText) findViewById(R.id.tvNoOffer);
-        tvCategoryTitle = (TrojanText) findViewById(R.id.tvCategoryTitle);
+        tvNoOffer = (cgTextView) findViewById(R.id.tvNoOffer);
+        tvCategoryTitle = (cgTextView) findViewById(R.id.tvCategoryTitle);
+        imgMap = (ImageView)findViewById(R.id.imgMap);
         tvCategoryTitle.setText(category_name);
        // listView_Elect.setAdapter(electOfferAdapter);
 
