@@ -9,63 +9,86 @@
     android:background="@color/white"
     tools:context="com.amplearch.beaconshop.Activity.ElectronicOfferActivity">
 
-        <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/divider"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/llActionbar">
+        <com.amplearch.beaconshop.Utils.cgTextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="@color/color_logo"
-            android:layout_alignParentStart="true"
-            android:id="@+id/llActionbar">
-            <com.amplearch.beaconshop.Utils.TrojanText
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/tvCategoryTitle"
-                android:text="ELECTRONIC OFFERS"
-                android:textColor="@color/logo_color"
-                android:gravity="center"/>
-        </LinearLayout>
+            android:id="@+id/tvCategoryTitle"
+            android:layout_centerInParent="true"
+            android:text="ELECTRONIC OFFERS"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+        <ImageView
+            android:id="@+id/imgMap"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_map"
+            />
+    </RelativeLayout>
 
-        <LinearLayout
-            android:layout_below="@+id/llActionbar"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:orientation="horizontal"
+    <LinearLayout
+        android:layout_below="@+id/llActionbar"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:id="@+id/llButtons">
+        <com.amplearch.beaconshop.Utils.TrojanButton
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/llButtons">
-            <com.amplearch.beaconshop.Utils.TrojanButton
-                android:id="@+id/btnFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="FILTERS"
-                android:textColor="@color/white"
-                android:layout_marginRight="1dp"
-                android:background="@color/logo_color"/>
-            <com.amplearch.beaconshop.Utils.TrojanButton
-                android:id="@+id/btnShort"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="SORT"
-                android:layout_marginLeft="1dp"
-                android:textColor="@color/white"
-                android:background="@color/logo_color"/>
-        </LinearLayout>
+            android:text="FILTERS"
+            android:textColor="@color/white"
+            android:layout_marginRight="1dp"
+            android:background="@color/logo_color"/>
+        <com.amplearch.beaconshop.Utils.TrojanButton
+            android:id="@+id/btnShort"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="SORT"
+            android:layout_marginLeft="1dp"
+            android:textColor="@color/white"
+            android:background="@color/logo_color"/>
+    </LinearLayout>
 
-    <com.amplearch.beaconshop.Utils.TrojanText
+    <com.amplearch.beaconshop.Utils.cgTextView
         android:visibility="gone"
         android:id="@+id/tvNoOffer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No Offer"
         android:layout_centerInParent="true"/>
-        <ListView
-            android:id="@+id/listView_Elect"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/llButtons"
-            android:dividerHeight="2dp"
-            android:layout_marginTop="5dp"
-            tools:listitem="@layout/electronics_offers"
-            android:layout_marginBottom="10dp" />
+    <ListView
+        android:id="@+id/listView_Elect"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/llButtons"
+        android:dividerHeight="2dp"
+        android:layout_marginTop="5dp"
+        android:visibility="visible"
+        tools:listitem="@layout/electronics_offers"
+        android:layout_marginBottom="10dp" />
+    <com.google.android.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/llButtons"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:apiKey="05M-7qOGbEjYduPPUdQgJt9ysL8HToawGdvu_ow"
+        />
 
 </RelativeLayout>

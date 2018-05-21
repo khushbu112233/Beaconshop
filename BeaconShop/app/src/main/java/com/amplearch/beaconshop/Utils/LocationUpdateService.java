@@ -689,7 +689,8 @@ try {
             numberFormat.setMinimumFractionDigits(2);
             numberFormat.setMaximumFractionDigits(3);
             String distt_km = numberFormat.format(dist);
-            float disttt_km = Float.parseFloat(numberFormat.format(dist));
+            if(dist!=0) {
+                float disttt_km = Float.parseFloat(numberFormat.format(dist));
 
             //distance units
             dist_double = dist; // double
@@ -702,7 +703,7 @@ try {
             // tvDouble_Dist.setText(dist_D+" Km");
             //tvFloat_Dist.setText(dist_F+" Km");
             // tvInteger_Dist.setText(dist_I+" M");
-
+            }
             if (dist_int > 0 && dist_int < 500) {
                 int mId = Integer.parseInt(String.valueOf(tag.getId()));
                // Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();

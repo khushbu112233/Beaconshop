@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -33,8 +36,10 @@ import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Fragment.AboutUsFragment;
 import com.amplearch.beaconshop.Fragment.AccountFragment;
 import com.amplearch.beaconshop.Fragment.BadgesFragment;
+import com.amplearch.beaconshop.Fragment.FavoriteFragment;
 import com.amplearch.beaconshop.Fragment.HelpFragment;
 import com.amplearch.beaconshop.Fragment.HomeFragment;
+import com.amplearch.beaconshop.Fragment.VoucherFragment;
 import com.amplearch.beaconshop.Model.ItemObject;
 import com.amplearch.beaconshop.Model.StoreLocation;
 import com.amplearch.beaconshop.Model.Voucher;
@@ -45,8 +50,8 @@ import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.amplearch.beaconshop.Utils.LocationUpdateService;
 import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.PrefUtils;
-import com.amplearch.beaconshop.Utils.TrojanText;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
+import com.amplearch.beaconshop.Utils.cgTextView;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 import com.facebook.CallbackManager;
@@ -106,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     private CharSequence mDrawerTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar topToolBar;
-    private TrojanText toolbarTitle ;
+    private cgTextView toolbarTitle ;
+    ImageView imgRightHeader;
     private static final int RC_SIGN_IN = 007;
 
     private boolean mIsServiceStarted = false;
@@ -133,10 +139,11 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     CircleImageView circleImageView;
     UserSessionManager session;
     NearbyMessagePref pref;
-
+    LinearLayout llAccount,llFavourites,llVouchers,llHome;
     public static GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
-
+    ImageView imgHome,imgVoucher,imgFavourites,imgAccount;
+    GillSansTextView txtHome,txtVoucher,txtFavourite,txtAccount;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -188,11 +195,23 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        mTitle = mDrawerTitle = getTitle();
 //        titles = getResources().getStringArray(R.array.navigation_drawer_items_array);
 
-        toolbarTitle =(TrojanText)findViewById(R.id.toolbarTitle);
+        toolbarTitle =(cgTextView)findViewById(R.id.toolbarTitle);
+        imgRightHeader = (ImageView)findViewById(R.id.imgRightHeader);
         topToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
         //topToolBar.setLogo(R.mipmap.ic_launcher);
-
+        imgHome = (ImageView)findViewById(R.id.imgHome);
+        imgVoucher = (ImageView)findViewById(R.id.imgVoucher);
+        imgFavourites = (ImageView)findViewById(R.id.imgFavourites);
+        imgAccount = (ImageView)findViewById(R.id.imgAccount);
+        txtAccount = (GillSansTextView)findViewById(R.id.txtAccount);
+        txtFavourite = (GillSansTextView)findViewById(R.id.txtFavourite);
+        txtVoucher = (GillSansTextView)findViewById(R.id.txtVoucher);
+        txtHome = (GillSansTextView)findViewById(R.id.txtHome);
+        llAccount = (LinearLayout)findViewById(R.id.llAccount);
+        llFavourites = (LinearLayout)findViewById(R.id.llFavourites);
+        llVouchers = (LinearLayout)findViewById(R.id.llVouchers);
+        llHome = (LinearLayout)findViewById(R.id.llHome);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         LayoutInflater inflater = getLayoutInflater();
@@ -287,6 +306,82 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             {
 //                Toast.makeText(getApplicationContext(), "Position " + position, Toast.LENGTH_LONG).show();
                 selectItemFragment(position);
+            }
+        });
+        llHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                txtHome.setTextColor(getResources().getColor(R.color.logo_color));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtAccount.setTextColor(getResources().getColor(R.color.divider));
+                imgRightHeader.setVisibility(View.GONE);
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                tx.replace(R.id.content_frame, new HomeFragment());
+                tx.addToBackStack(null);
+                tx.commit();
+            }
+        });
+        llFavourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                txtHome.setTextColor(getResources().getColor(R.color.divider));
+                txtVoucher.setTextColor(getResources().getColor(R.color.logo_color));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtAccount.setTextColor(getResources().getColor(R.color.divider));
+                imgRightHeader.setVisibility(View.GONE);
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                tx.replace(R.id.content_frame, new FavoriteFragment());
+                tx.addToBackStack(null);
+                tx.commit();
+            }
+        });
+        llVouchers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                txtHome.setTextColor(getResources().getColor(R.color.divider));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.logo_color));
+                txtAccount.setTextColor(getResources().getColor(R.color.divider));
+                imgRightHeader.setVisibility(View.GONE);
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                tx.replace(R.id.content_frame, new VoucherFragment());
+                tx.addToBackStack(null);
+                tx.commit();
+            }
+        });
+        llAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                txtHome.setTextColor(getResources().getColor(R.color.divider));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtAccount.setTextColor(getResources().getColor(R.color.logo_color));
+                imgRightHeader.setVisibility(View.VISIBLE);
+                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+                tx.replace(R.id.content_frame, new AccountFragment());
+                tx.addToBackStack(null);
+                tx.commit();
             }
         });
     }

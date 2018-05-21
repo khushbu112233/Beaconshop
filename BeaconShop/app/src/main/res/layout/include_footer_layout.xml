@@ -1,91 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/divider"
+    android:layout_height="70dp"
+    android:background="@color/light_divider"
     android:weightSum="4">
     <LinearLayout
+        android:id="@+id/llHome"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/imgHome"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_home"
             />
         <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/txtHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textColor="@color/divider"
+            android:textSize="14sp"
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/llVouchers"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/imgVoucher"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_voucher"
             />
         <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/txtVoucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="My Vouchers"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textColor="@color/divider"
+            android:textSize="14sp"
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/llFavourites"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/imgFavourites"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_favourite"
             />
         <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/txtFavourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="Favourites"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textColor="@color/divider"
+            android:textSize="14sp"
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/llAccount"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/imgAccount"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_account"
             />
         <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/txtAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Account"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textColor="@color/divider"
+            android:textSize="14sp"
             />
     </LinearLayout>
 </LinearLayout>
