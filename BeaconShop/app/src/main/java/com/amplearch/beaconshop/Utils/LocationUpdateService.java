@@ -689,7 +689,8 @@ try {
             numberFormat.setMinimumFractionDigits(2);
             numberFormat.setMaximumFractionDigits(3);
             String distt_km = numberFormat.format(dist);
-            float disttt_km = Float.parseFloat(numberFormat.format(dist));
+            try {
+                float disttt_km = Float.parseFloat(numberFormat.format(dist));
 
             //distance units
             dist_double = dist; // double
@@ -788,7 +789,7 @@ try {
 
             int dist_cm = dist_int * 100;
             String cm = String.valueOf(dist_cm);
-
+            }catch (Exception e){}
         }
 
         if (count > 0){
