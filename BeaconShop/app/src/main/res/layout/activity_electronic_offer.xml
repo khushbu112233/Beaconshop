@@ -15,6 +15,15 @@
         android:background="@color/light_divider"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/llActionbar">
+        <ImageView
+            android:id="@+id/imgLeft"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_left"
+            android:tint="@color/black"/>
         <com.amplearch.beaconshop.Utils.cgTextView
             android:layout_width="match_parent"
             android:layout_height="30dp"

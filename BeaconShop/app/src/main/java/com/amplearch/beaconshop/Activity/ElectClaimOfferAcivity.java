@@ -2,10 +2,12 @@ package com.amplearch.beaconshop.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -60,6 +62,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     GillSansButton btnItemClaimOffer ;
     ImageView ivFacebook, ivFavorite, ivShare ;
     String offer_title, offer_desc, offer_id, quantity, offer_image;
+    Bitmap offerImg;
     CallbackManager callbackManager;
     ShareDialog shareDialog;
     UserSessionManager session;
@@ -70,6 +73,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     String offerCode;
     FrameLayout redeemid;
     String category_id;
+    ImageView imgOffer,imgLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -82,7 +86,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         db = new DatabaseHelper(getApplicationContext());
 
-       // tvItemOfferCode = (GillSansTextView) findViewById(R.id.tvItemOfferCode);
+        // tvItemOfferCode = (GillSansTextView) findViewById(R.id.tvItemOfferCode);
         redeemid = (FrameLayout) findViewById(R.id.redeemid);
 
         shareDialog = new ShareDialog(this);
@@ -93,10 +97,12 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         quantity = intent.getStringExtra("quantity");
         offer_image = intent.getStringExtra("offer_image");
         category_id = intent.getStringExtra("category_id");
-
-       // Toast.makeText(getApplicationContext(), offer_image, Toast.LENGTH_LONG).show();
+       // offerImg = (Bitmap) intent.getParcelableExtra("BitmapImage");
+        // Toast.makeText(getApplicationContext(), offer_image, Toast.LENGTH_LONG).show();
         session = new UserSessionManager(getApplicationContext());
         tvItemOffers = (GillSansTextView) findViewById(R.id.tvItemOffer);
+        imgOffer = (ImageView)findViewById(R.id.imgOffer);
+        imgLeft = (ImageView)findViewById(R.id.imgLeft);
         tvItemOfferDetails = (GillSansTextView) findViewById(R.id.tvItemOfferDetails);
         chAgree = (CheckBox) findViewById(R.id.chAgree);
         ivFavorite = (ImageView)findViewById(R.id.ivFavorite);
@@ -110,7 +116,10 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         ivShare.setOnClickListener(this);
         ivFavorite.setOnClickListener(this);
         btnItemClaimOffer.setOnClickListener(this);
+        byte[] decodedString = Base64.decode(offer_image, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
+        imgOffer.setImageBitmap(decodedByte);
         final HashMap<String, String> user1 = session.getUserDetails();
 
         // get name
@@ -122,14 +131,19 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         Boolean exists = db.verification(offer_id);
 
-        if (exists) {
+      /*  if (exists) {
 
             ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
         }
         else {
             ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
-        }
-
+        }*/
+        imgLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         chAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -211,7 +225,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         }
         if (v == btnItemClaimOffer)
         {
-           // Toast.makeText(getApplicationContext(),"You are not ELIGIBLE to claim this offer.",Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"You are not ELIGIBLE to claim this offer.",Toast.LENGTH_LONG).show();
             if (isAgreeChecked)
             {
                 if (checkConnection() == true )
@@ -251,7 +265,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 String paramOfferDesc = params[6];
                 String paramOfferCode = params[7];
 
-            //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
+                //    System.out.println("paramUsername is :" + paramUsername + " paramPassword is :" + paramPassword);
 
                 // Create an intermediate to connect with the Internet
                 HttpClient httpClient = new DefaultHttpClient();
@@ -340,7 +354,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 if (result.equals("")){
                     Toast.makeText(getApplicationContext(), "Server Connection Failed..", Toast.LENGTH_LONG).show();
                 }else {
-                   // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         String res = jsonObject.getString("message");
@@ -473,7 +487,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 super.onPostExecute(result);
 
                 if (result.equals("")){
-                  //  Toast.makeText(getApplicationContext(), "Login attempt Failed..", Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(getApplicationContext(), "Login attempt Failed..", Toast.LENGTH_LONG).show();
                 }else {
                     //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
@@ -482,7 +496,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         // String message = jsonObject.getString("User");
                         //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                         if (res.equalsIgnoreCase("not exists")){
-                           // Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                             redeemid.setVisibility(View.GONE);
                             redeemid.setVisibility(View.GONE);
 
@@ -493,15 +507,15 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                             for(int i=0;i<6;++i)
                                 sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
                             //return sb.toString();
-                            tvItemOfferCode.setText(sb.toString());
+//                            tvItemOfferCode.setText(sb.toString());
                         }
                         else if (res.equalsIgnoreCase("exists")){
                             redeemid.setVisibility(View.VISIBLE);
                             redeemid.setVisibility(View.VISIBLE);
 
                             String code = jsonObject.getString("code");
-                            tvItemOfferCode.setText(code);
-                          //  Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
+                            //tvItemOfferCode.setText(code);
+                            //  Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

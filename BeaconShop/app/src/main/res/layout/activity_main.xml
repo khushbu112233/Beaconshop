@@ -49,7 +49,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/logout"
+                        android:src="@drawable/icon_logout"
                         />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>

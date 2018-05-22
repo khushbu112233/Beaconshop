@@ -8,22 +8,25 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        app:logo="@mipmap/ic_launcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/primary"
+        android:background="@color/light_divider"
         android:gravity="center">
-
+        <ImageView
+            android:id="@+id/imgLeft"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_left"
+            android:tint="@color/black"/>
         <com.amplearch.beaconshop.Utils.cgTextView
             android:layout_width="match_parent"
-            android:paddingLeft="-60dp"
             android:layout_height="wrap_content"
             android:text="BEACON SHOP"
-            android:textColor="@color/white"
+            android:layout_marginLeft="-60dp"
+            android:textColor="@color/black"
+            android:gravity="center"
             android:id="@+id/toolbarTitle"
-            android:layout_marginLeft="0dp"
-            android:textAlignment="center"
             android:textSize="18dp"/>
 
     </android.support.v7.widget.Toolbar>
@@ -49,97 +52,98 @@
             android:layout_height="250dp"
             android:orientation="vertical"
             />
-            <com.amplearch.beaconshop.Utils.GillSansTextView
-                android:id="@+id/tvItemOffer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Electronic Offer"
-                android:gravity="left"
-                android:layout_marginLeft="10dp"
-                android:textSize="21sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
-            <com.amplearch.beaconshop.Utils.GillSansTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:gravity="left"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="Flat 10%"
-                android:textColor="@color/black"
-                android:id="@+id/tvItemOfferDetails"
-                android:layout_below="@+id/tvItemOffer"/>
-
-
-            <FrameLayout
-                android:id="@+id/redeemid"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_redeem">
-
-            </FrameLayout>
-
-        </RelativeLayout>
-
-        <CheckBox
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/tvItemOffer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AGREE TO TERMS AND CONDITIONS."
+            android:text="Electronic Offer"
+            android:gravity="left"
+            android:layout_marginLeft="10dp"
+            android:textSize="21sp"
+            android:textStyle="bold"
             android:textColor="@color/black"
-            android:id="@+id/chAgree"
-            android:layout_above="@+id/llItemShare"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
-
-        <LinearLayout
-            android:id="@+id/llItemShare"
+            android:layout_marginTop="10dp" />
+        <com.amplearch.beaconshop.Utils.GillSansTextView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:gravity="left"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Flat 10%"
+            android:textColor="@color/black"
+            android:id="@+id/tvItemOfferDetails"
+            android:layout_below="@+id/tvItemOffer"/>
+
+
+        <FrameLayout
+            android:id="@+id/redeemid"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_redeem">
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AGREE TO TERMS AND CONDITIONS."
+        android:textColor="@color/black"
+        android:id="@+id/chAgree"
+        android:layout_above="@+id/llItemShare"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/llItemShare"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_above="@+id/btnItemClaimOffer"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/ivFacebook"
+            android:layout_width="30dp"
             android:layout_height="30dp"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:layout_above="@+id/btnItemClaimOffer"
-            android:gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+            android:src="@drawable/icon_fb"
+            android:layout_weight="0.2"
+            />
 
-            <ImageView
-                android:id="@+id/ivFacebook"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/icon_fb"
-                />
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_fv"
+            android:layout_weight="0.2"/>
+        <ImageView
+            android:id="@+id/ivShare"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_share"
+            android:layout_weight="0.2"/>
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivFavorite"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_favourite"
-                android:layout_weight="0.2"/>
-            <ImageView
-                android:id="@+id/ivShare"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/icon_share"
-                android:layout_weight="0.2"/>
-        </LinearLayout>
-
-        <com.amplearch.beaconshop.Utils.GillSansButton
-            android:id="@+id/btnItemClaimOffer"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Claim this offer"
-            android:textSize="16dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:textColor="@color/primary_light"
-            android:background="@drawable/button_shap_logo_color"
-            android:layout_alignParentBottom="true"
-            android:padding="10dp" />
+    <com.amplearch.beaconshop.Utils.GillSansButton
+        android:id="@+id/btnItemClaimOffer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Claim this offer"
+        android:textSize="16dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/primary_light"
+        android:background="@drawable/button_shap_logo_color"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp" />
 
 </RelativeLayout>

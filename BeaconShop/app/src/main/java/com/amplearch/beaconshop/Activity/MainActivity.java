@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         // listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
         // listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
         listViewItems.add(new ItemObject("About Us", R.drawable.information));
-        listViewItems.add(new ItemObject("Sign Out", R.drawable.logout));
+        listViewItems.add(new ItemObject("Sign Out", R.drawable.icon_logout));
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
@@ -294,7 +294,16 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+        imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+        imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+        imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
 
+        txtHome.setTextColor(getResources().getColor(R.color.logo_color));
+        txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+        txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+        txtAccount.setTextColor(getResources().getColor(R.color.divider));
+        imgRightHeader.setVisibility(View.GONE);
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.content_frame, new HomeFragment());
         tx.addToBackStack(null);

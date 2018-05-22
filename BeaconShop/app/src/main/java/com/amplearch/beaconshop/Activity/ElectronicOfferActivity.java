@@ -48,6 +48,8 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
     ImageView imgMap;
     private GoogleMap map;
     SupportMapFragment mapFragment;
+    ImageView imgLeft;
+    int click=0;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -76,7 +78,7 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
         elect_Text.add("20% Discount on Moto G5+ Mobile.");
 
         offers = new ArrayList<VoucherClass>();
-
+        imgLeft = (ImageView)findViewById(R.id.imgLeft);
         listView_Elect = (ListView)findViewById(R.id.listView_Elect);
         tvNoOffer = (cgTextView) findViewById(R.id.tvNoOffer);
         tvCategoryTitle = (cgTextView) findViewById(R.id.tvCategoryTitle);
@@ -86,13 +88,32 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
         listView_Elect.setVisibility(View.VISIBLE);
         mapFragment.getView().setVisibility(View.GONE);
 
+        imgLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         imgMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listView_Elect.setVisibility(View.GONE);
-                mapFragment.getView().setVisibility(View.VISIBLE);
+                click++;
+                if(click%2==0)
+                {
+                    listView_Elect.setVisibility(View.VISIBLE);
+                    mapFragment.getView().setVisibility(View.GONE);
+                    imgMap.setImageResource(R.drawable.ic_map);
+
+                }else
+                {
+                    listView_Elect.setVisibility(View.GONE);
+                    mapFragment.getView().setVisibility(View.VISIBLE);
+                    imgMap.setImageResource(R.drawable.ic_list);
+
+                }
             }
         });
+
         listView_Elect.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)

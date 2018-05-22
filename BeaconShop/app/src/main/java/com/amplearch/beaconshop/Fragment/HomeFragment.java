@@ -143,6 +143,8 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 Bitmap bitmap = BitmapFactory.decodeByteArray(OfferImage.get(position), 0, OfferImage.get(position).length);
 
                 image.setImageBitmap(bitmap);
+                Log.e("bitmap",""+bitmap);
+               // i.putExtra("BitmapImage", bitmap);
                 Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
