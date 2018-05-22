@@ -44,7 +44,7 @@ public class ImageViewLazyLoading extends AsyncTask<PbWithImage,Void,Bitmap>
         {
             byte[] decodedString = Base64.decode(string, Base64.DEFAULT);
             bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            bitmap = getResizedBitmap(bitmap, 100, 100);
+           // bitmap = getResizedBitmap(bitmap, 100, 100);
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();

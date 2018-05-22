@@ -13,6 +13,7 @@ public class StoreLocation {
 	String offer_desc;
 	String start_date;
 	String end_date;
+	String category_id;
 
 	// constructors
 	public StoreLocation() {
@@ -31,6 +32,14 @@ public class StoreLocation {
         this.offer_desc = offer_desc;
         this.start_date = start_date;
         this.end_date = end_date;*/
+	}
+
+	public String getCategory_id() {
+		return category_id;
+	}
+
+	public void setCategory_id(String category_id) {
+		this.category_id = category_id;
 	}
 
 	public byte[] getStore_image() {
@@ -113,7 +122,7 @@ public class StoreLocation {
         this.product_id = product_id;
     }
 
-    public StoreLocation(String product_id, String store_name, byte[] store_image, String lat, String lng, String quantity, String offer_title, String offer_desc, String start_date, String end_date ) {
+    public StoreLocation(String product_id, String store_name, byte[] store_image, String lat, String lng, String quantity, String offer_title, String offer_desc, String start_date, String end_date, String category_id ) {
 		this.product_id = product_id;
         this.store_name = store_name;
 		this.store_image = store_image;
@@ -124,6 +133,7 @@ public class StoreLocation {
         this.offer_desc = offer_desc;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.category_id = category_id;
 	}
 
 	public StoreLocation(int id, String store_name) {

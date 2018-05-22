@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     ArrayList<String> notice_array = new ArrayList<String>();
     ArrayList<String> id_array = new ArrayList<String>();
     ArrayList<String> count_array = new ArrayList<String>();
+    ArrayList<String> count_array1 = new ArrayList<String>();
 
     RecyclerView recyclerPaidBanner;
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/GetCategories";
@@ -97,6 +98,8 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     ArrayList<String>  OfferDesc = new ArrayList<String>();
     ArrayList<String>  StartDate = new ArrayList<String>();
     ArrayList<String>  EndDate = new ArrayList<String>();
+    ArrayList<String>  Category = new ArrayList<String>();
+
 
     public HomeFragment() { }
 
@@ -287,7 +290,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 StartDate.add(tag.getStart_date().toString());
                 EndDate.add(tag.getEnd_date().toString());
                 OfferImage.add(tag.getStore_image());
-
+                Category.add(tag.getCategory_id());
                 favImage.add(bitmap);
                 favText.add(tag.getStore_name());
                 favText1.add(tag.getOffer_desc());
@@ -528,7 +531,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                         //  tvNoOffer.setText("No Offers are Available..");
                         //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                     } else {
-                        recyclerPaidBanner.setVisibility(View.VISIBLE);
+                       // recyclerPaidBanner.setVisibility(View.VISIBLE);
                     }
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
                         try {

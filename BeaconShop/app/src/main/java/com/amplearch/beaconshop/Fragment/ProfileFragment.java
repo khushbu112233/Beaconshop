@@ -1511,8 +1511,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     Long tsLong = System.currentTimeMillis() / 1000;
                     timestamp = tsLong.toString();
                  //   photo = scaleBitmap(a, 200, 200);
-                    photo = scaleDown(bitmap, 100, true);
-                    ivImage.setImageBitmap(photo);
+                    //photo = scaleDown(bitmap, 100, true);
+                    ivImage.setImageBitmap(bitmap);
                     //photo = decodeSampledBitmapFromUri(picturePath, 100, 20);
                    // ivImage.setImageBitmap(photo);
                 }
@@ -1651,12 +1651,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
     private File persistImage(Bitmap bitmap, String name) {
         File filesDir = getContext().getFilesDir();
-        File imageFile = new File(filesDir, name + ".jpg");
+        File imageFile = new File(filesDir, name + ".png");
 
         OutputStream os;
         try {
             os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, os);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
             os.flush();
             os.close();
         } catch (Exception e) {

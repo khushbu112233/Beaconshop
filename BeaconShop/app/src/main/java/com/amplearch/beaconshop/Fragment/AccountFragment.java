@@ -5,10 +5,12 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
@@ -60,9 +63,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -74,6 +80,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.amplearch.beaconshop.Fragment.ProfileFragment.scaleDown;
 
 /**
  * Created by ample-arch on 5/18/2018.
@@ -113,6 +121,10 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
     private String userChoosenTask;
     private User user;
     int count = 0;
+    private File file1;
+    private String imagepath=null;
+    TextView txtName, txtEmail;
+
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_profile_new_layout, container, false);
@@ -158,9 +170,11 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         llProfile = (RelativeLayout)rootview.findViewById(R.id.llProfile);
         llChangePassword = (RelativeLayout)rootview.findViewById(R.id.llChangePassword);
         llSettings =(LinearLayout)rootview.findViewById(R.id.llSettings);
+        txtName = (TextView) rootview.findViewById(R.id.txtName);
         vProfile = (View)rootview.findViewById(R.id.vProfile);
         vChangePassword = (View)rootview.findViewById(R.id.vChangePassword);
         vSettings = (View)rootview.findViewById(R.id.vSettings);
+        txtEmail = (TextView) rootview.findViewById(R.id.txtEmail);
         btnUpdate = (GillSansButton)rootview.findViewById(R.id.btnUpdate);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.gender_array, android.R.layout.simple_spinner_item);
@@ -306,8 +320,8 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             @Override
             public void onClick(View v) {
                 vProfile.setVisibility(View.VISIBLE);
-                vChangePassword.setVisibility(View.GONE);
-                vSettings.setVisibility(View.GONE);
+                vChangePassword.setVisibility(View.INVISIBLE);
+                vSettings.setVisibility(View.INVISIBLE);
                 llProfile.setVisibility(View.VISIBLE);
                 llChangePassword.setVisibility(View.GONE);
                 llSettings.setVisibility(View.GONE);
@@ -317,9 +331,9 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             @Override
             public void onClick(View v) {
 
-                vProfile.setVisibility(View.GONE);
+                vProfile.setVisibility(View.INVISIBLE);
                 vChangePassword.setVisibility(View.VISIBLE);
-                vSettings.setVisibility(View.GONE);
+                vSettings.setVisibility(View.INVISIBLE);
                 llProfile.setVisibility(View.GONE);
                 llChangePassword.setVisibility(View.VISIBLE);
                 llSettings.setVisibility(View.GONE);
@@ -330,8 +344,8 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             @Override
             public void onClick(View v) {
 
-                vProfile.setVisibility(View.GONE);
-                vChangePassword.setVisibility(View.GONE);
+                vProfile.setVisibility(View.INVISIBLE);
+                vChangePassword.setVisibility(View.INVISIBLE);
                 vSettings.setVisibility(View.VISIBLE);
                 llProfile.setVisibility(View.GONE);
                 llChangePassword.setVisibility(View.GONE);
@@ -461,6 +475,101 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         nameValuePair.add(new BasicNameValuePair("newPassword", user_NewPassword));
         return nameValuePair;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case RESULT_LOAD_IMAGE:
+                if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK & null != data) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getActivity().getContentResolver()
+                            .query(selectedImage, filePathColumn, null, null,
+                                    null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    Bitmap a = (BitmapFactory.decodeFile(picturePath));
+                    file1 = null;
+                    try {
+                        Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
+                                getContext().getContentResolver(), data.getData());
+                        file1 = persistImage(thumbnail1, "profileImage");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    imagepath = getPath(selectedImage);
+                    Bitmap bitmap=BitmapFactory.decodeFile(imagepath);
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    timestamp = tsLong.toString();
+                    //   photo = scaleBitmap(a, 200, 200);
+                   // photo = scaleDown(bitmap, 100, true);
+                    profile_image.setImageBitmap(bitmap);
+                    //photo = decodeSampledBitmapFromUri(picturePath, 100, 20);
+                    // ivImage.setImageBitmap(photo);
+                }
+                break;
+
+            case REQUEST_IMAGE_CAPTURE:
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+
+                //to generate random file name
+                String fileName = "tempimg.jpg";
+
+                try {
+                    file1 = null;
+                    Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
+                            getContext().getContentResolver(), data.getData());
+                    photo = (Bitmap) data.getExtras().get("data");
+                    file1 = persistImage(thumbnail1, "profileImage");
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    timestamp = tsLong.toString();
+                    //captured image set in imageview
+                    profile_image.setImageBitmap(thumbnail);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case CAMERA_REQUEST:
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
+                profile_image.setImageBitmap(photo);
+                break;
+        }
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    private File persistImage(Bitmap bitmap, String name) {
+        File filesDir = getContext().getFilesDir();
+        File imageFile = new File(filesDir, name + ".png");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+        return imageFile;
+    }
+
     @Override
     public void asyncResponse(String response)
     {
@@ -643,6 +752,10 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                                         //  txtUserID.setText(userID);
                                         etName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
                                         etEmail.setText(email);
+                                        txtEmail.setText(email);
+                                        txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
+
+
                                         //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
