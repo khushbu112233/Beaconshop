@@ -8,6 +8,7 @@
     android:id="@+id/frameHome">
 
     <GridView
+        android:layout_marginTop="50dp"
         android:visibility="gone"
         android:id="@+id/nearby_list"
         android:layout_width="match_parent"
@@ -36,13 +37,13 @@
         android:visibility="visible">
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_gravity="top"
             android:id="@+id/rlButtons"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@android:color/darker_gray"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="2"
@@ -74,7 +75,7 @@
             android:background="@color/primary"
             android:id="@+id/recyclerPaidBanner"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="190dp"
             android:layout_marginTop="10dp" />
 
         <GridView

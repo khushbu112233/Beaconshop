@@ -27,6 +27,7 @@ import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
+import com.amplearch.beaconshop.Adapter.NearByAdapter;
 import com.amplearch.beaconshop.Adapter.PaidBannerHorizontal;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.StoreLocation;
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     Button btnNearby;
     TrojanText tvNoNearby;
     FavoriteAdapter favoriteAdapter ;
+    NearByAdapter nearByAdapter;
     ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
     ArrayList<String>  favText = new ArrayList<String>();
     ArrayList<String>  favText1 = new ArrayList<String>();
@@ -330,10 +332,10 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
         else {
             tvNoNearby.setVisibility(View.GONE);
         }
-        favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText,favText1);
+        nearByAdapter = new NearByAdapter(getActivity(), favText, favImage,count_array);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
        // Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
-        listNearby.setAdapter(favoriteAdapter);
+        //listNearby.setAdapter(nearByAdapter);
 
         recyclerPaidBanner.addOnItemTouchListener
                 (
@@ -432,6 +434,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                             //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                             CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), title_array, notice_array, count_array);
                             listCategory.setAdapter(adapterViewAndroid);
+                            listNearby.setAdapter(adapterViewAndroid);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

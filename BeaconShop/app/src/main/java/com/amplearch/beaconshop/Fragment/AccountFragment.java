@@ -567,7 +567,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     // There may be so many buffered chunks. We have to go through each and every chunk of characters
                     //and assign a each chunk to bufferedStrChunk String variable
                     //and append that value one by one to the stringBuilder
-                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
                         stringBuilder.append(bufferedStrChunk);
                     }
 
@@ -596,75 +596,75 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
 
-                if (result.equals("")){
-                    Toast.makeText(getContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
-                }else {
-                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String res = jsonObject.getString("user");
-                        // String message = jsonObject.getString("User");
-                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                        if (res.equals("")){
-                            Toast.makeText(getContext(), "User does not exists..", Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                try {
+                    if (result.equals("")) {
+                        Toast.makeText(getContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            String res = jsonObject.getString("user");
+                            // String message = jsonObject.getString("User");
+                            //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                            if (res.equals("")) {
+                                Toast.makeText(getContext(), "User does not exists..", Toast.LENGTH_LONG).show();
+                            } else {
 
-                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("user");
-                            for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
-                                try {
-                                    //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
-                                    userId = jsonArrayChanged.getJSONObject(i).get("id").toString();
-                                    email =  jsonArrayChanged.getJSONObject(i).get("email_id").toString();
-                                    //  voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("contact").toString());
-                                    name = jsonArrayChanged.getJSONObject(i).get("username").toString();
-                                    //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
-                                    byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
-                                    // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                JSONArray jsonArrayChanged = jsonObject.getJSONArray("user");
+                                for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
+                                    try {
+                                        //JSONObject jObject = jsonArrayChanged.getJSONObject(i);
+                                        userId = jsonArrayChanged.getJSONObject(i).get("id").toString();
+                                        email = jsonArrayChanged.getJSONObject(i).get("email_id").toString();
+                                        //  voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("contact").toString());
+                                        name = jsonArrayChanged.getJSONObject(i).get("username").toString();
+                                        //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
+                                        byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
+                                        // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
-                                    byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString(), Base64.DEFAULT);
-                                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                        byte[] decodedString = Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString(), Base64.DEFAULT);
+                                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                                    profile_image.setImageBitmap(decodedByte);
-                                    // byte[] byteArray =  Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes(), Base64.DEFAULT) ;
-                                    //  Bitmap bmp1 = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                                        profile_image.setImageBitmap(decodedByte);
+                                        // byte[] byteArray =  Base64.decode(jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes(), Base64.DEFAULT) ;
+                                        //  Bitmap bmp1 = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-                                    // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                                    //  ivImage.setImageBitmap(bmp1);
-                                    etBday.setText(jsonArrayChanged.getJSONObject(i).get("dob").toString());
-                                    String gen = jsonArrayChanged.getJSONObject(i).get("gender").toString();
-                                    // voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("type").toString());
-                                    if (gen.equalsIgnoreCase("Male")){
-                                        spinner.setSelection (1);
+                                        // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                        //  ivImage.setImageBitmap(bmp1);
+                                        etBday.setText(jsonArrayChanged.getJSONObject(i).get("dob").toString());
+                                        String gen = jsonArrayChanged.getJSONObject(i).get("gender").toString();
+                                        // voucherClass.setMessage(jsonArrayChanged.getJSONObject(i).get("type").toString());
+                                        if (gen.equalsIgnoreCase("Male")) {
+                                            spinner.setSelection(1);
+                                        } else if (gen.equalsIgnoreCase("Female")) {
+                                            spinner.setSelection(2);
+                                        }
+
+                                        //  txtUserID.setText(userID);
+                                        etName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
+                                        etEmail.setText(email);
+                                        //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                    else if (gen.equalsIgnoreCase("Female")){
-                                        spinner.setSelection (2);
-                                    }
 
-                                  //  txtUserID.setText(userID);
-                                    etName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
-                                    etEmail.setText(email);
-                                    //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
 
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
                 }
             }
-        }
+            }
 
-        // Initialize the AsyncTask class
-        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
-        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
-        // We are passing the connectWithHttpGet() method arguments to that
+            // Initialize the AsyncTask class
+            HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+            // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+            // We are passing the connectWithHttpGet() method arguments to that
         httpGetAsyncTask.execute(user_id);
-
     }
 
     private void connectWithHttpPostVoucher(final String user_id)
@@ -761,41 +761,33 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
                 //Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
-                if (result.equals(""))
-                {
-                    count = 0;
-                }
-                else
-                {
-                    //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                    try
-                    {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String res = jsonObject.getString("redeem");
-                        // String message = jsonObject.getString("User");
-                        //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                        if (res==null)
-                        {
-                            count = 0;
-                        }
-                        else
-                        {
-                            JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
-                            if (jsonArrayChanged.length() == 0)
-                            {
+
+                try {
+                    if (result.equals("")) {
+                        count = 0;
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            String res = jsonObject.getString("redeem");
+                            // String message = jsonObject.getString("User");
+                            //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
+                            if (res == null) {
                                 count = 0;
+                            } else {
+                                JSONArray jsonArrayChanged = jsonObject.getJSONArray("redeem");
+                                if (jsonArrayChanged.length() == 0) {
+                                    count = 0;
+                                } else {
+                                    count = jsonArrayChanged.length();
+                                }
                             }
-                            else
-                            {
-                                count = jsonArrayChanged.length();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
-                    catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //voucher.setText(String.valueOf(count));
+                    //voucher.setText(String.valueOf(count));
+                }catch (Exception e){}
             }
         }
 

@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/divider"
+        android:background="@color/light_divider"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/llActionbar">
         <com.amplearch.beaconshop.Utils.cgTextView

@@ -641,11 +641,13 @@ public class LocationUpdateService extends Service implements
 
             // The final argument to {@code requestLocationUpdates()} is a LocationListener
             // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
-            Log.i(TAG, " startLocationUpdates===");
-            isEnded = true;
 
+            try {
+                LocationServices.FusedLocationApi.requestLocationUpdates(
+                        mGoogleApiClient, mLocationRequest, this);
+                Log.i(TAG, " startLocationUpdates===");
+                isEnded = true;
+            } catch (Exception e){}
         }
     }
 

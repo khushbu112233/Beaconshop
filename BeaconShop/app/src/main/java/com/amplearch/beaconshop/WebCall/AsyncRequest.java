@@ -117,7 +117,9 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
                 String query = "";
                 String EQ = "="; String AMP = "&";
                 for (NameValuePair param : parameters) {
-                    query += param.getName() + EQ + URLEncoder.encode(param.getValue()) + AMP;
+                    try {
+                        query += param.getName() + EQ + URLEncoder.encode(param.getValue()) + AMP;
+                    }catch (Exception e){}
                 }
                 if (query != "")
                 {

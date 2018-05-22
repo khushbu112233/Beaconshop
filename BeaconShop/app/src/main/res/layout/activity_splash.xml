@@ -5,6 +5,7 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg1"
     tools:context="com.amplearch.beaconshop.Activity.SplashActivity">
 
     <FrameLayout
@@ -17,6 +18,7 @@
         android:id="@+id/ivLogo"
         android:layout_width="190dp"
         android:layout_height="190dp"
+        android:visibility="gone"
         android:src="@drawable/ic_shop_logo"
         android:layout_centerInParent="true"/>
 
@@ -26,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="A SHOP Of OFFERS."
+        android:visibility="gone"
         android:textAlignment="center"
         android:textSize="18dp"
         android:layout_marginTop="30dp"

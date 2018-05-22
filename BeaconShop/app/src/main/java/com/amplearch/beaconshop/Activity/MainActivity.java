@@ -331,13 +331,13 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             @Override
             public void onClick(View v) {
                 imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 txtHome.setTextColor(getResources().getColor(R.color.divider));
-                txtVoucher.setTextColor(getResources().getColor(R.color.logo_color));
-                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.logo_color));
                 txtAccount.setTextColor(getResources().getColor(R.color.divider));
                 imgRightHeader.setVisibility(View.GONE);
                 FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -350,13 +350,13 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             @Override
             public void onClick(View v) {
                 imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                 txtHome.setTextColor(getResources().getColor(R.color.divider));
-                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
-                txtFavourite.setTextColor(getResources().getColor(R.color.logo_color));
+                txtVoucher.setTextColor(getResources().getColor(R.color.logo_color));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
                 txtAccount.setTextColor(getResources().getColor(R.color.divider));
                 imgRightHeader.setVisibility(View.GONE);
                 FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -1084,6 +1084,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     public void asyncResponse(String response)
     {
         // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+
+        try{
         if (response.equals("")) {
             Toast.makeText(getApplicationContext(), "No Offers..", Toast.LENGTH_LONG).show();
         } else {
@@ -1227,8 +1229,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
+        }catch (Exception e){}
 
     }
 
