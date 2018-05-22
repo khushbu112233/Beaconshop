@@ -178,7 +178,8 @@
             android:id="@+id/tvSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SIGN IN"
+            android:text="Sign In"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:background="@drawable/button_shape"
             android:textSize="16dp"
@@ -187,6 +188,7 @@
             android:layout_below="@+id/tvForgotPassword"
             android:layout_marginTop="20dp"/>
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/llSocial"
             android:layout_below="@+id/tvSignIn"
             android:layout_width="match_parent"

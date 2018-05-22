@@ -27,7 +27,6 @@ import com.amplearch.beaconshop.Activity.ElectClaimOfferAcivity;
 import com.amplearch.beaconshop.Activity.ElectronicOfferActivity;
 import com.amplearch.beaconshop.Adapter.CategoryAdapter;
 import com.amplearch.beaconshop.Adapter.FavoriteAdapter;
-import com.amplearch.beaconshop.Adapter.NearByAdapter;
 import com.amplearch.beaconshop.Adapter.PaidBannerHorizontal;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.Model.StoreLocation;
@@ -62,7 +61,6 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     ArrayList<String> notice_array = new ArrayList<String>();
     ArrayList<String> id_array = new ArrayList<String>();
     ArrayList<String> count_array = new ArrayList<String>();
-    ArrayList<String> count_array1 = new ArrayList<String>();
 
     RecyclerView recyclerPaidBanner;
     String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/GetCategories";
@@ -86,7 +84,6 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     Button btnNearby;
     TrojanText tvNoNearby;
     FavoriteAdapter favoriteAdapter ;
-    NearByAdapter nearByAdapter;
     ArrayList<Bitmap> favImage = new ArrayList<Bitmap>();
     ArrayList<String>  favText = new ArrayList<String>();
     ArrayList<String>  favText1 = new ArrayList<String>();
@@ -98,8 +95,6 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     ArrayList<String>  OfferDesc = new ArrayList<String>();
     ArrayList<String>  StartDate = new ArrayList<String>();
     ArrayList<String>  EndDate = new ArrayList<String>();
-    ArrayList<String>  Category = new ArrayList<String>();
-
 
     public HomeFragment() { }
 
@@ -154,7 +149,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
 
                 String imgString = Base64.encodeToString(getBytesFromBitmap(image1), Base64.NO_WRAP);
 
-               // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+                // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
 
                 i.putExtra("offer_image",imgString );
                 startActivity(i);
@@ -212,7 +207,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
             cur_Longitude = gps.getLongitude();
 
             // \n is for new line
-           // Toast.makeText(getContext(), "Your Location is - \nLat: " + cur_Latitude + "\nLong: " + cur_Longitude, Toast.LENGTH_LONG).show();
+            // Toast.makeText(getContext(), "Your Location is - \nLat: " + cur_Latitude + "\nLong: " + cur_Longitude, Toast.LENGTH_LONG).show();
         }else{
             // can't get location
             // GPS or Network is not enabled
@@ -278,7 +273,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
 
                 }
 
-              //  Toast.makeText(getContext(), tag.getOffer_title() + " at " + tag.getStore_name(), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getContext(), tag.getOffer_title() + " at " + tag.getStore_name(), Toast.LENGTH_LONG).show();
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0, tag.getStore_image().length);
 
@@ -290,7 +285,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 StartDate.add(tag.getStart_date().toString());
                 EndDate.add(tag.getEnd_date().toString());
                 OfferImage.add(tag.getStore_image());
-                Category.add(tag.getCategory_id());
+
                 favImage.add(bitmap);
                 favText.add(tag.getStore_name());
                 favText1.add(tag.getOffer_desc());
@@ -335,39 +330,39 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
         else {
             tvNoNearby.setVisibility(View.GONE);
         }
-        nearByAdapter = new NearByAdapter(getActivity(), favText, favImage,count_array);
+        favoriteAdapter = new FavoriteAdapter(getActivity(), favImage, favText,favText1);
 //        favoritesAdapter = new FavoritesAdapter(getActivity(), StoreName, OfferTitle, OfferDesc, StartDate, EndDate);
-       // Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
-        //listNearby.setAdapter(nearByAdapter);
+        // Fav_gridView = (GridView) view.findViewById(R.id.Fav_gridView);
+        listNearby.setAdapter(favoriteAdapter);
 
         recyclerPaidBanner.addOnItemTouchListener
                 (
-                new RecyclerItemClickListener(getContext(), recyclerPaidBanner ,new RecyclerItemClickListener.OnItemClickListener()
-                {
-                    @Override public void onItemClick(View view, int position) {
-                        // do whatever
-                        if(offers.get(position).getStore_image() != null) {
+                        new RecyclerItemClickListener(getContext(), recyclerPaidBanner ,new RecyclerItemClickListener.OnItemClickListener()
+                        {
+                            @Override public void onItemClick(View view, int position) {
+                                // do whatever
+                                if(offers.get(position).getStore_image() != null) {
 
-                            Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
-                            i.putExtra("offer_title", offers.get(position).getOffer_title() );
-                            i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
-                            i.putExtra("offer_id", offers.get(position).getId() );
-                            i.putExtra("quantity", offers.get(position).getQuantity() );
-                            i.putExtra("offer_image", offers.get(position).getStore_image() );
-                            i.putExtra("category_id", offers.get(position).getCategory_id() );
+                                    Intent i = new Intent(getContext(), ElectClaimOfferAcivity.class);
+                                    i.putExtra("offer_title", offers.get(position).getOffer_title() );
+                                    i.putExtra("offer_desc", offers.get(position).getOffer_desc() );
+                                    i.putExtra("offer_id", offers.get(position).getId() );
+                                    i.putExtra("quantity", offers.get(position).getQuantity() );
+                                    i.putExtra("offer_image", offers.get(position).getStore_image() );
+                                    i.putExtra("category_id", offers.get(position).getCategory_id() );
 
-                            startActivity(i);
+                                    startActivity(i);
 
                             /*Picasso.with(getApplicationContext()).load("http://www.kumbhdesign.in/mobile-app/depost/api/assets/"+back_list.get(position).getBackground_img())
                                     .into(main_image.set);*/
-                        }
-                    }
+                                }
+                            }
 
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );
+                            @Override public void onLongItemClick(View view, int position) {
+                                // do whatever
+                            }
+                        })
+                );
 
         return rootView;
     }
@@ -413,7 +408,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
             Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
         }
         else
-            {
+        {
             // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             try {
                 JSONObject jsonObject = new JSONObject(response);
@@ -437,7 +432,6 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                             //   Toast.makeText(getContext(),jsonArrayChanged.getJSONObject(i).get("category_id").toString(), Toast.LENGTH_LONG).show();
                             CategoryAdapter adapterViewAndroid = new CategoryAdapter(getContext(), title_array, notice_array, count_array);
                             listCategory.setAdapter(adapterViewAndroid);
-                            listNearby.setAdapter(adapterViewAndroid);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -531,7 +525,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                         //  tvNoOffer.setText("No Offers are Available..");
                         //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                     } else {
-                       // recyclerPaidBanner.setVisibility(View.VISIBLE);
+                        //recyclerPaidBanner.setVisibility(View.VISIBLE);
                     }
                     for (int i = 0, count = jsonArrayChanged.length(); i < count; i++) {
                         try {
