@@ -1,26 +1,22 @@
 package com.amplearch.beaconshop.Activity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.ConnectivityReceiver;
-import com.amplearch.beaconshop.Model.Favourites;
-
 import com.amplearch.beaconshop.R;
-import com.amplearch.beaconshop.Utils.TrojanButton;
-import com.amplearch.beaconshop.Utils.TrojanCheckBox;
-import com.amplearch.beaconshop.Utils.TrojanText;
+import com.amplearch.beaconshop.Utils.GillSansButton;
+import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.helper.DatabaseHelper;
 import com.facebook.CallbackManager;
@@ -40,7 +36,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,19 +55,18 @@ import java.util.Random;
 
 public class ElectClaimOfferAcivity extends AppCompatActivity implements View.OnClickListener
 {
-    TrojanText tvItemOffers, tvItemOfferDetails, tvItemOfferCode ;
-    TrojanCheckBox tvCheckAgree ;
-    TrojanButton btnItemClaimOffer ;
+    GillSansTextView tvItemOffers, tvItemOfferDetails, tvItemOfferCode ;
+    CheckBox tvCheckAgree ;
+    GillSansButton btnItemClaimOffer ;
     ImageView ivFacebook, ivFavorite, ivShare ;
     String offer_title, offer_desc, offer_id, quantity, offer_image;
     CallbackManager callbackManager;
     ShareDialog shareDialog;
     UserSessionManager session;
     String userID;
-    TrojanCheckBox chAgree;
+    CheckBox chAgree;
     Boolean isAgreeChecked = false;
     DatabaseHelper db;
-    TrojanText claim;
     String offerCode;
     FrameLayout redeemid;
     String category_id;
@@ -88,8 +82,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         db = new DatabaseHelper(getApplicationContext());
 
-        claim = (TrojanText) findViewById(R.id.claim);
-        tvItemOfferCode = (TrojanText) findViewById(R.id.tvItemOfferCode);
+       // tvItemOfferCode = (GillSansTextView) findViewById(R.id.tvItemOfferCode);
         redeemid = (FrameLayout) findViewById(R.id.redeemid);
 
         shareDialog = new ShareDialog(this);
@@ -103,13 +96,13 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
        // Toast.makeText(getApplicationContext(), offer_image, Toast.LENGTH_LONG).show();
         session = new UserSessionManager(getApplicationContext());
-        tvItemOffers = (TrojanText)findViewById(R.id.tvItemOffer);
-        tvItemOfferDetails = (TrojanText) findViewById(R.id.tvItemOfferDetails);
-        chAgree = (TrojanCheckBox) findViewById(R.id.chAgree);
+        tvItemOffers = (GillSansTextView) findViewById(R.id.tvItemOffer);
+        tvItemOfferDetails = (GillSansTextView) findViewById(R.id.tvItemOfferDetails);
+        chAgree = (CheckBox) findViewById(R.id.chAgree);
         ivFavorite = (ImageView)findViewById(R.id.ivFavorite);
         ivShare = (ImageView)findViewById(R.id.ivShare);
         ivFacebook = (ImageView)findViewById(R.id.ivFacebook);
-        btnItemClaimOffer = (TrojanButton)findViewById(R.id.btnItemClaimOffer);
+        btnItemClaimOffer = (GillSansButton) findViewById(R.id.btnItemClaimOffer);
 
         tvItemOffers.setText(offer_title);
         tvItemOfferDetails.setText(offer_desc);
@@ -492,7 +485,6 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                            // Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                             redeemid.setVisibility(View.GONE);
                             redeemid.setVisibility(View.GONE);
-                            claim.setVisibility(View.GONE);
 
                             final String ALLOWED_CHARACTERS ="0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
 
@@ -506,7 +498,6 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         else if (res.equalsIgnoreCase("exists")){
                             redeemid.setVisibility(View.VISIBLE);
                             redeemid.setVisibility(View.VISIBLE);
-                            claim.setVisibility(View.VISIBLE);
 
                             String code = jsonObject.getString("code");
                             tvItemOfferCode.setText(code);
