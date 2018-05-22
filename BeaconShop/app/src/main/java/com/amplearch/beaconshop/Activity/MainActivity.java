@@ -1196,8 +1196,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                                     jsonArrayChanged.getJSONObject(i).get("offer_title").toString(),
                                     jsonArrayChanged.getJSONObject(i).get("offer_desc").toString(),
                                     jsonArrayChanged.getJSONObject(i).get("start_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString(),
-                                    jsonArrayChanged.getJSONObject(i).get("category_id").toString()
+                                    jsonArrayChanged.getJSONObject(i).get("end_date").toString()
                             );
                            /* StoreLocation tag2 = new StoreLocation("Ghatlodia", "23.057506", "72.543392", "Cashbak", "70% Cashback, Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%.", "08/03/2017", "06/04/2017");
                             StoreLocation tag3 = new StoreLocation("Vikram Appts", "23.01210", "72.522634", "Redeem Code", "Hurry up. Offer till 6th April, 2017 only. Men's wear discount 50%, Women's Wear discount 75%", "08/02/2015", "14/02/2016");

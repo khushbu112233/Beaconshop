@@ -835,8 +835,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		values.put(KEY_OFFERDESC, tag.getOffer_desc());
 		values.put(KEY_STARTDATE, tag.getStart_date());
 		values.put(KEY_ENDDATE, tag.getEnd_date());
-		values.put(KEY_CATEGORYID, tag.getCategory_id());
-
 
 		// insert row
 		long tag_id = db.insert(TABLE_STORELOCATION, null, values);
