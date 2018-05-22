@@ -86,7 +86,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         db = new DatabaseHelper(getApplicationContext());
 
-        // tvItemOfferCode = (GillSansTextView) findViewById(R.id.tvItemOfferCode);
+        tvItemOfferCode = (GillSansTextView) findViewById(R.id.tvItemOfferCode);
         redeemid = (FrameLayout) findViewById(R.id.redeemid);
 
         shareDialog = new ShareDialog(this);
@@ -514,7 +514,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                             redeemid.setVisibility(View.VISIBLE);
 
                             String code = jsonObject.getString("code");
-                            //tvItemOfferCode.setText(code);
+                            tvItemOfferCode.setText(code);
                             //  Toast.makeText(getApplicationContext(), "LoggedIn Successfully..", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {

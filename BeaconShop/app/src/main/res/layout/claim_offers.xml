@@ -30,13 +30,31 @@
             android:textSize="18dp"/>
 
     </android.support.v7.widget.Toolbar>
-
+    <FrameLayout
+        android:id="@+id/redeemid"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.20"
+        android:background="@color/divider"
+        >
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You have claimed this offer."
+            android:gravity="center"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp" />
+    </FrameLayout>
     <ImageView
         android:id="@+id/imgOffer"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="fitXY"
-        android:src="@drawable/bg1"
         android:layout_below="@+id/toolbar"/>
 
 
@@ -52,6 +70,20 @@
             android:layout_height="250dp"
             android:orientation="vertical"
             />
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textAlignment="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Flat 10%"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:id="@+id/tvItemOfferCode" />
         <com.amplearch.beaconshop.Utils.GillSansTextView
             android:id="@+id/tvItemOffer"
             android:layout_width="match_parent"
@@ -77,15 +109,7 @@
             android:layout_below="@+id/tvItemOffer"/>
 
 
-        <FrameLayout
-            android:id="@+id/redeemid"
-            android:visibility="gone"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_redeem">
 
-        </FrameLayout>
 
     </RelativeLayout>
 
