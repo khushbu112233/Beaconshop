@@ -84,7 +84,7 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
         // strings in a remote file.
         //pDialog.isIndeterminate();
         pDialog.setCancelable(false);
-       // pDialog.show();
+        pDialog.show();
     }
 
     public void onProgressUpdate(Integer... progress) {
@@ -95,7 +95,7 @@ public class AsyncRequest extends AsyncTask<String, Integer, String>
     public void onPostExecute(String response)
     {
         if (pDialog != null && pDialog.isShowing()) {
-           // pDialog.dismiss();
+            pDialog.dismiss();
         }
         caller.asyncResponse(response);
     }
