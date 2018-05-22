@@ -31,23 +31,26 @@
 
     </android.support.v7.widget.Toolbar>
     <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:background="@color/black"
+        android:alpha="0.40"></FrameLayout>
+    <FrameLayout
         android:id="@+id/redeemid"
         android:visibility="visible"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:alpha="0.20"
-        android:background="@color/divider"
+        android:layout_height="450dp"
         >
         <com.amplearch.beaconshop.Utils.GillSansTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="You have claimed this offer."
             android:gravity="center"
+            android:layout_gravity="center"
             android:textSize="21sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_marginTop="10dp" />
     </FrameLayout>
     <ImageView
