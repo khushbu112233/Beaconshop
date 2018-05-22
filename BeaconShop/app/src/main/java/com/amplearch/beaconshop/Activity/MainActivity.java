@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     List<VoucherClass> offers;
     DatabaseHelper db;
     CallbackManager callbackManager;
-    String userID, name;
+    String userID, name,email;
     CircleImageView circleImageView;
     UserSessionManager session;
     NearbyMessagePref pref;
@@ -222,10 +222,13 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         userID = user1.get(UserSessionManager.KEY_USER_ID);
         name = user1.get(UserSessionManager.KEY_NAME);
+        email =user1.get(UserSessionManager.KEY_EMAIL);
 
         circleImageView = (CircleImageView) listHeaderView.findViewById(R.id.circleView);
         GillSansTextView profile_name = (GillSansTextView) listHeaderView.findViewById(R.id.profile_name);
+        GillSansTextView profile_email = (GillSansTextView)listHeaderView.findViewById(R.id.profile_email);
         profile_name.setText(name);
+        profile_email.setText(email);
 
         mDrawerList.addHeaderView(listHeaderView);
 
