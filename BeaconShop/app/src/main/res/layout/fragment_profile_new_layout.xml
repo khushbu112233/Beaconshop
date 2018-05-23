@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:elevation="25dp"
+        android:layout_height="217dp"
+        android:elevation="50dp"
         android:background="@drawable/bg1"
         android:orientation="vertical">
         <FrameLayout
@@ -55,6 +56,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:weightSum="3">
+
             <com.amplearch.beaconshop.Utils.GillSansTextView
                 android:id="@+id/txtProfile"
                 android:layout_width="0dp"
@@ -90,44 +92,45 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:weightSum="3">
+            >
             <View
                 android:id="@+id/vProfile"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="1dp"
+                android:layout_width="90dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="3dp"
+                android:layout_alignParentLeft="true"
                 android:background="@color/white"/>
 
             <View
                 android:id="@+id/vChangePassword"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="1dp"
+                android:layout_width="90dp"
+                android:layout_height="3dp"
+                android:layout_centerInParent="true"
                 android:visibility="gone"
                 android:background="@color/white"/>
 
             <View
                 android:id="@+id/vSettings"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="1dp"
+                android:layout_width="90dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="3dp"
+                android:layout_alignParentRight="true"
                 android:visibility="gone"
                 android:background="@color/white"/>
 
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
-
     <RelativeLayout
         android:id="@+id/llProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -524,7 +527,7 @@
         android:id="@+id/llSettings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
