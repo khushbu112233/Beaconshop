@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+        imgHome.setColorFilter(getResources().getColor(R.color.logo_color));
         imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
         imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
         imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         llHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgHome.setColorFilter(getResources().getColor(R.color.logo_color));
                 imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -344,9 +344,9 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             public void onClick(View v) {
                 imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                //imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-
+                imgFavourites.setColorFilter(getResources().getColor(R.color.logo_color));
                 txtHome.setTextColor(getResources().getColor(R.color.divider));
                 txtVoucher.setTextColor(getResources().getColor(R.color.divider));
                 txtFavourite.setTextColor(getResources().getColor(R.color.logo_color));
@@ -362,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             @Override
             public void onClick(View v) {
                 imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(getResources().getColor(R.color.logo_color));
                 imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
 
@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
                 imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
-                imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.logo_color), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(getResources().getColor(R.color.logo_color));
 
                 txtHome.setTextColor(getResources().getColor(R.color.divider));
                 txtVoucher.setTextColor(getResources().getColor(R.color.divider));
