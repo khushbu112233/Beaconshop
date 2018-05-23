@@ -23,16 +23,17 @@
         android:layout_centerInParent="true"/>
 
 
-    <com.amplearch.beaconshop.Utils.TrojanText
+    <com.amplearch.beaconshop.Utils.cgTextView
+        android:layout_centerInParent="true"
         android:layout_below="@+id/ivLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A SHOP Of OFFERS."
-        android:visibility="gone"
+        android:text="BeaconShop"
+        android:visibility="visible"
         android:textAlignment="center"
-        android:textSize="18dp"
+        android:textSize="25dp"
         android:layout_marginTop="30dp"
         android:textStyle="bold"
-        android:textColor="@color/primary_dark"/>
+        android:textColor="@color/white"/>
 
 </RelativeLayout>
