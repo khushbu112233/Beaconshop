@@ -13,6 +13,9 @@
         android:minHeight="?attr/actionBarSize"
         android:background="@color/light_divider"
         android:gravity="center">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/imgLeft"
             android:layout_width="30dp"
@@ -22,44 +25,48 @@
         <com.amplearch.beaconshop.Utils.cgTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BEACON SHOP"
-            android:layout_marginLeft="-60dp"
+            android:text="BeaconShop"
             android:textColor="@color/black"
             android:gravity="center"
             android:id="@+id/toolbarTitle"
             android:textSize="18dp"/>
-
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:background="@color/black"
-        android:alpha="0.40"></FrameLayout>
-    <FrameLayout
-        android:id="@+id/redeemid"
-        android:visibility="visible"
-        android:layout_marginTop="50dp"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        >
-        <com.amplearch.beaconshop.Utils.GillSansTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="You have claimed this offer."
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_marginTop="10dp" />
-    </FrameLayout>
+
     <ImageView
         android:id="@+id/imgOffer"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="fitXY"
         android:layout_below="@+id/toolbar"/>
-
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/frameOpacity"
+        android:layout_above="@+id/llItemShare"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha="0.7"></FrameLayout>
+    <FrameLayout
+        android:layout_above="@+id/llItemShare"
+        android:id="@+id/redeemid"
+        android:visibility="gone"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <com.amplearch.beaconshop.Utils.cgTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You have claimed this offer."
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_below="@+id/imgOffer"

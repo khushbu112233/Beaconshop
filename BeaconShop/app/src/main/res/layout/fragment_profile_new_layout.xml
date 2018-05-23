@@ -75,7 +75,7 @@
                 android:textSize="17sp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Change Password"
+                android:text="Change password"
                 android:textStyle="bold" />
             <com.amplearch.beaconshop.Utils.GillSansTextView
                 android:id="@+id/txtSettings"
@@ -341,6 +341,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Update"
+            android:textAllCaps="false"
             android:textSize="16dp"
             android:layout_marginBottom="20dp"
             android:layout_marginRight="30dp"

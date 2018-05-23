@@ -316,6 +316,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/button_shape"
             android:text="Sign Up"
+            android:textAllCaps="false"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:padding="0dp"

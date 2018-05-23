@@ -71,7 +71,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
     Boolean isAgreeChecked = false;
     DatabaseHelper db;
     String offerCode;
-    FrameLayout redeemid;
+    FrameLayout redeemid, frameOpacity;
     String category_id;
     ImageView imgOffer,imgLeft;
 
@@ -88,6 +88,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
         tvItemOfferCode = (GillSansTextView) findViewById(R.id.tvItemOfferCode);
         redeemid = (FrameLayout) findViewById(R.id.redeemid);
+        frameOpacity = (FrameLayout) findViewById(R.id.frameOpacity);
 
         shareDialog = new ShareDialog(this);
         Intent intent = getIntent();
@@ -498,7 +499,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         if (res.equalsIgnoreCase("not exists")){
                             // Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                             redeemid.setVisibility(View.GONE);
-                            redeemid.setVisibility(View.GONE);
+                            frameOpacity.setVisibility(View.GONE);
 
                             final String ALLOWED_CHARACTERS ="0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
 
@@ -511,7 +512,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         }
                         else if (res.equalsIgnoreCase("exists")){
                             redeemid.setVisibility(View.VISIBLE);
-                            redeemid.setVisibility(View.VISIBLE);
+                            frameOpacity.setVisibility(View.VISIBLE);
 
                             String code = jsonObject.getString("code");
                             tvItemOfferCode.setText(code);

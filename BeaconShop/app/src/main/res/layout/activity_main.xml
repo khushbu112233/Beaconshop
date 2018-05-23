@@ -30,15 +30,15 @@
                 android:background="@color/light_divider"
                 >
                 <RelativeLayout
+                    android:layout_marginLeft="70dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.amplearch.beaconshop.Utils.cgTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="BEACON SHOP"
+                        android:text="BeaconShop"
                         android:textColor="@color/black"
                         android:id="@+id/toolbarTitle"
-                        android:layout_centerInParent="true"
                         android:textAlignment="center"
                         android:textSize="18dp"/>
 

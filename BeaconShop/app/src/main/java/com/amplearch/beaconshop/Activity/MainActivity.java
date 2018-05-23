@@ -265,12 +265,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         // listViewItems.add(new ItemObject("Favourites", R.drawable.my_favorites));
         //listViewItems.add(new ItemObject("My Vouchers", R.drawable.my_vouchers));
         listViewItems.add(new ItemObject("Badges", R.drawable.ic_badges));
-        listViewItems.add(new ItemObject("My Account", R.drawable.my_account));
+        listViewItems.add(new ItemObject("My account", R.drawable.my_account));
         listViewItems.add(new ItemObject("Help", R.drawable.help));
         // listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
         // listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
-        listViewItems.add(new ItemObject("About Us", R.drawable.information));
-        listViewItems.add(new ItemObject("Sign Out", R.drawable.icon_logout));
+        listViewItems.add(new ItemObject("About us", R.drawable.information));
+        listViewItems.add(new ItemObject("Sign out", R.drawable.icon_logout));
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
@@ -766,7 +766,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             case 1:
                 fragment = new HomeFragment();
                 //  rlButtons.setVisibility(View.VISIBLE);
-                toolbarTitle.setText("Beacon Shop");
+                toolbarTitle.setText("BeaconShop");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 2:

@@ -71,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
         llStateBox = (LinearLayout) findViewById(R.id.llStateBox);
 
         ArrayAdapter<CharSequence> adapterCountry = ArrayAdapter.createFromResource(this,
-                R.array.country_array, android.R.layout.simple_spinner_item);
+                R.array.country_array, R.layout.spinner_item);
 // Specify the layout to use when the list of choices appears
         adapterCountry.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner

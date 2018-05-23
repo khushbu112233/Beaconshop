@@ -646,7 +646,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
             if (s.equals(""))
             {
-                Toast.makeText(getApplicationContext(), "Server Connection Failed..", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Server connection failed..", Toast.LENGTH_LONG).show();
             }
             else {
                 // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
@@ -1025,7 +1025,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
         if (response.equals(""))
         {
-            Toast.makeText(getApplicationContext(), "Server Connection Failed..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Server connection failed..", Toast.LENGTH_LONG).show();
         }
         else
         {
