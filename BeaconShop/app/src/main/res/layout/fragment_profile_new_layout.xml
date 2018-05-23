@@ -127,6 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -523,7 +524,7 @@
         android:id="@+id/llSettings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -535,9 +536,12 @@
                 android:layout_weight="0.70"
                 android:layout_height="wrap_content"
                 android:text="New Offer Notifications"
-                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="18sp"
                 />
 
             <Switch
@@ -565,9 +569,12 @@
                 android:layout_weight="0.70"
                 android:layout_height="wrap_content"
                 android:text="Allows Offer Popups"
-                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="18sp"
                 />
             <Switch
                 android:id="@+id/sAllowPopup"
@@ -593,9 +600,12 @@
                 android:layout_weight="0.70"
                 android:layout_height="wrap_content"
                 android:text="Allow Welcome Messages"
-                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="18sp"
                 />
             <Switch
                 android:id="@+id/sWelcomeMessage"
