@@ -396,6 +396,24 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 tx.commit();
             }
         });
+        imgRightHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                session.logoutUser();
+                            }
+                        });
+                PrefUtils.clearCurrentUser(MainActivity.this);
+
+                // We can logout from facebook by calling following method
+                LoginManager.getInstance().logOut();
+                session.logoutUser();
+            }
+        });
     }
 
     private void connectWithHttpPostUserRedeem(final String user_id)
