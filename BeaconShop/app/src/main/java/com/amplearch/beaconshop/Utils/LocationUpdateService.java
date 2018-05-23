@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -59,7 +60,7 @@ import java.util.List;
  * Created by Grishma on 16/5/16.
  */
 public class LocationUpdateService extends Service implements
-          GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, BeaconConsumer {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, BeaconConsumer {
     protected static final String TAG = "LocationUpdateService";
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -159,7 +160,7 @@ public class LocationUpdateService extends Service implements
     @Override
     public void onCreate() {
         super.onCreate();
-      // verifyBluetooth();
+        // verifyBluetooth();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         MyApplication app = (MyApplication) this.getApplication();
         beaconManager = app.getBeaconManager();
@@ -295,13 +296,27 @@ public class LocationUpdateService extends Service implements
                         for (Voucher tag : allTags) {
                             Log.d("Voucher Details", tag.getUuid());
                             int mId = Integer.parseInt(String.valueOf(tag.getId()));
-                            if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())){
-                                NotificationCompat.Builder mBuilder =
-                                        new NotificationCompat.Builder(getApplicationContext())
-                                                .setSmallIcon(R.drawable.ic_noti)
-                                                .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
-                                                .setContentText(tag.getOffer_desc());
+                            if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())) {
+                                NotificationCompat.Builder mBuilder ;
 // Creates an explicit intent for an Activity in your app
+
+                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    mBuilder =
+                                            new NotificationCompat.Builder(getApplicationContext())
+                                                    .setSmallIcon(R.drawable.ic_stat_bs)
+                                                    .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                    .setContentText(tag.getOffer_desc());
+                                } else {
+                                    mBuilder =
+                                            new NotificationCompat.Builder(getApplicationContext())
+                                                    .setSmallIcon(R.drawable.ic_noti)
+                                                    .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                    .setContentText(tag.getOffer_desc());
+
+                                }
+
+
+
                                 NotificationManager mNotificationManager =
                                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
@@ -361,7 +376,7 @@ public class LocationUpdateService extends Service implements
         }
 
         logToDisplay(scanString.toString());
-     //   Toast.makeText(getApplicationContext(), scanString.toString() + "\n", Toast.LENGTH_LONG).show();
+        //   Toast.makeText(getApplicationContext(), scanString.toString() + "\n", Toast.LENGTH_LONG).show();
 
         scanString.append("\n");
 
@@ -445,25 +460,25 @@ public class LocationUpdateService extends Service implements
                         //   logBeaconData(beacon);
                         Log.i(TAG, "The first beacon I see is about " + beacon.getDistance() + " meters away.");
 
-                      //  Toast.makeText(getApplicationContext(), "The first beacon I see is about " + beacon.getDistance() + " meters away.", Toast.LENGTH_LONG).show();
+                        //  Toast.makeText(getApplicationContext(), "The first beacon I see is about " + beacon.getDistance() + " meters away.", Toast.LENGTH_LONG).show();
 
                         List<Voucher> allTags = db.getAllBeaconVouchers();
                         for (Voucher tag : allTags) {
                             Log.d("Voucher Details", tag.getUuid());
                             int mId = Integer.parseInt(String.valueOf(tag.getId()));
-                            if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())){
+                            if (beacon.getId1().toString().equalsIgnoreCase(tag.getUuid())) {
 
                                 int requestID = (int) System.currentTimeMillis();
                                 Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
 
 
-                                notificationIntent.putExtra("offer_title", tag.getOffer_title().toString() );
-                                notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString() );
+                                notificationIntent.putExtra("offer_title", tag.getOffer_title().toString());
+                                notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString());
                                 notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
-                                notificationIntent.putExtra("quantity", tag.getQuantity() );
+                                notificationIntent.putExtra("quantity", tag.getQuantity());
 
                                 ImageView image = new ImageView(getApplicationContext());
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0,tag.getStore_image().length);
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0, tag.getStore_image().length);
 
                                 image.setImageBitmap(bitmap);
                                 Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
@@ -475,24 +490,44 @@ public class LocationUpdateService extends Service implements
 
                                 // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
 
-                                notificationIntent.putExtra("offer_image",imgString );
+                                notificationIntent.putExtra("offer_image", imgString);
 
 //**add this line**
                                 notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 //**edit this line to put requestID as requestCode**
-                                PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), requestID,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-                                NotificationCompat.Builder mBuilder =
-                                        new NotificationCompat.Builder(getApplicationContext())
-                                                .setSmallIcon(R.drawable.ic_noti)
-                                                .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
-                                                .setStyle(new NotificationCompat.BigTextStyle()
-                                                        .bigText(tag.getOffer_desc()))
-                                                .setContentIntent(contentIntent)
+                                NotificationCompat.Builder mBuilder;
 
-                                                .setContentText(tag.getOffer_desc());
+
+                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    mBuilder =
+                                            new NotificationCompat.Builder(getApplicationContext())
+                                                    .setSmallIcon(R.drawable.ic_stat_bs)
+                                                    .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                    .setStyle(new NotificationCompat.BigTextStyle()
+                                                            .bigText(tag.getOffer_desc()))
+                                                    .setContentIntent(contentIntent)
+
+                                                    .setContentText(tag.getOffer_desc());
+
+                                } else {
+                                    mBuilder =
+                                            new NotificationCompat.Builder(getApplicationContext())
+                                                    .setSmallIcon(R.drawable.ic_noti)
+                                                    .setContentTitle(tag.getMessage() + " at " + tag.getStore_name())
+                                                    .setStyle(new NotificationCompat.BigTextStyle()
+                                                            .bigText(tag.getOffer_desc()))
+                                                    .setContentIntent(contentIntent)
+
+                                                    .setContentText(tag.getOffer_desc());
+
+
+                                }
+
+
 // Creates an explicit intent for an Activity in your app
                                 NotificationManager mNotificationManager =
                                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -519,7 +554,7 @@ public class LocationUpdateService extends Service implements
         new MainActivity().runOnUiThread(new Runnable() {
             public void run() {
 
-              //  Toast.makeText(getApplicationContext(), line + "\n", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getApplicationContext(), line + "\n", Toast.LENGTH_LONG).show();
                 //  editText.append(line + "\n");
 
                 // Temp code - don't really want to do this for every line logged, will look for a
@@ -599,7 +634,7 @@ public class LocationUpdateService extends Service implements
         Log.d(TAG, "Latitude:==" + mCurrentLocation.getLatitude() + "\n Longitude:==" + mCurrentLocation.getLongitude
                 ());
 
-     //   LocationDBHelper.getInstance(this).insertLocationDetails(mLocationData);
+        //   LocationDBHelper.getInstance(this).insertLocationDetails(mLocationData);
     }
 
     /**
@@ -647,7 +682,8 @@ public class LocationUpdateService extends Service implements
                         mGoogleApiClient, mLocationRequest, this);
                 Log.i(TAG, " startLocationUpdates===");
                 isEnded = true;
-            } catch (Exception e){}
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -663,7 +699,7 @@ public class LocationUpdateService extends Service implements
         List<StoreLocation> allTags = db.getAllLocations();
         for (StoreLocation tag : allTags) {
             Log.d("StoreLocation Name", tag.getStore_name());
-          //  Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getOffer_title(), Toast.LENGTH_LONG).show();
+            //  Toast.makeText(getApplicationContext(), tag.getStore_name() + " " + tag.getOffer_title(), Toast.LENGTH_LONG).show();
 
                 /*Toast.makeText(this,
                         cursor.getString(cursor.getColumnIndex(StoreLocations._ID)) +
@@ -672,13 +708,14 @@ public class LocationUpdateService extends Service implements
                                 ", " + cursor.getString(cursor.getColumnIndex(StoreLocations.FIELD_START_DATE)),
                         Toast.LENGTH_SHORT).show();*/
 
-try {
+            try {
 
-    fix_Latitude = Double.parseDouble(tag.getLat());
-    fix_Longitude = Double.parseDouble(tag.getLng());
+                fix_Latitude = Double.parseDouble(tag.getLat());
+                fix_Longitude = Double.parseDouble(tag.getLng());
 
-    theta = fix_Longitude - cur_Longitude;
-}catch (NumberFormatException e){}
+                theta = fix_Longitude - cur_Longitude;
+            } catch (NumberFormatException e) {
+            }
             dist = (Math.sin(deg2rad(fix_Latitude)) * Math.sin(deg2rad(cur_Latitude)))
                     + (Math.cos(deg2rad(fix_Latitude)) * Math.cos(deg2rad(cur_Latitude)))
                     * Math.cos(deg2rad(theta));
@@ -694,107 +731,123 @@ try {
             try {
                 float disttt_km = Float.parseFloat(numberFormat.format(dist));
 
-            //distance units
-            dist_double = dist; // double
-            dist_float = disttt_km * 1000;  //
-            dist_int = (int) dist_float;
+                //distance units
+                dist_double = dist; // double
+                dist_float = disttt_km * 1000;  //
+                dist_int = (int) dist_float;
 
-            String dist_D = String.valueOf(dist_double);
-            String dist_F = String.valueOf(disttt_km);
-            String dist_I = String.valueOf(dist_int);
-            // tvDouble_Dist.setText(dist_D+" Km");
-            //tvFloat_Dist.setText(dist_F+" Km");
-            // tvInteger_Dist.setText(dist_I+" M");
+                String dist_D = String.valueOf(dist_double);
+                String dist_F = String.valueOf(disttt_km);
+                String dist_I = String.valueOf(dist_int);
+                // tvDouble_Dist.setText(dist_D+" Km");
+                //tvFloat_Dist.setText(dist_F+" Km");
+                // tvInteger_Dist.setText(dist_I+" M");
 
-            if (dist_int > 0 && dist_int < 500) {
-                int mId = Integer.parseInt(String.valueOf(tag.getId()));
-               // Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();
-                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                if (!mBluetoothAdapter.isEnabled()) {
-                    mBluetoothAdapter.enable();
+                if (dist_int > 0 && dist_int < 500) {
+                    int mId = Integer.parseInt(String.valueOf(tag.getId()));
+                    // Toast.makeText(getApplicationContext(), "Please! Enable Bluetooth " + dist_int, Toast.LENGTH_LONG).show();
+                    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    if (!mBluetoothAdapter.isEnabled()) {
+                        mBluetoothAdapter.enable();
 
-                }
+                    }
 
-                final HashMap<String, String> nearpref = pref.getUserDetails();
+                    final HashMap<String, String> nearpref = pref.getUserDetails();
 
-                String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
+                    String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
 
-                int requestID = (int) System.currentTimeMillis();
-
-
-                if (near.equals("true")) {
-                    Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
+                    int requestID = (int) System.currentTimeMillis();
 
 
-                    notificationIntent.putExtra("offer_title", tag.getOffer_title().toString());
-                    notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString());
-                    notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
-                    notificationIntent.putExtra("quantity", tag.getQuantity());
+                    if (near.equals("true")) {
+                        Intent notificationIntent = new Intent(getApplicationContext(), ElectClaimOfferAcivity.class);
 
-                    ImageView image = new ImageView(getApplicationContext());
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0, tag.getStore_image().length);
 
-                    image.setImageBitmap(bitmap);
-                    Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                        notificationIntent.putExtra("offer_title", tag.getOffer_title().toString());
+                        notificationIntent.putExtra("offer_desc", tag.getOffer_desc().toString());
+                        notificationIntent.putExtra("offer_id", tag.getProduct_id().toString());
+                        notificationIntent.putExtra("quantity", tag.getQuantity());
 
-                    String imgString = android.util.Base64.encodeToString(getBytesFromBitmap(image1),
-                            android.util.Base64.NO_WRAP);
+                        ImageView image = new ImageView(getApplicationContext());
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(tag.getStore_image(), 0, tag.getStore_image().length);
 
-                    // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+                        image.setImageBitmap(bitmap);
+                        Bitmap image1 = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        image1.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
 
-                    notificationIntent.putExtra("offer_image", imgString);
+                        String imgString = android.util.Base64.encodeToString(getBytesFromBitmap(image1),
+                                android.util.Base64.NO_WRAP);
+
+                        // Toast.makeText(getContext(), imgString, Toast.LENGTH_LONG).show();
+
+                        notificationIntent.putExtra("offer_image", imgString);
 
 //**add this line**
-                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 //**edit this line to put requestID as requestCode**
-                    PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(this)
-                                    .setSmallIcon(R.drawable.ic_noti)
-                                    .setStyle(new NotificationCompat.BigTextStyle()
-                                            .bigText(tag.getOffer_desc()))
-                                    .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
-                                    .setContentIntent(contentIntent)
-                                    .setContentText(tag.getOffer_desc());
+                        NotificationCompat.Builder mBuilder;
+
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            mBuilder =
+                                    new NotificationCompat.Builder(this)
+                                            .setSmallIcon(R.drawable.ic_noti)
+                                            .setStyle(new NotificationCompat.BigTextStyle()
+                                                    .bigText(tag.getOffer_desc()))
+                                            .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
+                                            .setContentIntent(contentIntent)
+                                            .setContentText(tag.getOffer_desc());
+                        } else {
+                            mBuilder =
+                                    new NotificationCompat.Builder(this)
+                                            .setSmallIcon(R.drawable.ic_stat_bs)
+                                            .setStyle(new NotificationCompat.BigTextStyle()
+                                                    .bigText(tag.getOffer_desc()))
+                                            .setContentTitle(tag.getOffer_title() + " at " + tag.getStore_name())
+                                            .setContentIntent(contentIntent)
+                                            .setContentText(tag.getOffer_desc());
+                        }
+
+
 // Creates an explicit intent for an Activity in your app
-                    NotificationManager mNotificationManager =
-                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        NotificationManager mNotificationManager =
+                                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
-                    mNotificationManager.notify(mId, mBuilder.build());
-                }else if (near.equals("false")){
+                        mNotificationManager.notify(mId, mBuilder.build());
+                    } else if (near.equals("false")) {
 
-                    count++;
+                        count++;
 
+                    }
+
+                    //     tvStatus.setText("Status: "+"Please! Enable Bluetooth Mode.");
+                } else if (dist_int > 500 && dist_int < 1000) {
+                    // Toast.makeText(getApplicationContext(), "You are nearest to Mall within" + dist_int + " Meter", Toast.LENGTH_LONG).show();
+                    //       tvStatus.setText("Status: "+"You are nearest to Mall within "+dist_int+" meters.");
+                } else if (dist_int > 1000 && dist_int < 2000) {
+                    // Toast.makeText(getApplicationContext(), "Your distance from Mall is: " + dist_int + " Meters.", Toast.LENGTH_LONG).show();
+                    //       tvStatus.setText("Status: "+"Your distance from Mall is "+distt_km+" km.");
+                } else if (dist_int > 2000 && dist_int < 3000) {
+                    // Toast.makeText(getApplicationContext(), "Distance from mall: " + distt_km + " Km", Toast.LENGTH_LONG).show();
+                    //      tvStatus.setText("Status: "+"Find Alpha-One Mall in range of "+distt_km+" kms distance.");
+                } else if (dist_int > 3000) {
+                    // Toast.makeText(getApplicationContext(), "Away from.." + distt_km + " Km", Toast.LENGTH_LONG).show();
+                    //   tvStatus.setText("You are away from Alpha-One Mall at "+distt_km+" Km.");
+                } else {
+                    //    tvStatus.setText("Ta-Ta Bye.. Bye.. "+distt_km+" Km.");
                 }
 
-                //     tvStatus.setText("Status: "+"Please! Enable Bluetooth Mode.");
-            } else if (dist_int > 500 && dist_int < 1000) {
-               // Toast.makeText(getApplicationContext(), "You are nearest to Mall within" + dist_int + " Meter", Toast.LENGTH_LONG).show();
-                //       tvStatus.setText("Status: "+"You are nearest to Mall within "+dist_int+" meters.");
-            } else if (dist_int > 1000 && dist_int < 2000) {
-               // Toast.makeText(getApplicationContext(), "Your distance from Mall is: " + dist_int + " Meters.", Toast.LENGTH_LONG).show();
-                //       tvStatus.setText("Status: "+"Your distance from Mall is "+distt_km+" km.");
-            } else if (dist_int > 2000 && dist_int < 3000) {
-               // Toast.makeText(getApplicationContext(), "Distance from mall: " + distt_km + " Km", Toast.LENGTH_LONG).show();
-                //      tvStatus.setText("Status: "+"Find Alpha-One Mall in range of "+distt_km+" kms distance.");
-            } else if (dist_int > 3000) {
-               // Toast.makeText(getApplicationContext(), "Away from.." + distt_km + " Km", Toast.LENGTH_LONG).show();
-                //   tvStatus.setText("You are away from Alpha-One Mall at "+distt_km+" Km.");
-            } else {
-                //    tvStatus.setText("Ta-Ta Bye.. Bye.. "+distt_km+" Km.");
+                int dist_cm = dist_int * 100;
+                String cm = String.valueOf(dist_cm);
+            } catch (Exception e) {
             }
-
-            int dist_cm = dist_int * 100;
-            String cm = String.valueOf(dist_cm);
-            }catch (Exception e){}
         }
 
-        if (count > 0){
+        if (count > 0) {
             int mId = 111;
             int requestID = (int) System.currentTimeMillis();
             Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -806,15 +859,37 @@ try {
             PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_noti)
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("To get Offers detail, switch on Near by Message from the Settings."))
-                            .setContentTitle("BeaconShop has "+ count +" Offers. Check it out!")
-                            .setContentIntent(contentIntent)
-                            .setContentText("To get Offers detail, switch on Near by Message from the Settings.");
-// Creates an explicit intent for an Activity in your app
+            NotificationCompat.Builder mBuilder;
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                /*notification.setSmallIcon(R.drawable.icon_transperent);
+                notification.setColor(getResources().getColor(R.color.notification_color));
+*/
+                mBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(R.drawable.ic_stat_bs)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText("To get Offers detail, switch on Near by Message from the Settings."))
+                                .setContentTitle("BeaconShop has " + count + " Offers. Check it out!")
+                                .setContentIntent(contentIntent)
+                                .setContentText("To get Offers detail, switch on Near by Message from the Settings.");
+
+            } else {
+
+                mBuilder =
+                        new NotificationCompat.Builder(this)
+                                .setSmallIcon(R.drawable.ic_noti)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText("To get Offers detail, switch on Near by Message from the Settings."))
+                                .setContentTitle("BeaconShop has " + count + " Offers. Check it out!")
+                                .setContentIntent(contentIntent)
+                                .setContentText("To get Offers detail, switch on Near by Message from the Settings.");
+
+            }
+
+
+
+
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
@@ -939,14 +1014,12 @@ try {
         return stream.toByteArray();
     }
 
-    private double deg2rad(double deg)
-    {
-        return ( (deg * Math.PI )/ 180.0 );
+    private double deg2rad(double deg) {
+        return ((deg * Math.PI) / 180.0);
     }
 
-    private double rad2deg(double rad )
-    {
-        return ( (rad * 180.0)/ (Math.PI) );
+    private double rad2deg(double rad) {
+        return ((rad * 180.0) / (Math.PI));
     }
 
     /**
