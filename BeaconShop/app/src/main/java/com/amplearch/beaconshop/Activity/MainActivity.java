@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     LinearLayout llAccount,llFavourites,llVouchers,llHome;
     public static GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
-    ImageView imgHome,imgVoucher,imgFavourites,imgAccount;
+    ImageView imgHome,imgVoucher,imgFavourites,imgAccount, imgLogo;
     GillSansTextView txtHome,txtVoucher,txtFavourite,txtAccount;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         llFavourites = (LinearLayout)findViewById(R.id.llFavourites);
         llVouchers = (LinearLayout)findViewById(R.id.llVouchers);
         llHome = (LinearLayout)findViewById(R.id.llHome);
+        imgLogo = (ImageView) findViewById(R.id.imgLogo);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         LayoutInflater inflater = getLayoutInflater();
@@ -293,10 +295,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
+      //  mDrawerToggle.setDrawerIndicatorEnabled(true);
 //        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_logo);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(null);
+
         imgHome.setColorFilter(getResources().getColor(R.color.logo_color));
         imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
         imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -320,6 +324,20 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 selectItemFragment(position);
             }
         });
+
+        imgLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // callMainPage("LeftMenu");
+                mDrawerLayout.openDrawer(Gravity.START);
+                /*boolean result = Utility.checkWriteContactPermission(DashboardActivity.this);
+                if (result) {
+                    contactAdd();
+                }*/
+            }
+        });
+
+
         llHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
