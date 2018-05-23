@@ -11,15 +11,18 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Adapter.ElectOfferAdapter;
 import com.amplearch.beaconshop.ConnectivityReceiver;
+import com.amplearch.beaconshop.Model.InfoWindowData;
 import com.amplearch.beaconshop.Model.VoucherClass;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.cgTextView;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
+import com.amplearch.beaconshop.helper.CustomInfoWindowGoogleMap;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
@@ -248,10 +251,25 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
         for(int i=0;i<offers.size();i++)
         {
             LatLng sydney = new LatLng(Double.parseDouble(offers.get(i).getLat()), Double.parseDouble(offers.get(i).getLng()));
-            googleMap.addMarker(new MarkerOptions().position(sydney)
-                    .title(offers.get(i).getOffer_title()));
+
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(sydney);
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             googleMap.getUiSettings().setZoomControlsEnabled(true);
+            InfoWindowData info = new InfoWindowData();
+            info.setImage(offers.get(i).getStore_image());
+            info.setTitle(offers.get(i).getOffer_title());
+            info.setDesc(offers.get(i).getOffer_desc());
+            info.setStorename(offers.get(i).getStore_name());
+
+            CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(this);
+            googleMap.setInfoWindowAdapter(customInfoWindow);
+
+            Marker m = googleMap.addMarker(markerOptions);
+            m.setTag(info);
+            m.showInfoWindow();
+
 
         }
 

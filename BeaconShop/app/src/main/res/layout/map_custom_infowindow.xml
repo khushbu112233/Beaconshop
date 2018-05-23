@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal"
+    android:layout_marginRight="25dp"
+    android:layout_marginLeft="25dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/ivElectImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_border_width="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentLeft="true"
+        app:civ_border_color="@color/divider"
+        android:src="@drawable/ic_sale" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/ivElectImage"
+        android:layout_toLeftOf="@+id/ivRightImage"
+        android:layout_centerInParent="true"
+        >
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/tvElectOfferDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/tvElectOfferDetails1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
+        <com.amplearch.beaconshop.Utils.GillSansTextView
+            android:id="@+id/tvElectOfferDetails2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fav Offer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/ivRightImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:tint="@color/black"
+        android:rotation="270"
+        android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36" />
+</RelativeLayout>
