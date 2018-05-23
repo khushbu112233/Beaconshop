@@ -117,10 +117,13 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
         ivShare.setOnClickListener(this);
         ivFavorite.setOnClickListener(this);
         btnItemClaimOffer.setOnClickListener(this);
-        byte[] decodedString = Base64.decode(offer_image, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-        imgOffer.setImageBitmap(decodedByte);
+        try {
+            byte[] decodedString = Base64.decode(offer_image, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+            imgOffer.setImageBitmap(decodedByte);
+        } catch (Exception e){}
         final HashMap<String, String> user1 = session.getUserDetails();
 
         // get name
