@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.amplearch.beaconshop.Model.ItemObject;
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.cgTextView;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class CustomAdapter extends BaseAdapter {
             listViewHolder = new ViewHolder();
             convertView = lInflater.inflate(R.layout.listview_with_text_image, parent, false);
 
-            listViewHolder.textInListView = (TextView) convertView.findViewById(R.id.textView);
+            listViewHolder.textInListView = (cgTextView) convertView.findViewById(R.id.textView);
             listViewHolder.imageInListView = (ImageView) convertView.findViewById(R.id.imageView);
             convertView.setTag(listViewHolder);
         } else {
@@ -60,7 +60,7 @@ public class CustomAdapter extends BaseAdapter {
 
     static class ViewHolder {
 
-        TextView textInListView;
+        cgTextView textInListView;
         ImageView imageInListView;
     }
 }

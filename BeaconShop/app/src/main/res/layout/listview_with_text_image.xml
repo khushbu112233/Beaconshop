@@ -22,7 +22,7 @@
             android:contentDescription="Home!"
             android:layout_marginTop="0dp" />
 
-        <com.amplearch.beaconshop.Utils.TrojanText
+        <com.amplearch.beaconshop.Utils.cgTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Home"
