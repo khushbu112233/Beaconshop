@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amplearch.beaconshop.Model.InfoWindowData;
@@ -31,6 +32,7 @@ public class CustomInfoWindowGoogleMap implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(Marker marker) {
         View view = ((Activity)context).getLayoutInflater()
                 .inflate(R.layout.map_custom_infowindow, null);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(700, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         TextView name_tv = (TextView) view.findViewById(R.id.tvElectOfferDetails);
         TextView details_tv = (TextView)view.findViewById(R.id.tvElectOfferDetails1);

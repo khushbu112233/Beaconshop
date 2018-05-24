@@ -3,6 +3,7 @@ package com.amplearch.beaconshop.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -151,6 +152,7 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
     @Override
     public void asyncResponse(String response)
     {
+        Log.e("response",""+response);
         //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
         if (response.equals("")){
             Toast.makeText(getApplicationContext(), "Offers not Loaded..", Toast.LENGTH_LONG).show();
@@ -221,7 +223,7 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
                     // adapter = new CustomFrameList(FestivalListPage.this, friends);
                     listView_Elect.setAdapter(electOfferAdapter);
                     mapFragment.getMapAsync(this);
-
+                    Log.e("size",""+offers.size());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -247,6 +249,7 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
 
         for(int i=0;i<offers.size();i++)
         {
