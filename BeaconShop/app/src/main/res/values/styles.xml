@@ -27,4 +27,11 @@
     <style parent="@android:style/Widget.Spinner" name="SpinnerwithNoArrow">
         <item name="android:background">@android:drawable/edit_text</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/logo_color</item>
+        <item name="colorPrimaryDark">@color/logo_color</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 </resources>

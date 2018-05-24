@@ -92,6 +92,8 @@
         <activity android:name=".Activity.StoreListActivity" />
         <activity android:name=".Activity.OffersListActivity" />
         <activity android:name=".Activity.ElectClaimOfferAcivity" />
+        <activity
+            android:theme="@style/AppTheme" android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
 
         <service
             android:name=".Utils.LocationUpdateService"

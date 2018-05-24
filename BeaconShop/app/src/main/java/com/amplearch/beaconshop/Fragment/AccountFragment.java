@@ -46,6 +46,8 @@ import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.Utils.Utility;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 import com.github.siyamed.shapeimageview.CircularImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -286,7 +288,23 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage();
+                //selectImage();
+
+                boolean result= Utility.checkPermission(getContext());
+
+                if(result) {
+                    /*CropImage.activity(null)
+                            .setCropShape(CropImageView.CropShape.OVAL)
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .start(getContext(), AccountFragment.this);*/
+
+                    Intent intent = CropImage.activity(null)
+                            .setCropShape(CropImageView.CropShape.OVAL)
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .getIntent(getContext());
+                    startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -542,6 +560,17 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                 ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
                 photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
                 profile_image.setImageBitmap(photo);
+                break;
+
+
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == Activity.RESULT_OK) {
+                    profile_image.setImageURI(result.getUri());
+                }
+                else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }

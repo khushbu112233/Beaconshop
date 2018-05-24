@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.SignUpActivity;
 import com.amplearch.beaconshop.ConnectivityReceiver;
+
+import java.io.ByteArrayOutputStream;
 
 public class Utility {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -66,6 +69,18 @@ public class Utility {
         } else {
             return true;
         }
+    }
+
+    public static long imageCalculateSize(Bitmap bitmapOrg){
+        Bitmap bitmap = bitmapOrg;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] imageInByte = stream.toByteArray();
+        long lengthbmp = imageInByte.length;
+        long MEGABYTE = 1024L * 1024L;
+        long b = lengthbmp / MEGABYTE;
+
+        return b;
     }
 
     public static boolean validate(String userName, String emailAddress, String contactNo, String password, String rePassword)

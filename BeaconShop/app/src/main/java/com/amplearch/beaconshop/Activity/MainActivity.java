@@ -68,6 +68,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -898,6 +899,13 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
+    }
+
+    public Fragment getCurrentFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        //    Log.e("currentFragment",""+currentFragment);
+        return currentFragment;
+
     }
 
     @Override
