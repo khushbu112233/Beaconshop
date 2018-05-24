@@ -83,6 +83,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
 import static com.amplearch.beaconshop.Fragment.ProfileFragment.scaleDown;
 
 /**
@@ -498,72 +499,88 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case RESULT_LOAD_IMAGE:
-                if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK & null != data) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getActivity().getContentResolver()
-                            .query(selectedImage, filePathColumn, null, null,
-                                    null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    Bitmap a = (BitmapFactory.decodeFile(picturePath));
-                    file1 = null;
-                    try {
-                        Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
-                                getContext().getContentResolver(), data.getData());
-                        file1 = persistImage(thumbnail1, "profileImage");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    imagepath = getPath(selectedImage);
-                    Bitmap bitmap=BitmapFactory.decodeFile(imagepath);
-                    Long tsLong = System.currentTimeMillis() / 1000;
-                    timestamp = tsLong.toString();
-                    //   photo = scaleBitmap(a, 200, 200);
-                   // photo = scaleDown(bitmap, 100, true);
-                    profile_image.setImageBitmap(bitmap);
-                    //photo = decodeSampledBitmapFromUri(picturePath, 100, 20);
-                    // ivImage.setImageBitmap(photo);
-                }
-                break;
-
-            case REQUEST_IMAGE_CAPTURE:
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-
-
-                //to generate random file name
-                String fileName = "tempimg.jpg";
-
+        if(requestCode==RESULT_LOAD_IMAGE) {
+            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK & null != data) {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver()
+                        .query(selectedImage, filePathColumn, null, null,
+                                null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                Bitmap a = (BitmapFactory.decodeFile(picturePath));
+                file1 = null;
                 try {
-                    file1 = null;
                     Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
                             getContext().getContentResolver(), data.getData());
-                    photo = (Bitmap) data.getExtras().get("data");
                     file1 = persistImage(thumbnail1, "profileImage");
-                    Long tsLong = System.currentTimeMillis() / 1000;
-                    timestamp = tsLong.toString();
-                    //captured image set in imageview
-                    profile_image.setImageBitmap(thumbnail);
-                } catch (Exception e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                break;
+                imagepath = getPath(selectedImage);
+                Bitmap bitmap = BitmapFactory.decodeFile(imagepath);
+                Long tsLong = System.currentTimeMillis() / 1000;
+                timestamp = tsLong.toString();
+                //   photo = scaleBitmap(a, 200, 200);
+                // photo = scaleDown(bitmap, 100, true);
+                profile_image.setImageBitmap(bitmap);
+                //photo = decodeSampledBitmapFromUri(picturePath, 100, 20);
+                // ivImage.setImageBitmap(photo);
+            }
+        }else if(requestCode==REQUEST_IMAGE_CAPTURE)
+        {
 
-            case CAMERA_REQUEST:
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
-                profile_image.setImageBitmap(photo);
-                break;
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
 
-            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+            //to generate random file name
+            String fileName = "tempimg.jpg";
+
+            try {
+                file1 = null;
+                Bitmap thumbnail1 = MediaStore.Images.Media.getBitmap(
+                        getContext().getContentResolver(), data.getData());
+                photo = (Bitmap) data.getExtras().get("data");
+                file1 = persistImage(thumbnail1, "profileImage");
+                Long tsLong = System.currentTimeMillis() / 1000;
+                timestamp = tsLong.toString();
+                //captured image set in imageview
+                profile_image.setImageBitmap(thumbnail);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if(requestCode==CAMERA_REQUEST){
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
+            profile_image.setImageBitmap(photo);
+        }else if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), result.getUri());
+                    profile_image.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e("test",""+result.getUri()+"  "+requestCode+"  "+resultCode);
+            }
+            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Log.e("test",""+result.getError()+"  "+requestCode+"  "+resultCode);
+                Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+           /* case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == Activity.RESULT_OK) {
                     profile_image.setImageURI(result.getUri());
@@ -571,10 +588,12 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                 else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
                 }
-                break;
-        }
-    }
+                break;*/
 
+    }
+    public void onActivity(CropImage.ActivityResult result) {
+        profile_image.setImageURI(result.getUri());
+    }
     public String getPath(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
@@ -800,12 +819,12 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                 } catch (Exception e) {
                 }
             }
-            }
+        }
 
-            // Initialize the AsyncTask class
-            HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
-            // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
-            // We are passing the connectWithHttpGet() method arguments to that
+        // Initialize the AsyncTask class
+        HttpGetAsyncTask httpGetAsyncTask = new HttpGetAsyncTask();
+        // Parameter we pass in the execute() method is relate to the first generic type of the AsyncTask
+        // We are passing the connectWithHttpGet() method arguments to that
         httpGetAsyncTask.execute(user_id);
     }
 

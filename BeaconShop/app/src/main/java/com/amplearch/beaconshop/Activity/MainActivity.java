@@ -68,7 +68,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -879,6 +878,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 //        setTitle(titles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
+
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
@@ -908,12 +908,22 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-
-        /*if (resultCode == Activity.RESULT_OK) {
+        if (getCurrentFragment() instanceof AccountFragment) {
+            Log.e("test",""+data+"  "+requestCode+"  "+resultCode);
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode == RESULT_OK)
+            {
+                Log.e("test1",""+result);
+                ((AccountFragment) getCurrentFragment()).onActivity(result);
+            }else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE&&resultCode == RESULT_OK) {
+                Toast.makeText(MainActivity.this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+        *//*if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode == SELECT_FILE)
 
@@ -922,8 +932,8 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             else if (requestCode == REQUEST_CAMERA)
 
                 onCaptureImageResult(data);
-        }*/
-    }
+        }*//*
+    }*/
     @Override
     protected void onResume() {
         super.onResume();
