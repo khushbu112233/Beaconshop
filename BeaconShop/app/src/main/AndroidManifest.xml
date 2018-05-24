@@ -50,7 +50,7 @@
             android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCDZcKByb3DiLbofIJgOzB5p7eiB0MZZk0" />
+            android:value="AIzaSyASG1-C4O8mC2ZIHDrJCYa9c1wSfcBbUlw" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
