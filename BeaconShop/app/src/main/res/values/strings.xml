@@ -7,12 +7,12 @@
         <item>Favourites</item>
         <item>My Vouchers</item>
         <item>Badges</item>
-        <item>My Account</item>
+        <item>My account</item>
         <item>Settings</item>
         <item>Change Password</item>
-        <item>Log Out</item>
+        <item>Log out</item>
         <item>Help</item>
-        <item>About Us</item>
+        <item>About us</item>
     </string-array>
 
     <string-array name="country_array">

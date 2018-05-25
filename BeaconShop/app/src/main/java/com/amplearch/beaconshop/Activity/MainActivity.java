@@ -267,12 +267,12 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         // listViewItems.add(new ItemObject("Favourites", R.drawable.my_favorites));
         //listViewItems.add(new ItemObject("My Vouchers", R.drawable.my_vouchers));
         listViewItems.add(new ItemObject("Badges", R.drawable.ic_badges));
-        listViewItems.add(new ItemObject("My Account", R.drawable.ic_my_account));
+        listViewItems.add(new ItemObject("My account", R.drawable.ic_my_account));
         listViewItems.add(new ItemObject("Help", R.drawable.ic_help));
         // listViewItems.add(new ItemObject("Settings", R.drawable.ic_settings_black_24dp));
         // listViewItems.add(new ItemObject("Change Password", R.drawable.ic_change));
         listViewItems.add(new ItemObject("About us", R.drawable.ic_inform));
-        listViewItems.add(new ItemObject("Sign Out", R.drawable.icon_logout));
+        listViewItems.add(new ItemObject("Sign out", R.drawable.icon_logout));
 
         mDrawerList.setAdapter(new CustomAdapter(this, listViewItems));
 
@@ -827,7 +827,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
             case 5:
                 fragment = new AboutUsFragment();
                 //  rlButtons.setVisibility(View.GONE);
-                toolbarTitle.setText("About Us");
+                toolbarTitle.setText("About us");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 6:
