@@ -1,10 +1,8 @@
 package com.amplearch.beaconshop.Activity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +10,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,7 +76,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         GoogleApiClient.ConnectionCallbacks, LocationListener, AsyncRequest.OnAsyncRequestComplete {
     TextView txtSignIn, txtSignUp;
 
-    //  private static final String TAG = MainActivity.class.getSimpleName();
+  //  private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 007;
 
     private GoogleApiClient mGoogleApiClient;
@@ -101,11 +98,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     public String SERVER2 = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterFacebookUser",
             timestamp1;
 
-    String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterGoogleUser";
-    ArrayList<NameValuePair> params;
+    String apiURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterGoogleUser" ;
+    ArrayList<NameValuePair> params ;
 
-    String apiURLFacebook = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterFacebookUser";
-    ArrayList<NameValuePair> paramsFacebook;
+    String apiURLFacebook = "http://beacon.ample-arch.com/BeaconWebService.asmx/RegisterFacebookUser" ;
+    ArrayList<NameValuePair> paramsFacebook ;
 
     protected static final String TAG = "location-updates-sample";
 
@@ -147,7 +144,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     public static Cursor c;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_account);
@@ -160,15 +158,15 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
         String near = nearpref.get(NearbyMessagePref.KEY_OFFER_NOTI);
         try {
-            if (near.isEmpty()) {
+            if (near.isEmpty()){
                 pref.createUserLoginSession("false");
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             pref.createUserLoginSession("false");
         }
 
-        txtSignIn = (TextView) findViewById(R.id.btnSignIn);
-        txtSignUp = (TextView) findViewById(R.id.btnSignUp);
+        txtSignIn = (TextView)findViewById(R.id.btnSignIn);
+        txtSignUp = (TextView)findViewById(R.id.btnSignUp);
         btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
         txtSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,7 +191,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             } while (c.moveToNext());
         }*/
 
-        if (PrefUtils.getCurrentUser(AccountActivity.this) != null) {
+        if(PrefUtils.getCurrentUser(AccountActivity.this) != null){
 
             Intent homeIntent = new Intent(AccountActivity.this, MainActivity.class);
 
@@ -206,8 +204,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 "User Login Status: " + session.isUserLoggedIn(),
                 Toast.LENGTH_LONG).show();*/
 
-        if (session.isUserLoggedIn()) {
-            Intent intent = new Intent(AccountActivity.this, MainActivity.class);
+        if (session.isUserLoggedIn()){
+            Intent intent=new Intent(AccountActivity.this,MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -224,7 +222,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
         // Kick off the process of building a GoogleApiClient and requesting the LocationServices
         // API.
-        //  buildGoogleApiClient();
+      //  buildGoogleApiClient();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -242,8 +240,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
         if (!mRequestingLocationUpdates) {
             mRequestingLocationUpdates = true;
-            // setButtonsEnabledState();
-            //  startLocationUpdates();
+           // setButtonsEnabledState();
+          //  startLocationUpdates();
         }
         // Customizing G+ button
         btnSignIn.setSize(SignInButton.SIZE_STANDARD);
@@ -292,7 +290,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES_KEY)) {
                 mRequestingLocationUpdates = savedInstanceState.getBoolean(
                         REQUESTING_LOCATION_UPDATES_KEY);
-                //   setButtonsEnabledState();
+             //   setButtonsEnabledState();
             }
 
             // Update the value of mCurrentLocation from the Bundle and update the UI to show the
@@ -307,7 +305,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)) {
                 mLastUpdateTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
             }
-            //  updateUI();
+          //  updateUI();
         }
     }
 
@@ -316,7 +314,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         super.onPause();
         // Stop location updates to save battery, but don't disconnect the GoogleApiClient object.
         if (mGoogleApiClient.isConnected()) {
-            // stopLocationUpdates();
+           // stopLocationUpdates();
         }
     }
 
@@ -329,13 +327,13 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             startLocationUpdates();
         }
 
-        callbackManager = CallbackManager.Factory.create();
+        callbackManager=CallbackManager.Factory.create();
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton= (LoginButton)findViewById(R.id.login_button);
 
-        loginButton.setReadPermissions("public_profile", "email", "user_friends", "user_location");
+        loginButton.setReadPermissions("public_profile", "email","user_friends", "user_location");
 
-        btnLogin = (TextView) findViewById(R.id.btnLogin);
+        btnLogin= (TextView) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -367,7 +365,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    String personName = "";
+    String personName= "";
     String personPhotoUrl = "";
     String email = "";
     String googleID = "";
@@ -424,7 +422,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
 
             // txtName.setText(personName);
-            // txtEmail.setText(email);
+           // txtEmail.setText(email);
            /* Glide.with(getApplicationContext()).load(personPhotoUrl)
                     .thumbnail(0.5f)
                     .crossFade()
@@ -440,7 +438,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private String hashMapToUrl(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
+        for(Map.Entry<String, String> entry : params.entrySet()){
             if (first)
                 first = false;
             else
@@ -455,11 +453,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private class UploadFacebook extends AsyncTask<Void, Void, String> {
+    private class UploadFacebook extends AsyncTask<Void,Void,String>{
         private Bitmap image;
         private String name1;
 
-        public UploadFacebook(String name1) {
+        public UploadFacebook(String name1){
             this.name1 = name1;
         }
 
@@ -469,8 +467,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             //compress the image to jpg format
             //  image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
             /*
-             * encode image to base64 so that it can be picked by saveImage.php file
-             * */
+            * encode image to base64 so that it can be picked by saveImage.php file
+            * */
 
 
             personPhotoUrl = "https://graph.facebook.com/" + user.facebookID + "/picture?type=large";
@@ -486,7 +484,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 e.printStackTrace();
             }
 
-            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.DEFAULT);
 
             // Bitmap bm = BitmapFactory.decodeFile("/path/to/image.jpg");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -497,7 +495,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
             byte[] b = baos.toByteArray();
             //generate hashMap to store encodedImage and the name
-            HashMap<String, String> detail = new HashMap<>();
+            HashMap<String,String> detail = new HashMap<>();
             detail.put("name", user.name.toString());
             detail.put("email", user.email.toString());
             detail.put("contact", "");
@@ -507,18 +505,18 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             detail.put("image", imgString);
             Long tsLong = System.currentTimeMillis() / 1000;
             timestamp1 = tsLong.toString();
-            try {
+            try{
                 //convert this HashMap to encodedUrl to send to php file
                 String dataToSend = hashMapToUrl(detail);
                 //make a Http request and send data to saveImage.php file
-                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER2, dataToSend);
+                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER2,dataToSend);
 
                 //return the response
                 return response;
 
-            } catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
-                Log.e(TAG, "ERROR  " + e);
+                Log.e(TAG,"ERROR  "+e);
                 return null;
             }
         }
@@ -528,23 +526,28 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             //show image uploaded
 
 
-            try {
+            try
+            {
                 JSONObject jsonObject = new JSONObject(s);
                 String res = jsonObject.getString("message");
                 String userId = jsonObject.getString("userId");
                 // String message = jsonObject.getString("User");
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
-                if (res.equals("Success Facebook") || res.equalsIgnoreCase("Already Exists")) {
-                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId);
-                    Intent intent = new Intent(AccountActivity.this, MainActivity.class);
+                if (res.equals("Success Facebook") || res.equalsIgnoreCase("Already Exists"))
+                {
+                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId,"");
+                    Intent intent=new Intent(AccountActivity.this,MainActivity.class);
                     startActivity(intent);
                     finish();
-                } else {
+                }
+                else
+                {
                     Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
 //                            session.createUserLoginSession(username, email_id, image, password, user_id);
                     //etEmailAddress.setError("Email Address, Already Exist!");
                 }
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -570,11 +573,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private class Upload extends AsyncTask<Void, Void, String> {
+    private class Upload extends AsyncTask<Void,Void,String>{
         private Bitmap image;
         private String name1;
 
-        public Upload(String name1) {
+        public Upload(String name1){
             this.name1 = name1;
         }
 
@@ -584,8 +587,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             //compress the image to jpg format
             //  image.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
             /*
-             * encode image to base64 so that it can be picked by saveImage.php file
-             * */
+            * encode image to base64 so that it can be picked by saveImage.php file
+            * */
 
 
             try {
@@ -599,7 +602,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 e.printStackTrace();
             }
 
-            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+            String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.DEFAULT);
 
             // Bitmap bm = BitmapFactory.decodeFile("/path/to/image.jpg");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -610,7 +613,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
 
             byte[] b = baos.toByteArray();
             //generate hashMap to store encodedImage and the name
-            HashMap<String, String> detail = new HashMap<>();
+            HashMap<String,String> detail = new HashMap<>();
             detail.put("name", personName);
             detail.put("email", email);
             detail.put("contact", "");
@@ -620,18 +623,18 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             detail.put("image", imgString);
             Long tsLong = System.currentTimeMillis() / 1000;
             timestamp = tsLong.toString();
-            try {
+            try{
                 //convert this HashMap to encodedUrl to send to php file
                 String dataToSend = hashMapToUrl(detail);
                 //make a Http request and send data to saveImage.php file
-                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER, dataToSend);
+                String response = com.amplearch.beaconshop.WebCall.Request.post(SERVER,dataToSend);
 
                 //return the response
                 return response;
 
-            } catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
-                Log.e(TAG, "ERROR  " + e);
+                Log.e(TAG,"ERROR  "+e);
                 return null;
             }
         }
@@ -641,9 +644,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             //show image uploaded
 
 
-            if (s.equals("")) {
+            if (s.equals(""))
+            {
                 Toast.makeText(getApplicationContext(), "Server connection failed..", Toast.LENGTH_LONG).show();
-            } else {
+            }
+            else {
                 // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                 try {
                     JSONObject jsonObject = new JSONObject(s);
@@ -652,7 +657,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                     // String message = jsonObject.getString("User");
                     //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                     if (res.equals("Success Google") || res.equalsIgnoreCase("Already Exists")) {
-                        session.createUserLoginSession(personName, email, personPhotoUrl, "gmailpass", userId);
+                        session.createUserLoginSession(personName, email, personPhotoUrl, "gmailpass", userId,"");
                         updateUI(true);
                     } else {
                         updateUI(false);
@@ -686,9 +691,11 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public class MyAsync extends AsyncTask<Void, Void, Bitmap> {
+    public class MyAsync extends AsyncTask<Void, Void, Bitmap>
+    {
         @Override
-        protected Bitmap doInBackground(Void... params) {
+        protected Bitmap doInBackground(Void... params)
+        {
             // for converting url to bitmap
             try {
                 URL url = new URL(personPhotoUrl);
@@ -705,7 +712,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         @Override
-        protected void onPostExecute(Bitmap bitmap) {
+        protected void onPostExecute(Bitmap bitmap)
+        {
             super.onPostExecute(bitmap);
 
 //            ivBitmapImage.setImageBitmap(bitmap);
@@ -787,25 +795,25 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                                 JSONObject object,
                                 GraphResponse response) {
 
-                            Log.e("response: ", response + "");
-                            // Toast.makeText(AccountActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                            Log.e("response:1 ", response + "");
+                           // Toast.makeText(AccountActivity.this, response.toString(), Toast.LENGTH_LONG).show();
                             try {
                                 user = new User();
                                 user.facebookID = object.getString("id").toString();
                                 user.email = object.getString("email").toString();
                                 user.name = object.getString("name").toString();
                                 user.gender = object.getString("gender").toString();
-                                PrefUtils.setCurrentUser(user, AccountActivity.this);
+                                PrefUtils.setCurrentUser(user,AccountActivity.this);
                                 new UploadFacebook("IMG_" + timestamp1).execute();
                                /* JSONObject object1 = object.getJSONObject("location");
                                 Toast.makeText(getApplicationContext(), object1.toString(), Toast.LENGTH_LONG).show();
 */
-                                //  session.createUserLoginSession(user.name, user.email, "", "", "");
+                              //  session.createUserLoginSession(user.name, user.email, "", "", "");
 
-                            } catch (Exception e) {
+                            }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            //  Toast.makeText(AccountActivity.this,"welcome "+user.name,Toast.LENGTH_LONG).show();
+                          //  Toast.makeText(AccountActivity.this,"welcome "+user.name,Toast.LENGTH_LONG).show();
 
                         }
 
@@ -870,19 +878,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
         // moves to a new location, and then changes the device orientation, the original location
         // is displayed as the activity is re-created.
         if (mCurrentLocation == null) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                return;
-            }
-
+            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
            // updateUI();
         }
 
@@ -981,7 +978,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Do you want to exit?");
+        alertDialogBuilder.setTitle("Exit Application?");
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Yes",
@@ -1011,7 +1008,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showSnack(boolean isConnected) {
-        String message = "Check For data connection..";
+        String message = "Check For Data Connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {

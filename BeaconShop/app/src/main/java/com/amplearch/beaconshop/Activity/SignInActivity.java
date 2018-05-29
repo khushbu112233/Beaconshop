@@ -230,10 +230,12 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                     String image = jsonArrayChanged.getJSONObject(0).get("image").toString();
                     String dob = jsonArrayChanged.getJSONObject(0).get("dob").toString();
                     String gender = jsonArrayChanged.getJSONObject(0).get("gender").toString();
+                    String mob = jsonArrayChanged.getJSONObject(0).get("contact").toString();
+
                     String password = jsonArrayChanged.getJSONObject(0).get("password").toString();
 
                     Toast.makeText(getApplicationContext(),"Logged In: "+ email_id + " Successfully..", Toast.LENGTH_LONG).show();
-                    session.createUserLoginSession(username, email_id, image, password, user_id);
+                    session.createUserLoginSession(username, email_id, image, password, user_id,mob);
 
                     Intent intent=new Intent(SignInActivity.this,MainActivity.class);
                     startActivity(intent);
@@ -248,7 +250,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
             {
                 JSONObject jsonObject = new JSONObject(response);
                 String res = jsonObject.getString("message");
-                Log.i("SignIn response: ", res);
+                Log.e("SignIn response: ", res);
 //                Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
 
                 if (res.equals("This email address does not match our records."))

@@ -93,8 +93,8 @@
             android:layout_marginTop="50dp"
             android:weightSum="1"
             android:layout_below="@+id/txttitle"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:paddingLeft="2dp"
             android:layout_centerVertical="true">
 
@@ -132,8 +132,8 @@
             android:weightSum="1"
             android:layout_below="@+id/llEmailBox"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:paddingLeft="2dp">
             <ImageView
                 android:layout_width="40dp"
@@ -177,12 +177,12 @@
         <com.amplearch.beaconshop.Utils.GillSansButton
             android:id="@+id/tvSignIn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="Sign In"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:background="@drawable/button_shape"
-            android:textSize="16dp"
+            android:textColor="@color/primary_light"
+            android:background="@drawable/button_shape1"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/tvForgotPassword"
@@ -239,17 +239,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:textSize="11dp"
+                android:textSize="17sp"
                 android:layout_marginRight="-0dp"
                 android:textColor="@color/white"
-                android:text="Don't Have An Account?"/>
+                android:text="Don't have an account?"/>
             <com.amplearch.beaconshop.Utils.GillSansTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="Sign Up"
                 android:textStyle="bold"
-                android:textSize="16dp"
+                android:textSize="17sp"
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="0dp"
                 android:textColor="@color/white"/>

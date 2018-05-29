@@ -2,7 +2,6 @@ package com.amplearch.beaconshop.Fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,6 +39,7 @@ import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.GillSansButton;
 import com.amplearch.beaconshop.Utils.GillSansEditText;
+import com.amplearch.beaconshop.Utils.GillSansShowPassEditText;
 import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.PrefUtils;
@@ -101,12 +101,14 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
     LinearLayout llSettings;
     View vProfile,vChangePassword,vSettings;
     GillSansButton btnUpdate,btnChangePassword;
-    GillSansEditText etName,etEmail,etContact,etPass,etNewPass,etConfirmPass;
+    GillSansEditText etName,etEmail,etContact;
+    GillSansShowPassEditText etPass,etNewPass,etConfirmPass;
+
     ArrayList<NameValuePair> params ;
     String voucherURL  ;
     UserSessionManager session;
     String changePasswordURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/ChangePassword" ;
-    String email, password, userId, name;
+    String email, password, userId, name,phone;
     public String SERVER = "http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile",
             timestamp;
     String user_Email, user_OldPassword, user_NewPassword ;
@@ -152,6 +154,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         name = user1.get(UserSessionManager.KEY_NAME);
         password = user1.get(UserSessionManager.KEY_PASSWORD);
         userId = user1.get(UserSessionManager.KEY_USER_ID);
+        phone = user1.get(UserSessionManager.KEY_MOB);
         profile_image = (CircularImageView)rootview.findViewById(R.id.profile_image);
         sNewOffer = (Switch)rootview.findViewById(R.id.sNewOffer);
         sAllowPopup = (Switch)rootview.findViewById(R.id.sAllowPopup);
@@ -165,9 +168,9 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         etEmail = (GillSansEditText)rootview.findViewById(R.id.etEmail);
         etName = (GillSansEditText)rootview.findViewById(R.id.etName);
         spinner = (Spinner) rootview.findViewById(R.id.gender_spinner);
-        etPass = (GillSansEditText)rootview.findViewById(R.id.etPass);
-        etNewPass = (GillSansEditText)rootview.findViewById(R.id.etNewPass);
-        etConfirmPass = (GillSansEditText)rootview.findViewById(R.id.etConfirmPass);
+        etPass = (GillSansShowPassEditText) rootview.findViewById(R.id.etPass);
+        etNewPass = (GillSansShowPassEditText)rootview.findViewById(R.id.etNewPass);
+        etConfirmPass = (GillSansShowPassEditText)rootview.findViewById(R.id.etConfirmPass);
         txtProfile = (GillSansTextView)rootview.findViewById(R.id.txtProfile);
         txtChangePassword = (GillSansTextView)rootview.findViewById(R.id.txtChangePassword);
         txtSettings = (GillSansTextView)rootview.findViewById(R.id.txtSettings);
@@ -194,7 +197,6 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
         // get email
         //email = user1.get(UserSessionManager.KEY_EMAIL);
-
         voucherURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID";
         if (checkConnection()== true)
         {
@@ -239,6 +241,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     if (user.name != null) {
                         profile_image.setImageBitmap(bitmap);
                         etName.setText(user.name + System.lineSeparator() + user.email);
+                        etContact.setText(user.mobNo);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -321,13 +324,13 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     Drawable myDrawable = profile_image.getDrawable();
                     if(profile_image.getDrawable().getConstantState().equals
                             (getResources().getDrawable(R.drawable.default1).getConstantState())){
-                        Toast.makeText(getContext(), "Please select profile picture..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
                     } else if (date2.equals("")) {
-                        Toast.makeText(getContext(), "Please select birthDate..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Select BirthDate..", Toast.LENGTH_LONG).show();
                     } else if (gender.equals("Select")) {
-                        Toast.makeText(getContext(), "Please select gender..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Select Gender..", Toast.LENGTH_LONG).show();
                     } else if (image == null) {
-                        Toast.makeText(getContext(), "Please select profile picture..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
                     } else {
                         //execute the async task and upload the image to server
                         new Upload(image, "IMG_" + timestamp).execute();
@@ -627,7 +630,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
         if (response.equals(""))
         {
-            Toast.makeText(getContext(), "Email address..?", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Email Address..?", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -637,11 +640,11 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 //                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
                 if (res.equals("Invalid Credential"))
                 {
-                    Toast.makeText(getContext(), "Your old password not correct. ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Your Old Password not correct. ", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(), "Password has been changed, successfully!", Toast.LENGTH_LONG).show();
-                    session.createUserLoginSession(name, email, "", user_NewPassword, userId);
+                    Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
+                    session.createUserLoginSession(name, email, "", user_NewPassword, userId,phone);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -756,7 +759,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
                 try {
                     if (result.equals("")) {
-                        Toast.makeText(getContext(), "Check for data connection..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
                     } else {
                         //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                         try {
@@ -776,6 +779,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                                         email = jsonArrayChanged.getJSONObject(i).get("email_id").toString();
                                         //  voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("contact").toString());
                                         name = jsonArrayChanged.getJSONObject(i).get("username").toString();
+                                        phone = jsonArrayChanged.getJSONObject(i).get("contact").toString();
                                         //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
                                         byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
                                         // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
@@ -802,6 +806,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                                         etName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
                                         etEmail.setText(email);
                                         txtEmail.setText(email);
+                                        etContact.setText(phone);
                                         txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
 
 
@@ -1098,7 +1103,6 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
     private class Upload extends AsyncTask<Void,Void,String> {
         private Bitmap image;
         private String name1;
-        ProgressDialog progressDialog;
 
         public Upload(Bitmap image,String name1){
             this.image = image;
@@ -1146,30 +1150,22 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             }
         }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
 
-        }
 
         @Override
         protected void onPostExecute(String s) {
             //show image uploaded
-            progressDialog.cancel();
+
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
                 String res = jsonObject.getString("message");
                 if (res.equalsIgnoreCase("Success")){
-                    Toast.makeText(getContext(),"Profile updated successfully..",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Data Uploaded Successfully..",Toast.LENGTH_SHORT).show();
                     // session.createUserLoginSession(name, email, "", password, userID);
                 }
                 else {
-                    Toast.makeText(getContext(),"Profile not updated..",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Data not Uploaded..",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
