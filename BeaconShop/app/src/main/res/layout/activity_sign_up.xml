@@ -59,14 +59,14 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_marginTop="35dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp">
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="30dp"
+                android:padding="5dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_user" />
+                android:src="@drawable/ic_user1" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
                 android:id="@+id/etUserName"
                 android:inputType="textPersonName|text"
@@ -96,15 +96,15 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llUsernameBox">
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="25dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:padding="5dp"
                 android:src="@drawable/ic_email" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
                 android:id="@+id/etEmailAddress"
@@ -135,8 +135,7 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llEmailBox">
 
@@ -144,6 +143,7 @@
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:padding="5dp"
                 android:src="@drawable/ic_mobile" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
                 android:id="@+id/etContactNo"
@@ -175,15 +175,15 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llContactBox">
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="28dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:padding="5dp"
                 android:src="@drawable/ic_password" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
                 android:id="@+id/etPassword"
@@ -214,14 +214,14 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llPasswordBox">
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="28dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:padding="5dp"
                 android:src="@drawable/ic_password" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
                 android:id="@+id/etRePassword"
@@ -252,18 +252,19 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llRePaswordBox">
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="25dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_web" />
             <Spinner
                 android:id="@+id/spnCountry"
                 android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></Spinner>
         </LinearLayout>
@@ -275,37 +276,29 @@
             android:layout_marginTop="5dp"
             android:background="@color/white"/>
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/llStateBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1"
-            android:background="@drawable/rectangle_shape"
             android:layout_marginTop="10dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="10dp"
             android:paddingLeft="2dp"
             android:layout_below="@+id/llCountryBox">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <View
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
-                    android:padding="5dp"
-                    android:layout_weight="0.1"
-                    android:background="@drawable/view_shape"
-                    android:layout_marginLeft="0dp"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="28dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_account_balance_white_24dp" />
-            </FrameLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_state"
+                />
+
             <Spinner
                 android:id="@+id/spnState"
                 android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></Spinner>
         </LinearLayout>

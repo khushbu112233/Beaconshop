@@ -1,9 +1,8 @@
 package com.amplearch.beaconshop.Activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,26 +17,12 @@ import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.amplearch.beaconshop.Utils.Utility.validate;
 
@@ -79,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
 
 
         ArrayAdapter<CharSequence> adapterState = ArrayAdapter.createFromResource(SignUpActivity.this,
-                R.array.canada_state_array, android.R.layout.simple_spinner_item);
+                R.array.canada_state_array, R.layout.spinner_item);
 // Specify the layout to use when the list of choices appears
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner

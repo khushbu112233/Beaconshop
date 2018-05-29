@@ -94,13 +94,13 @@
             android:weightSum="1"
             android:layout_below="@+id/txttitle"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:paddingLeft="2dp"
             android:layout_centerVertical="true">
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="20dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_email" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
@@ -133,11 +133,11 @@
             android:layout_below="@+id/llEmailBox"
             android:layout_marginTop="10dp"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:paddingLeft="2dp">
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="23dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_password" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
