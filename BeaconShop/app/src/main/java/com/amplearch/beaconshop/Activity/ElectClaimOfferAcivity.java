@@ -210,7 +210,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
 
                 Boolean del = db.deleteFavourites(offer_id);
                 if (del) {
-                    Toast.makeText(getApplicationContext(), "Removed from Favourites", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Removed from favourites", Toast.LENGTH_LONG).show();
                     ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
                 }
             }
@@ -218,7 +218,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.heart_grey));
                 db.addFavourites(offer_id, userID);
 
-                Toast.makeText(getApplicationContext(),"Added to Favorite.",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Added to favourites.",Toast.LENGTH_LONG).show();
                 ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_blue));
 
             }
@@ -241,7 +241,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 }
             }
             else {
-                Toast.makeText(getApplicationContext(), "Please Agree to Terms & Conditions before Claim Offer..", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Please agree terms & conditions before claim offer..", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -358,7 +358,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                 super.onPostExecute(result);
 
                 if (result.equals("")){
-                    Toast.makeText(getApplicationContext(), "Server Connection Failed..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Server connection failed..", Toast.LENGTH_LONG).show();
                 }else {
                     // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
@@ -368,7 +368,7 @@ public class ElectClaimOfferAcivity extends AppCompatActivity implements View.On
                         //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                         if (res.equals("Success")){
 
-                            Toast.makeText(getApplicationContext(), "Successfully Claimed..", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Successfully claimed..", Toast.LENGTH_LONG).show();
 
                             getQuantityWithHttpPost(userID, offer_id);
                         }

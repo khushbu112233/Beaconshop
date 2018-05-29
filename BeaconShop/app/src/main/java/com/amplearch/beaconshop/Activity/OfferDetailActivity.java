@@ -56,20 +56,20 @@ public class OfferDetailActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
 
         if (v == imgFavourite){
-            Toast.makeText(getApplicationContext(), "Added to Favourites..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Added to favourites..", Toast.LENGTH_LONG).show();
         }
         if (v == imgShare){
 
             String shareBody = "Here is the share content body";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Reddem Code");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Redeem Code");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share Via"));
 
         }
         if (v == tvClaimOffer){
-            Toast.makeText(getApplicationContext(), "You have Claimed Offer Successfully..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "You have claimed offer successfully..", Toast.LENGTH_LONG).show();
         }
         if (v == imgFBShare){
             if (ShareDialog.canShow(ShareLinkContent.class)) {

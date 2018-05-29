@@ -110,7 +110,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
             if(voch == null) {
                 //  Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
                 tvNoVoucher.setVisibility(View.VISIBLE);
-                tvNoVoucher.setText("No Vouchers are Added..");
+                tvNoVoucher.setText("No vouchers are added..");
                 return view;
             }
 
@@ -143,7 +143,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
 
             if (favImage.size() == 0 && favText.size() == 0&&favText1.size()==0){
                 tvNoVoucher.setVisibility(View.VISIBLE);
-                tvNoVoucher.setText("No Vouchers are Added..");
+                tvNoVoucher.setText("No vouchers are added..");
             }
             else {
                 tvNoVoucher.setVisibility(View.GONE);
@@ -199,7 +199,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
         Log.i("Voch res: ", response);
         if (response.equals(""))
         {
-            Toast.makeText(getContext(), "Vouchers not Loaded..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Vouchers not loaded..", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -212,7 +212,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res==null)
                 {
-                    Toast.makeText(getContext(), "No Vouchers are Added..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "No vouchers are added..", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -220,7 +220,7 @@ public class VoucherFragment extends Fragment implements  AsyncRequest.OnAsyncRe
                     if (jsonArrayChanged.length() == 0)
                     {
                         tvNoVoucher.setVisibility(View.VISIBLE);
-                        tvNoVoucher.setText("No Vouchers are Added..");
+                        tvNoVoucher.setText("No vouchers are added..");
                         //  Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                     }
                     else

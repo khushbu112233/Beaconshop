@@ -155,7 +155,7 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
         Log.e("response",""+response);
         //  Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
         if (response.equals("")){
-            Toast.makeText(getApplicationContext(), "Offers not Loaded..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Offers not loaded..", Toast.LENGTH_LONG).show();
         }else {
             //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             try {
@@ -165,7 +165,7 @@ public class ElectronicOfferActivity extends AppCompatActivity  implements Async
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res.equals("")){
                     tvNoOffer.setVisibility(View.VISIBLE);
-                    tvNoOffer.setText("No Offers are Available..");
+                    tvNoOffer.setText("No offers are available..");
                     // Toast.makeText(getApplicationContext(), "No Offers are Available..", Toast.LENGTH_LONG).show();
                 }
                 else {

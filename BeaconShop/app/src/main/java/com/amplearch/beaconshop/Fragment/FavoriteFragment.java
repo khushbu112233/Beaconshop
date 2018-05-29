@@ -95,7 +95,7 @@ public class FavoriteFragment extends Fragment
         if(voch == null) {
           //  Toast.makeText(getContext(), "There is no favourite data available", Toast.LENGTH_LONG).show();
             tvNoFavourites.setVisibility(View.VISIBLE);
-            tvNoFavourites.setText("No Favourites are Added..");
+            tvNoFavourites.setText("No favourites are added..");
             return view;
         }
 
@@ -130,7 +130,7 @@ public class FavoriteFragment extends Fragment
 
         if (favImage.size() == 0 && favText.size() == 0 && favText1.size()==0){
             tvNoFavourites.setVisibility(View.VISIBLE);
-            tvNoFavourites.setText("No Favourites are Added..");
+            tvNoFavourites.setText("No favourites are added..");
         }
         else {
             tvNoFavourites.setVisibility(View.GONE);
@@ -233,7 +233,7 @@ public class FavoriteFragment extends Fragment
     }
 
     private void showSnack(boolean isConnected) {
-        String message = "Check For Data Connection..";
+        String message = "Check for data connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {

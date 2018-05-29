@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
                 }
 
                 else if (!isValidEmail( login_Email)) {
-                    etEmailAdd.setError("Email Id is not in Valid Format.");
+                    etEmailAdd.setError("Email id is not in valid format.");
                 }
 
                 else if (!isValidPassword( login_Password)) {
@@ -109,7 +109,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
             public void onClick(View v) {
                 AlertDialog.Builder inputEmail = new AlertDialog.Builder(context);
                 inputEmail.setTitle("Forgot Password?");
-                inputEmail.setMessage("Please! Enter your Emial Id.");
+                inputEmail.setMessage("Please! Enter your email id.");
                 // for email edittext
                 final EditText etInputEmail = new EditText(context);
                 etInputEmail.setHint("ample-arch@gmail.com");
@@ -205,7 +205,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
 
         if (response.equals(""))
         {
-            Toast.makeText(getApplicationContext(), "Attempt Failed..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Attempt failed..", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -255,7 +255,7 @@ public class SignInActivity extends AppCompatActivity implements AsyncRequest.On
 
                 if (res.equals("This email address does not match our records."))
                 {
-                    Toast.makeText(getApplicationContext(), "This email address does not EXISTS..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "This email address does not exists..", Toast.LENGTH_LONG).show();
                 }
                 else if (res.equalsIgnoreCase("Password has been sent to your email address.")){
                     Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
