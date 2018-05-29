@@ -392,7 +392,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     }
 
     private void showSnack(boolean isConnected) {
-        String message = "Check For Data Connection..";
+        String message = "Check for data connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {
@@ -407,7 +407,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
         //  Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
 
         if (response.equals("")) {
-            Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Categories are not loaded..", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -419,7 +419,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res == null) {
 
-                    Toast.makeText(getContext(), "No Categories are Available..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "No categories are available..", Toast.LENGTH_LONG).show();
                 } else {
 
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("category");
@@ -508,7 +508,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
     public void joyResponse(String response)
     {
         if (response.equals("")) {
-            Toast.makeText(getContext(), "Category not Loaded..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Categories are not loaded..", Toast.LENGTH_LONG).show();
         }
         else {
             try {
@@ -518,7 +518,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res == null) {
 
-                    Toast.makeText(getContext(), "No Paid Offers are Available..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Paid offers are not available..", Toast.LENGTH_LONG).show();
                 } else {
 
                     JSONArray jsonArrayChanged = jsonObject.getJSONArray("offers");
@@ -747,7 +747,7 @@ public class HomeFragment extends Fragment implements JayRequest.OnAsyncRequestC
                     // handle back button
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-                    alertDialogBuilder.setTitle("Exit Application?");
+                    alertDialogBuilder.setTitle("Do you want to exit?");
                     alertDialogBuilder
                             .setCancelable(false)
                             .setPositiveButton("Yes",

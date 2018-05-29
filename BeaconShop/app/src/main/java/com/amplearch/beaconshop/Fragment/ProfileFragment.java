@@ -514,7 +514,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 super.onPostExecute(result);
 
                 if (result.equals("")){
-                    Toast.makeText(getContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Check for data connection..", Toast.LENGTH_LONG).show();
                 }else {
                     //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
@@ -890,7 +890,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
 
 
     private void showSnack(boolean isConnected) {
-        String message = "Check For Data Connection..";
+        String message = "Check for data connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {
@@ -1097,13 +1097,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                 Drawable myDrawable = ivImage.getDrawable();
                 if(ivImage.getDrawable().getConstantState().equals
                         (getResources().getDrawable(R.drawable.default1).getConstantState())){
-                    Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please select profile picture..", Toast.LENGTH_LONG).show();
                 } else if (date.equals("")) {
-                    Toast.makeText(getContext(), "Please Select BirthDate..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please select birthDate..", Toast.LENGTH_LONG).show();
                 } else if (gender.equals("Select")) {
-                    Toast.makeText(getContext(), "Please Select Gender..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please select gender..", Toast.LENGTH_LONG).show();
                 } else if (image == null) {
-                    Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Please select profile picture..", Toast.LENGTH_LONG).show();
                 } else {
                     //execute the async task and upload the image to server
                     new Upload(image, "IMG_" + timestamp).execute();
@@ -1572,6 +1572,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     private class Upload extends AsyncTask<Void,Void,String>{
         private Bitmap image;
         private String name1;
+        ProgressDialog progressDialog;
 
         public Upload(Bitmap image,String name1){
             this.image = image;
@@ -1619,7 +1620,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
             }
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getContext());
 
+        }
 
         @Override
         protected void onPostExecute(String s) {

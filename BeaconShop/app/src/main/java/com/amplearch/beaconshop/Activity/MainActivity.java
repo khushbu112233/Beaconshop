@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 super.onPostExecute(result);
 
                 if (result.equals("")){
-                    Toast.makeText(getApplicationContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Check for data connection..", Toast.LENGTH_LONG).show();
                 }else {
                     //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
@@ -687,7 +687,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 super.onPostExecute(result);
 
                 if (result.equals("")){
-                    Toast.makeText(getApplicationContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Check for data connection..", Toast.LENGTH_LONG).show();
                 }else {
                     //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                     try {
@@ -1129,7 +1129,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
     }
 
     private void showSnack(boolean isConnected) {
-        String message = "Check for Data Connection..";
+        String message = "Check for data connection..";
         if (isConnected) {
 //            message = "Good! Connected to Internet";
         } else {
@@ -1153,7 +1153,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
 
         try{
         if (response.equals("")) {
-            Toast.makeText(getApplicationContext(), "No Offers..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No offers..", Toast.LENGTH_LONG).show();
         } else {
             // Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             try {
@@ -1163,7 +1163,7 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res == null) {
 
-                    Toast.makeText(getApplicationContext(), "No Vouchers are Available..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "No vouchers are available..", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("StoreLocation Count", "StoreLocation Count: " + db.getAllLocations().size());
                     //  Toast.makeText(getApplicationContext(), "StoreLocation Count: " + db.getAllLocations().size(), Toast.LENGTH_LONG ).show();

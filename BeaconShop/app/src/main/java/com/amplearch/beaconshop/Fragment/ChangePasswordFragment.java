@@ -93,7 +93,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
 
                 if(!user_Email.equals(login_email))
                 {
-                    etChEmail.setError("You using wrong EMAIL");
+                    etChEmail.setError("You are using wrong email id");
                 }
                 else {
                     etChEmail.setError(null);
@@ -128,7 +128,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
 
         if (response.equals(""))
         {
-            Toast.makeText(getContext(), "Email Address..?", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Email address..?", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -138,10 +138,10 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
 //                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
                 if (res.equals("Invalid Credential"))
                 {
-                    Toast.makeText(getContext(), "Your Old Password not correct. ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Your old password not correct. ", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Password has been changed, successfully!", Toast.LENGTH_LONG).show();
                     session.createUserLoginSession(name, email, "", user_NewPassword, userId);
                 }
             } catch (JSONException e) {

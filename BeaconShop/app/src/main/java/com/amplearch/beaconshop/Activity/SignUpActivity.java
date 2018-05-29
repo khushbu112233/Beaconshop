@@ -131,9 +131,9 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
                 final_state = spnState.getSelectedItem().toString();
                 if (!validate(UserName,EmailAddress,ContactNo,Password,RePassword))
                 {
-                    Toast.makeText(getApplicationContext(), "Form Fill Invalid!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Form fill invalid!", Toast.LENGTH_SHORT).show();
                 } else if (final_country.equalsIgnoreCase("Select Country")){
-                    Toast.makeText(getApplicationContext(), "Please Select Country..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please select country..", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -142,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
 
                         if (final_country.equalsIgnoreCase("Canada")) {
                             if (final_state.equalsIgnoreCase("Select Province")) {
-                                Toast.makeText(getApplicationContext(), "Please Select Province for Canada..", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Please select province for canada..", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         }
@@ -180,7 +180,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
 
         if (response.equals(""))
         {
-            Toast.makeText(getApplicationContext(), "SignUp attempt Failed..", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "SignUp attempt failed..", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -193,7 +193,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res.equals("Success"))
                 {
-                    Toast.makeText(getApplicationContext(), "Successfully Registered!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Successfully registered!", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(SignUpActivity.this,SignInActivity.class);
                     startActivity(intent);
                     finish();
@@ -202,7 +202,7 @@ public class SignUpActivity extends AppCompatActivity implements AsyncRequest.On
                 {
                     Toast.makeText(getApplicationContext(), "Not registered!", Toast.LENGTH_LONG).show();
 //                            session.createUserLoginSession(username, email_id, image, password, user_id);
-                    etEmailAddress.setError("Email Address, Already Exist!");
+                    etEmailAddress.setError("Email id, Already exist!");
                 }
             }
             catch (JSONException e) {

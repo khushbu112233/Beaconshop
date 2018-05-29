@@ -2,6 +2,7 @@ package com.amplearch.beaconshop.Fragment;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -320,13 +321,13 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     Drawable myDrawable = profile_image.getDrawable();
                     if(profile_image.getDrawable().getConstantState().equals
                             (getResources().getDrawable(R.drawable.default1).getConstantState())){
-                        Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please select profile picture..", Toast.LENGTH_LONG).show();
                     } else if (date2.equals("")) {
-                        Toast.makeText(getContext(), "Please Select BirthDate..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please select birthDate..", Toast.LENGTH_LONG).show();
                     } else if (gender.equals("Select")) {
-                        Toast.makeText(getContext(), "Please Select Gender..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please select gender..", Toast.LENGTH_LONG).show();
                     } else if (image == null) {
-                        Toast.makeText(getContext(), "Please Select Profile Picture..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please select profile picture..", Toast.LENGTH_LONG).show();
                     } else {
                         //execute the async task and upload the image to server
                         new Upload(image, "IMG_" + timestamp).execute();
@@ -626,7 +627,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
         if (response.equals(""))
         {
-            Toast.makeText(getContext(), "Email Address..?", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Email address..?", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -636,10 +637,10 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 //                        Toast.makeText(getApplicationContext(), "res: "+res, Toast.LENGTH_LONG).show();
                 if (res.equals("Invalid Credential"))
                 {
-                    Toast.makeText(getContext(), "Your Old Password not correct. ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Your old password not correct. ", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Password has been changed, successfully!", Toast.LENGTH_LONG).show();
                     session.createUserLoginSession(name, email, "", user_NewPassword, userId);
                 }
             } catch (JSONException e) {
@@ -755,7 +756,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
                 try {
                     if (result.equals("")) {
-                        Toast.makeText(getContext(), "Check For Data Connection..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Check for data connection..", Toast.LENGTH_LONG).show();
                     } else {
                         //   Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
                         try {
@@ -1097,6 +1098,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
     private class Upload extends AsyncTask<Void,Void,String> {
         private Bitmap image;
         private String name1;
+        ProgressDialog progressDialog;
 
         public Upload(Bitmap image,String name1){
             this.image = image;
@@ -1144,22 +1146,30 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
             }
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
 
+        }
 
         @Override
         protected void onPostExecute(String s) {
             //show image uploaded
-
+            progressDialog.cancel();
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
                 String res = jsonObject.getString("message");
                 if (res.equalsIgnoreCase("Success")){
-                    Toast.makeText(getContext(),"Data Uploaded Successfully..",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Profile updated successfully..",Toast.LENGTH_SHORT).show();
                     // session.createUserLoginSession(name, email, "", password, userID);
                 }
                 else {
-                    Toast.makeText(getContext(),"Data not Uploaded..",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Profile not updated..",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
