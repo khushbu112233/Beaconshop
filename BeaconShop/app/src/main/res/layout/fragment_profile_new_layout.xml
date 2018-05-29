@@ -132,214 +132,219 @@
         android:layout_marginTop="10dp"
         android:visibility="visible"
         android:orientation="vertical">
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/llName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_user"
-                    android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansEditText
-                    android:id="@+id/etName"
-                    android:inputType="text"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/llName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="UserName"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="2dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_user1"
+                        android:tint="@color/black"/>
+                    <com.amplearch.beaconshop.Utils.GillSansEditText
+                        android:id="@+id/etName"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="UserName"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
 
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/llPasswordBox"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/black"/>
-            <LinearLayout
-                android:id="@+id/llEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_email"
-                    android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansEditText
-                    android:id="@+id/etEmail"
-                    android:inputType="textEmailAddress"
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llPasswordBox"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/black"/>
+                <LinearLayout
+                    android:id="@+id/llEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="2dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_email"
+                        android:tint="@color/black"/>
+                    <com.amplearch.beaconshop.Utils.GillSansEditText
+                        android:id="@+id/etEmail"
+                        android:inputType="textEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
 
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/llPasswordBox"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/black"/>
-            <LinearLayout
-                android:id="@+id/llContact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_mobile"
-                    android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansEditText
-                    android:id="@+id/etContact"
-                    android:inputType="number"
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llPasswordBox"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/black"/>
+                <LinearLayout
+                    android:id="@+id/llContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Contact"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="2dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mobile"
+                        android:tint="@color/black"/>
+                    <com.amplearch.beaconshop.Utils.GillSansEditText
+                        android:id="@+id/etContact"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contact"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
 
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/llPasswordBox"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/black"/>
-            <LinearLayout
-                android:id="@+id/llGender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_user"
-                    android:tint="@color/black"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llPasswordBox"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/black"/>
+                <LinearLayout
+                    android:id="@+id/llGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="2dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_gender"
+                        android:tint="@color/black"/>
 
-                <Spinner
-                    android:id="@+id/gender_spinner"
+                    <Spinner
+                        android:id="@+id/gender_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:background="@android:color/transparent"
+                        android:layout_gravity="center_vertical"
+
+                        />
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
+                        android:tint="@color/black"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llPasswordBox"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/black"/>
+                <LinearLayout
+                    android:id="@+id/llBday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:background="@android:color/transparent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    />
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
-                    android:tint="@color/black"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/llPasswordBox"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/black"/>
-            <LinearLayout
-                android:id="@+id/llBday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="2dp">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_calendar"
-                    android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansTextView
-                    android:id="@+id/etBday"
-                    android:inputType="text"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="2dp">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_calendar"
+                        android:tint="@color/black"/>
+                    <com.amplearch.beaconshop.Utils.GillSansTextView
+                        android:id="@+id/etBday"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="11/11/1994"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:editable="false"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
+                        android:tint="@color/black"/>
+                </LinearLayout>
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="11/11/1994"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:editable="false"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
-                    android:tint="@color/black"/>
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llPasswordBox"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/black"/>
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/llPasswordBox"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/black"/>
-        </LinearLayout>
+        </ScrollView>
         <com.amplearch.beaconshop.Utils.GillSansButton
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
@@ -362,9 +367,12 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/llOldPasswordBox"
@@ -373,30 +381,32 @@
                 android:orientation="horizontal"
                 android:weightSum="1"
                 android:layout_marginTop="10dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="2dp">
                 <ImageView
-
                     android:layout_width="40dp"
                     android:layout_height="23dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_password"
                     android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansEditText
-                    android:id="@+id/etPass"
-                    android:inputType="textPassword"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Old Password"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
+                    android:layout_height="wrap_content">
+                    <com.amplearch.beaconshop.Utils.GillSansShowPassEditText
+                        android:id="@+id/etPass"
+                        android:inputType="textPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Old Password"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
+                </android.support.design.widget.TextInputLayout>
                 <ImageView
                     android:id="@+id/imgPass"
                     android:layout_width="40dp"
@@ -421,8 +431,8 @@
                 android:orientation="horizontal"
                 android:weightSum="1"
                 android:layout_marginTop="10dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="2dp">
                 <ImageView
                     android:layout_width="40dp"
@@ -430,20 +440,24 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_password"
                     android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansEditText
-                    android:id="@+id/etNewPass"
-                    android:inputType="textPassword"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="New Password"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
+                    android:layout_height="wrap_content">
+
+                    <com.amplearch.beaconshop.Utils.GillSansShowPassEditText
+                        android:id="@+id/etNewPass"
+                        android:inputType="textPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="New Password"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
+                </android.support.design.widget.TextInputLayout>
                 <ImageView
                     android:id="@+id/imgNewPass"
                     android:layout_width="40dp"
@@ -469,8 +483,8 @@
                 android:weightSum="1"
                 android:layout_below="@+id/llEmailBox"
                 android:layout_marginTop="10dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="2dp">
                 <ImageView
                     android:layout_width="40dp"
@@ -478,20 +492,24 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_password"
                     android:tint="@color/black"/>
-                <com.amplearch.beaconshop.Utils.GillSansEditText
-                    android:id="@+id/etConfirmPass"
-                    android:inputType="textPassword"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Confirm Password"
-                    android:layout_weight="0.9"
-                    android:textColorHint="@color/black"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="10dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"/>
+                    android:layout_height="wrap_content">
+
+                    <com.amplearch.beaconshop.Utils.GillSansShowPassEditText
+                        android:id="@+id/etConfirmPass"
+                        android:inputType="textPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Confirm Password"
+                        android:layout_weight="0.9"
+                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:paddingLeft="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"/>
+                </android.support.design.widget.TextInputLayout>
                 <ImageView
                     android:id="@+id/imgConfirmPass"
                     android:layout_width="40dp"

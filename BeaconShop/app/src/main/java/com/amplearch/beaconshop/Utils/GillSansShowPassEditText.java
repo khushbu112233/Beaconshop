@@ -2,22 +2,21 @@ package com.amplearch.beaconshop.Utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
-public class GillSansEditText extends AppCompatEditText
+public class GillSansShowPassEditText extends com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
 {
-    public GillSansEditText(Context context, AttributeSet attrs, int defStyle) {
+    public GillSansShowPassEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public GillSansEditText(Context context, AttributeSet attrs) {
+    public GillSansShowPassEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public GillSansEditText(Context context) {
+    public GillSansShowPassEditText(Context context) {
         super(context);
         init();
     }

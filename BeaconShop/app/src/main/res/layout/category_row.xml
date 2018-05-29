@@ -47,6 +47,7 @@
             android:layout_alignRight="@id/relative_layout"
             android:background="@drawable/badge_item_count"
             android:text="27"
+            android:gravity="center"
             android:textColor="#FFF"
             android:textSize="10sp"
             android:textStyle="bold"

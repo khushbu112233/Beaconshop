@@ -535,7 +535,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                 if (res.equals("Success Facebook") || res.equalsIgnoreCase("Already Exists"))
                 {
-                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId);
+                    session.createUserLoginSession(user.name, user.email, personPhotoUrl, "fbpass", userId,"");
                     Intent intent=new Intent(AccountActivity.this,MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -657,7 +657,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                     // String message = jsonObject.getString("User");
                     //  Toast.makeText(getApplicationContext(), res, Toast.LENGTH_LONG).show();
                     if (res.equals("Success Google") || res.equalsIgnoreCase("Already Exists")) {
-                        session.createUserLoginSession(personName, email, personPhotoUrl, "gmailpass", userId);
+                        session.createUserLoginSession(personName, email, personPhotoUrl, "gmailpass", userId,"");
                         updateUI(true);
                     } else {
                         updateUI(false);
@@ -795,7 +795,7 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                                 JSONObject object,
                                 GraphResponse response) {
 
-                            Log.e("response: ", response + "");
+                            Log.e("response:1 ", response + "");
                            // Toast.makeText(AccountActivity.this, response.toString(), Toast.LENGTH_LONG).show();
                             try {
                                 user = new User();

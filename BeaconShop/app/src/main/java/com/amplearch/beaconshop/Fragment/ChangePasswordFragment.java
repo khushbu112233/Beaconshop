@@ -1,8 +1,6 @@
 package com.amplearch.beaconshop.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,32 +14,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amplearch.beaconshop.Activity.MainActivity;
-import com.amplearch.beaconshop.Activity.SignInActivity;
 import com.amplearch.beaconshop.ConnectivityReceiver;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.UserSessionManager;
 import com.amplearch.beaconshop.WebCall.AsyncRequest;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by ample-arch on 4/15/2017.
@@ -58,7 +42,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
     String changePasswordURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/ChangePassword" ;
     ArrayList<NameValuePair> params ;
     String user_Email, user_OldPassword, user_NewPassword ;
-    String email, password, userId, name;
+    String email, password, userId, name ,phone;
 
     @Nullable
     @Override
@@ -75,6 +59,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
         name = user1.get(UserSessionManager.KEY_NAME);
         password = user1.get(UserSessionManager.KEY_PASSWORD);
         userId = user1.get(UserSessionManager.KEY_USER_ID);
+        phone = user1.get(UserSessionManager.KEY_MOB);
 
          etChEmail = (EditText)rootView.findViewById(R.id.etChEmail);
          etChOldPassword = (EditText)rootView.findViewById(R.id.etChOldPassword);
@@ -142,7 +127,7 @@ public class ChangePasswordFragment extends Fragment implements AsyncRequest.OnA
                 }
                 else {
                     Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
-                    session.createUserLoginSession(name, email, "", user_NewPassword, userId);
+                    session.createUserLoginSession(name, email, "", user_NewPassword, userId,phone);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

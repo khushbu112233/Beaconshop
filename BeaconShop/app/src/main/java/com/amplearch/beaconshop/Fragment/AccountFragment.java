@@ -39,6 +39,7 @@ import com.amplearch.beaconshop.Model.User;
 import com.amplearch.beaconshop.R;
 import com.amplearch.beaconshop.Utils.GillSansButton;
 import com.amplearch.beaconshop.Utils.GillSansEditText;
+import com.amplearch.beaconshop.Utils.GillSansShowPassEditText;
 import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.amplearch.beaconshop.Utils.NearbyMessagePref;
 import com.amplearch.beaconshop.Utils.PrefUtils;
@@ -100,12 +101,14 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
     LinearLayout llSettings;
     View vProfile,vChangePassword,vSettings;
     GillSansButton btnUpdate,btnChangePassword;
-    GillSansEditText etName,etEmail,etContact,etPass,etNewPass,etConfirmPass;
+    GillSansEditText etName,etEmail,etContact;
+    GillSansShowPassEditText etPass,etNewPass,etConfirmPass;
+
     ArrayList<NameValuePair> params ;
     String voucherURL  ;
     UserSessionManager session;
     String changePasswordURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/ChangePassword" ;
-    String email, password, userId, name;
+    String email, password, userId, name,phone;
     public String SERVER = "http://beacon.ample-arch.com/BeaconWebService.asmx/UpdateProfile",
             timestamp;
     String user_Email, user_OldPassword, user_NewPassword ;
@@ -151,6 +154,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         name = user1.get(UserSessionManager.KEY_NAME);
         password = user1.get(UserSessionManager.KEY_PASSWORD);
         userId = user1.get(UserSessionManager.KEY_USER_ID);
+        phone = user1.get(UserSessionManager.KEY_MOB);
         profile_image = (CircularImageView)rootview.findViewById(R.id.profile_image);
         sNewOffer = (Switch)rootview.findViewById(R.id.sNewOffer);
         sAllowPopup = (Switch)rootview.findViewById(R.id.sAllowPopup);
@@ -164,9 +168,9 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
         etEmail = (GillSansEditText)rootview.findViewById(R.id.etEmail);
         etName = (GillSansEditText)rootview.findViewById(R.id.etName);
         spinner = (Spinner) rootview.findViewById(R.id.gender_spinner);
-        etPass = (GillSansEditText)rootview.findViewById(R.id.etPass);
-        etNewPass = (GillSansEditText)rootview.findViewById(R.id.etNewPass);
-        etConfirmPass = (GillSansEditText)rootview.findViewById(R.id.etConfirmPass);
+        etPass = (GillSansShowPassEditText) rootview.findViewById(R.id.etPass);
+        etNewPass = (GillSansShowPassEditText)rootview.findViewById(R.id.etNewPass);
+        etConfirmPass = (GillSansShowPassEditText)rootview.findViewById(R.id.etConfirmPass);
         txtProfile = (GillSansTextView)rootview.findViewById(R.id.txtProfile);
         txtChangePassword = (GillSansTextView)rootview.findViewById(R.id.txtChangePassword);
         txtSettings = (GillSansTextView)rootview.findViewById(R.id.txtSettings);
@@ -193,7 +197,6 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
 
         // get email
         //email = user1.get(UserSessionManager.KEY_EMAIL);
-
         voucherURL = "http://beacon.ample-arch.com/BeaconWebService.asmx/getRedeemUserbyUserID";
         if (checkConnection()== true)
         {
@@ -238,6 +241,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                     if (user.name != null) {
                         profile_image.setImageBitmap(bitmap);
                         etName.setText(user.name + System.lineSeparator() + user.email);
+                        etContact.setText(user.mobNo);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -640,7 +644,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                 }
                 else {
                     Toast.makeText(getContext(), "Password has been changed, Successfully!", Toast.LENGTH_LONG).show();
-                    session.createUserLoginSession(name, email, "", user_NewPassword, userId);
+                    session.createUserLoginSession(name, email, "", user_NewPassword, userId,phone);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -775,6 +779,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                                         email = jsonArrayChanged.getJSONObject(i).get("email_id").toString();
                                         //  voucherClass.setStore_name(jsonArrayChanged.getJSONObject(i).get("contact").toString());
                                         name = jsonArrayChanged.getJSONObject(i).get("username").toString();
+                                        phone = jsonArrayChanged.getJSONObject(i).get("contact").toString();
                                         //  voucherClass.setOffer_title(jsonArrayChanged.getJSONObject(i).get("password").toString());
                                         byte[] image = jsonArrayChanged.getJSONObject(i).get("image").toString().getBytes();
                                         // Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
@@ -801,6 +806,7 @@ public class AccountFragment extends Fragment implements AsyncRequest.OnAsyncReq
                                         etName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
                                         etEmail.setText(email);
                                         txtEmail.setText(email);
+                                        etContact.setText(phone);
                                         txtName.setText(jsonArrayChanged.getJSONObject(i).get("username").toString());
 
 

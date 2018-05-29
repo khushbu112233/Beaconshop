@@ -29,18 +29,26 @@
         android:id="@+id/txttitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:textSize="31sp"
         android:gravity="center"
         android:textColor="@color/white"
         android:text="BeaconShop"/>
+    <ImageView
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/ivLogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_shop_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"/>
     <com.amplearch.beaconshop.Utils.GillSansTextView
         android:layout_below="@+id/txttitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:id="@+id/txtdes"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="200dp"
         android:paddingRight="30dp"
         android:paddingLeft="30dp"
         android:gravity="center"
@@ -102,7 +110,7 @@
         <TextView
             android:id="@+id/btnLogin"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:background="@drawable/button_shape"
@@ -110,23 +118,39 @@
             android:text="Facebook"
             android:textAlignment="center"
             android:textColor="@color/white" />
-
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.50"
-            android:visibility="gone" />
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btn_sign_in"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="50dp"
             android:layout_marginLeft="5dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            />
+            android:layout_weight="1">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/login_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.50"
+                    android:visibility="gone" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/btn_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/button_shape"
+                android:padding="12dp"
+                android:text="Google"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </FrameLayout>
     </LinearLayout>
 </RelativeLayout>

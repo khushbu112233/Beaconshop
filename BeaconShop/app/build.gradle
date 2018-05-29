@@ -62,7 +62,7 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:multidex:1.0.1'
-
+    implementation 'com.github.scottyab:showhidepasswordedittext:0.8'
 }
 
 apply plugin: 'com.google.gms.google-services'

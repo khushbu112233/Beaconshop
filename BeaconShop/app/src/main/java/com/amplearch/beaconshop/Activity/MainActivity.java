@@ -804,6 +804,17 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 //  rlButtons.setVisibility(View.VISIBLE);
                 toolbarTitle.setText("BeaconShop");
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                imgRightHeader.setVisibility(View.GONE);
+                imgHome.setColorFilter(getResources().getColor(R.color.logo_color));
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+                txtHome.setTextColor(getResources().getColor(R.color.logo_color));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtAccount.setTextColor(getResources().getColor(R.color.divider));
+
                 break;
             case 2:
                 fragment = new BadgesFragment();
