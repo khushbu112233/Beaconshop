@@ -793,6 +793,17 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
         {
             default:
             case 0:
+
+                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(getResources().getColor(R.color.logo_color));
+
+                txtHome.setTextColor(getResources().getColor(R.color.divider));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtAccount.setTextColor(getResources().getColor(R.color.logo_color));
+                imgRightHeader.setVisibility(View.VISIBLE);
                 fragment = new AccountFragment();
                 // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");
@@ -824,6 +835,16 @@ public class MainActivity extends AppCompatActivity implements AsyncRequest.OnAs
                 break;
 
             case 3:
+                imgHome.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgVoucher.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgFavourites.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.divider), android.graphics.PorterDuff.Mode.MULTIPLY);
+                imgAccount.setColorFilter(getResources().getColor(R.color.logo_color));
+
+                txtHome.setTextColor(getResources().getColor(R.color.divider));
+                txtVoucher.setTextColor(getResources().getColor(R.color.divider));
+                txtFavourite.setTextColor(getResources().getColor(R.color.divider));
+                txtAccount.setTextColor(getResources().getColor(R.color.logo_color));
+                imgRightHeader.setVisibility(View.VISIBLE);
                 fragment = new AccountFragment();
                 // rlButtons.setVisibility(View.GONE);
                 toolbarTitle.setText("Profile");

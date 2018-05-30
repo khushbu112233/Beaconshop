@@ -134,10 +134,12 @@
         android:orientation="vertical">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="180dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
                     android:id="@+id/llName"
@@ -146,14 +148,15 @@
                     android:orientation="horizontal"
                     android:weightSum="1"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="2dp"
                     android:paddingLeft="2dp">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_user1"
-                        android:tint="@color/black"/>
+                        android:tint="@color/hint_color"
+                        />
                     <com.amplearch.beaconshop.Utils.GillSansEditText
                         android:id="@+id/etName"
                         android:inputType="text"
@@ -184,14 +187,15 @@
                     android:orientation="horizontal"
                     android:weightSum="1"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="2dp"
                     android:paddingLeft="2dp">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_email"
-                        android:tint="@color/black"/>
+                        android:tint="@color/hint_color"
+                        />
                     <com.amplearch.beaconshop.Utils.GillSansEditText
                         android:id="@+id/etEmail"
                         android:inputType="textEmailAddress"
@@ -222,14 +226,15 @@
                     android:orientation="horizontal"
                     android:weightSum="1"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="2dp"
                     android:paddingLeft="2dp">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_mobile"
-                        android:tint="@color/black"/>
+                        android:tint="@color/hint_color"
+                        />
                     <com.amplearch.beaconshop.Utils.GillSansEditText
                         android:id="@+id/etContact"
                         android:inputType="number"
@@ -260,14 +265,14 @@
                     android:orientation="horizontal"
                     android:weightSum="1"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="2dp"
                     android:paddingLeft="2dp">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_gender"
-                        android:tint="@color/black"/>
+                        />
 
                     <Spinner
                         android:id="@+id/gender_spinner"
@@ -284,11 +289,11 @@
                         />
                     <ImageView
                         android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="15dp"
                         android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
-                        android:tint="@color/black"/>
+                        android:tint="@color/hint_color"/>
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
@@ -304,14 +309,14 @@
                     android:orientation="horizontal"
                     android:weightSum="1"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="2dp"
                     android:paddingLeft="2dp">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_calendar"
-                        android:tint="@color/black"/>
+                        />
                     <com.amplearch.beaconshop.Utils.GillSansTextView
                         android:id="@+id/etBday"
                         android:inputType="text"
@@ -330,11 +335,12 @@
                         android:background="@android:color/transparent"/>
                     <ImageView
                         android:layout_width="40dp"
-                        android:layout_height="23dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:layout_marginRight="15dp"
                         android:src="@drawable/quantum_ic_keyboard_arrow_down_white_36"
-                        android:tint="@color/black"/>
+                        android:tint="@color/hint_color"
+                        />
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
@@ -380,16 +386,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="1"
-                android:layout_marginTop="10dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="2dp"
                 android:paddingLeft="2dp">
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:src="@drawable/ic_password"
-                    android:tint="@color/black"/>
+                    android:tint="@color/hint_color"
+                    />
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -400,21 +408,22 @@
                         android:layout_height="wrap_content"
                         android:hint="Old Password"
                         android:layout_weight="0.9"
+                        android:focusable="false"
                         android:textColorHint="@color/hint_color"
                         android:textColor="@color/black"
                         android:layout_marginRight="10dp"
                         android:paddingLeft="5dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>
                 <ImageView
                     android:id="@+id/imgPass"
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_eye"
                     android:layout_marginRight="10dp"
-                    android:tint="@color/black"/>
+                    />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -430,16 +439,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="1"
-                android:layout_marginTop="10dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="2dp"
                 android:paddingLeft="2dp">
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:src="@drawable/ic_password"
-                    android:tint="@color/black"/>
+                    android:tint="@color/hint_color"
+                    />
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -451,21 +462,22 @@
                         android:layout_height="wrap_content"
                         android:hint="New Password"
                         android:layout_weight="0.9"
+                        android:focusable="false"
                         android:textColorHint="@color/hint_color"
                         android:textColor="@color/black"
                         android:layout_marginRight="10dp"
                         android:paddingLeft="5dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>
                 <ImageView
                     android:id="@+id/imgNewPass"
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_eye"
                     android:layout_marginRight="10dp"
-                    android:tint="@color/black"/>
+                    />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -482,16 +494,18 @@
                 android:orientation="horizontal"
                 android:weightSum="1"
                 android:layout_below="@+id/llEmailBox"
-                android:layout_marginTop="10dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="2dp"
                 android:paddingLeft="2dp">
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
                     android:src="@drawable/ic_password"
-                    android:tint="@color/black"/>
+                    android:tint="@color/hint_color"
+                    />
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -502,22 +516,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Confirm Password"
+                        android:focusable="false"
                         android:layout_weight="0.9"
                         android:textColorHint="@color/hint_color"
                         android:textColor="@color/black"
                         android:layout_marginRight="10dp"
                         android:paddingLeft="5dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>
                 <ImageView
                     android:id="@+id/imgConfirmPass"
-                    android:layout_width="40dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_eye"
                     android:layout_marginRight="10dp"
-                    android:tint="@color/black"/>
+                    />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -550,6 +565,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:orientation="horizontal"
             android:weightSum="1">
             <com.amplearch.beaconshop.Utils.GillSansTextView
@@ -557,6 +574,7 @@
                 android:layout_weight="0.70"
                 android:layout_height="wrap_content"
                 android:text="New Offer Notifications"
+                android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
@@ -570,6 +588,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.30"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:theme="@style/SCBSwitch"
                 android:checked="true" />
@@ -578,12 +600,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/black"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:weightSum="1">
             <com.amplearch.beaconshop.Utils.GillSansTextView
                 android:layout_width="0dp"
@@ -591,6 +615,7 @@
                 android:layout_height="wrap_content"
                 android:text="Allows Offer Popups"
                 android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp"
@@ -602,6 +627,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.30"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:theme="@style/SCBSwitch"
                 android:checked="true" />
@@ -609,17 +638,20 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/black"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:weightSum="1">
             <com.amplearch.beaconshop.Utils.GillSansTextView
                 android:layout_width="0dp"
                 android:layout_weight="0.70"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Allow Welcome Messages"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
@@ -633,6 +665,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.30"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginRight="10dp"
                 android:theme="@style/SCBSwitch"
                 android:checked="false" />
@@ -640,7 +676,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/black"/>
     </LinearLayout>
 </LinearLayout>

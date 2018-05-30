@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.amplearch.beaconshop.R;
+import com.amplearch.beaconshop.Utils.GillSansTextView;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -55,8 +55,8 @@ public class FavoriteAdapter extends BaseAdapter
         View rowView= inflater.inflate(R.layout.grid_favorite, null, true);
 
         CircularImageView roundedImageView = (CircularImageView) rowView.findViewById(R.id.imgOffer);
-        TextView tvFavText = (TextView)rowView.findViewById(R.id.tvFavText);
-        TextView tvFavText1 = (TextView)rowView.findViewById(R.id.tvFavText1);
+        GillSansTextView tvFavText = (GillSansTextView)rowView.findViewById(R.id.tvFavText);
+        GillSansTextView tvFavText1 = (GillSansTextView)rowView.findViewById(R.id.tvFavText1);
 
         roundedImageView.setImageBitmap(favImage.get(position));
         tvFavText.setText(favText.get(position));
