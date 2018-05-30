@@ -5,10 +5,10 @@
     android:id="@+id/activity_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg1"
     tools:context="com.amplearch.beaconshop.Activity.AccountActivity">
 
     <FrameLayout
+        android:alpha="0.9"
         android:background="@drawable/bg1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

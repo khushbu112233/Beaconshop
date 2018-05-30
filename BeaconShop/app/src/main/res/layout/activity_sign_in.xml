@@ -33,6 +33,7 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:gravity="center"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -80,7 +81,7 @@
             android:id="@+id/txttitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginBottom="40dp"
             android:textSize="31sp"
             android:gravity="center"
             android:textColor="@color/white"
@@ -93,7 +94,6 @@
             android:layout_marginTop="50dp"
             android:weightSum="1"
             android:layout_below="@+id/txttitle"
-            android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="2dp"
             android:layout_centerVertical="true">
@@ -131,13 +131,12 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:layout_below="@+id/llEmailBox"
-            android:layout_marginTop="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="2dp">
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="23dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_password" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
@@ -160,7 +159,6 @@
             android:layout_height="1dp"
             android:layout_below="@+id/llPasswordBox"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:background="@color/white"/>
 
         <com.amplearch.beaconshop.Utils.GillSansTextView
@@ -168,7 +166,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/llPasswordBox"
-            android:text="Forgot Password?"
+            android:text="Forgot password?"
             android:textColor="@color/white"
             android:layout_marginTop="15dp"
             android:textAlignment="textEnd"
@@ -177,7 +175,7 @@
         <com.amplearch.beaconshop.Utils.GillSansButton
             android:id="@+id/tvSignIn"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:text="Sign In"
             android:textAllCaps="false"
             android:textColor="@color/primary_light"

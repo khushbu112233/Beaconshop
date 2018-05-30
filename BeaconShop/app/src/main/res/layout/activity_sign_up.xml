@@ -53,6 +53,7 @@
         android:layout_marginTop="120dp">
 
         <LinearLayout
+            android:gravity="center"
             android:id="@+id/llUsernameBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,8 +65,8 @@
             android:paddingLeft="2dp">
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_user" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
                 android:id="@+id/etUserName"
@@ -73,6 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
+                android:textSize="17dp"
                 android:layout_weight="0.9"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
@@ -103,7 +105,7 @@
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="25dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_email" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
@@ -111,8 +113,9 @@
                 android:inputType="text|textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email Address"
+                android:hint="Email address"
                 android:layout_weight="0.9"
+                android:textSize="17dp"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:layout_marginRight="10dp"
@@ -142,7 +145,7 @@
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="30dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_mobile" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
@@ -150,7 +153,8 @@
                 android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contact No"
+                android:hint="Contact no"
+                android:textSize="17dp"
                 android:layout_weight="0.9"
                 android:maxLength="10"
                 android:textColorHint="@color/white"
@@ -182,7 +186,7 @@
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="28dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_password" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
@@ -191,6 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
+                android:textSize="17dp"
                 android:layout_weight="0.9"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
@@ -220,7 +225,7 @@
             android:layout_below="@+id/llPasswordBox">
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="28dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_password" />
             <com.amplearch.beaconshop.Utils.GillSansEditText
@@ -230,6 +235,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Re-Password"
                 android:layout_weight="0.9"
+                android:textSize="17dp"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:layout_marginRight="10dp"
@@ -262,6 +268,9 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_web" />
             <Spinner
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"
                 android:id="@+id/spnCountry"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
@@ -349,7 +358,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Sign in"
+                android:text="Sign In"
                 android:textStyle="bold"
                 android:textSize="17sp"
                 android:layout_marginLeft="5dp"
